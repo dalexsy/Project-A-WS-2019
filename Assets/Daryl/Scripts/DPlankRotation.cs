@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlankRotation : MonoBehaviour
+public class DPlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
@@ -94,7 +94,7 @@ public class PlankRotation : MonoBehaviour
             transform.RotateAround(pivot.position, transform.right * direction, targetRotation);
 
             // Adjust camera offset
-            var offset = mainCamera.GetComponent<CameraSmoothFollow>().offset += -.027f * direction;
+            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction;
 
             // Returns to top of while loop
             yield return null;
@@ -103,4 +103,5 @@ public class PlankRotation : MonoBehaviour
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
     }
+
 }
