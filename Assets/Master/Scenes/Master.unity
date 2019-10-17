@@ -314,6 +314,25 @@ MonoBehaviour:
   heightDamping: 2
   rotationDamping: 3
   offset: 0
+--- !u!1 &789421087 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 879994915121367167, guid: 618c3c560a239d845ab68c44624d0096,
+    type: 3}
+  m_PrefabInstance: {fileID: 1622409882}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &789421090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789421087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab694988bb0565044a75a16b47449a60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTag: Player
 --- !u!1001 &883032879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -325,6 +344,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618562282970611686, guid: 98366cd5a85dd504182ae78c6aaa1db0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3618562282970611706, guid: 98366cd5a85dd504182ae78c6aaa1db0,
         type: 3}
@@ -385,6 +409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052634653778550344, guid: 98366cd5a85dd504182ae78c6aaa1db0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
