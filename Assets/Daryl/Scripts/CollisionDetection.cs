@@ -6,7 +6,7 @@ public class CollisionDetection : MonoBehaviour
 {
     [SerializeField] string targetTag = null;
 
-    private bool isCollidingWithTarget = false;
+    public bool isCollidingWithTarget = false;
 
     private void OnCollisionEnter(Collision collision)
     {

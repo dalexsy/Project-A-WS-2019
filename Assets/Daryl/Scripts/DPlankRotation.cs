@@ -12,9 +12,11 @@ public class DPlankRotation : MonoBehaviour
     [SerializeField] Transform lPivot = null;
     [SerializeField] Transform rPivot = null;
 
-    private GameObject mainCamera;
-
     private bool isRotating = false;
+
+    private CollisionDetection collisionDetection;
+
+    private GameObject mainCamera;
 
     private float objectAngle = 0f;
     private float targetRotation = 0f;
@@ -22,11 +24,13 @@ public class DPlankRotation : MonoBehaviour
     private void Start()
     {
         mainCamera = GameObject.Find("Main Camera");
+        collisionDetection = GetComponent<CollisionDetection>();
     }
 
     private void Update()
     {
-        RotationInput();
+        if (collisionDetection.isCollidingWithTarget == false)
+            RotationInput();
     }
 
     private void RotationInput()
