@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollisionDetection : MonoBehaviour
 {
     [SerializeField] string targetTag = null;
+    [SerializeField] bool isTrigger = false;
 
     public bool isCollidingWithTarget = false;
 
@@ -17,6 +18,24 @@ public class CollisionDetection : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == targetTag)
+            this.isCollidingWithTarget = false;
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (!isTrigger)
+            return;
+
+        if (collider.gameObject.tag == targetTag)
+            this.isCollidingWithTarget = true;
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (!isTrigger)
+            return;
+
+        if (collider.gameObject.tag == targetTag)
             this.isCollidingWithTarget = false;
     }
 }

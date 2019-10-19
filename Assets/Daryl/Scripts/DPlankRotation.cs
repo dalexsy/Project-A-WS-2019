@@ -9,8 +9,7 @@ public class DPlankRotation : MonoBehaviour
 
     [SerializeField] GameObject pulseParticlePrefab = null;
 
-    [SerializeField] Transform lPivot = null;
-    [SerializeField] Transform rPivot = null;
+    public Transform Pivot = null;
 
     private bool isRotating = false;
 
@@ -29,14 +28,17 @@ public class DPlankRotation : MonoBehaviour
 
     private void Update()
     {
+        // If Plank is not colliding with Player
         if (collisionDetection.isCollidingWithTarget == false)
+
+            // Accept rotation input
             RotationInput();
     }
 
     private void RotationInput()
     {
         // If no pivots are given, accept no input
-        if (!lPivot || !rPivot)
+        if (!Pivot)
             return;
 
         // If Plank is not rotating
@@ -45,25 +47,13 @@ public class DPlankRotation : MonoBehaviour
             // Rotate plank up from left pivot
             if (Input.GetKeyDown("q"))
             {
-                StartCoroutine(RotatePlank(-1, lPivot));
+                StartCoroutine(RotatePlank(-1, Pivot));
             }
 
             // Rotate plank down from left pivot
             if (Input.GetKeyDown("e"))
             {
-                StartCoroutine(RotatePlank(1, lPivot));
-            }
-
-            // Rotate plank up from right pivot
-            if (Input.GetKeyDown("i"))
-            {
-                StartCoroutine(RotatePlank(-1, rPivot));
-            }
-
-            // Rotate plank down from right pivot
-            if (Input.GetKeyDown("p"))
-            {
-                StartCoroutine(RotatePlank(1, rPivot));
+                StartCoroutine(RotatePlank(1, Pivot));
             }
         }
     }

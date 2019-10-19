@@ -266,7 +266,7 @@ PrefabInstance:
     - target: {fileID: 3618562282970611706, guid: 98366cd5a85dd504182ae78c6aaa1db0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3618562282970611706, guid: 98366cd5a85dd504182ae78c6aaa1db0,
         type: 3}
@@ -301,7 +301,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1125884957}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1453836990
+--- !u!1001 &1241439282
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -311,7 +311,7 @@ PrefabInstance:
     - target: {fileID: 879994915121367167, guid: 618c3c560a239d845ab68c44624d0096,
         type: 3}
       propertyPath: m_Name
-      value: DPlank
+      value: DPlankU
       objectReference: {fileID: 0}
     - target: {fileID: 148497908983516361, guid: 618c3c560a239d845ab68c44624d0096,
         type: 3}
@@ -351,7 +351,7 @@ PrefabInstance:
     - target: {fileID: 148497908983516361, guid: 618c3c560a239d845ab68c44624d0096,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 148497908983516361, guid: 618c3c560a239d845ab68c44624d0096,
         type: 3}
@@ -368,99 +368,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8866932186216258664, guid: 618c3c560a239d845ab68c44624d0096,
-        type: 3}
-      propertyPath: collisionDetection
-      value: 
-      objectReference: {fileID: 1453836994}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 618c3c560a239d845ab68c44624d0096, type: 3}
---- !u!1 &1453836991 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 879994915121367167, guid: 618c3c560a239d845ab68c44624d0096,
-    type: 3}
-  m_PrefabInstance: {fileID: 1453836990}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1453836992 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3394664955729633458, guid: 618c3c560a239d845ab68c44624d0096,
-    type: 3}
-  m_PrefabInstance: {fileID: 1453836990}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1453836993 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3394664956742007889, guid: 618c3c560a239d845ab68c44624d0096,
-    type: 3}
-  m_PrefabInstance: {fileID: 1453836990}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1453836994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453836991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab694988bb0565044a75a16b47449a60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTag: Player
-  isCollidingWithTarget: 0
---- !u!114 &1453836995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453836992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab694988bb0565044a75a16b47449a60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTag: Player
-  isCollidingWithTarget: 0
---- !u!65 &1453836996
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453836992}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1453836997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453836993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab694988bb0565044a75a16b47449a60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTag: Player
-  isCollidingWithTarget: 0
---- !u!65 &1453836998
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453836993}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1488552556
 GameObject:
   m_ObjectHideFlags: 0
