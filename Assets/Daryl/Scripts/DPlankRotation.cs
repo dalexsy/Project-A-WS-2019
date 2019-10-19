@@ -9,7 +9,13 @@ public class DPlankRotation : MonoBehaviour
 
     [SerializeField] GameObject pulseParticlePrefab = null;
 
+    [SerializeField] string topColliderName = "Plank Collider T";
+    [SerializeField] string bottomColliderName = "Plank Collider B";
+
     public Transform Pivot = null;
+
+    public bool canRotateUp = true;
+    public bool canRotateDown = true;
 
     private bool isRotating = false;
 
@@ -44,16 +50,20 @@ public class DPlankRotation : MonoBehaviour
         // If Plank is not rotating
         if (!isRotating)
         {
-            // Rotate plank up from left pivot
-            if (Input.GetKeyDown("q"))
+            if (canRotateUp)
             {
-                StartCoroutine(RotatePlank(-1, Pivot));
+                // Rotate plank up from active pivot
+                if (Input.GetKeyDown("q"))
+
+                    StartCoroutine(RotatePlank(-1, Pivot));
             }
 
-            // Rotate plank down from left pivot
-            if (Input.GetKeyDown("e"))
+            if (canRotateDown)
             {
-                StartCoroutine(RotatePlank(1, Pivot));
+                // Rotate plank down from active pivot
+                if (Input.GetKeyDown("e"))
+
+                    StartCoroutine(RotatePlank(1, Pivot));
             }
         }
     }
@@ -97,5 +107,4 @@ public class DPlankRotation : MonoBehaviour
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
     }
-
 }
