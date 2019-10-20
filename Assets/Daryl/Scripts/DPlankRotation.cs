@@ -9,17 +9,15 @@ public class DPlankRotation : MonoBehaviour
 
     [SerializeField] GameObject pulseParticlePrefab = null;
 
-    [SerializeField] string topColliderName = "Plank Collider T";
-    [SerializeField] string bottomColliderName = "Plank Collider B";
-
     public Transform Pivot = null;
 
-    public bool canRotateUp = true;
-    public bool canRotateDown = true;
+    public bool canRotateClockwise = true;
+    public bool canRotateCounterclockwise = true;
 
     private bool isRotating = false;
 
     private CollisionDetection collisionDetection;
+    private PlankCollisionDetection plankCollisionDetection;
 
     private GameObject mainCamera;
 
@@ -30,6 +28,7 @@ public class DPlankRotation : MonoBehaviour
     {
         mainCamera = GameObject.Find("Main Camera");
         collisionDetection = GetComponent<CollisionDetection>();
+        plankCollisionDetection = GetComponentInChildren<PlankCollisionDetection>();
     }
 
     private void Update()
@@ -50,20 +49,24 @@ public class DPlankRotation : MonoBehaviour
         // If Plank is not rotating
         if (!isRotating)
         {
-            if (canRotateUp)
+            // If Plank can rotate clockwise
+            if (canRotateClockwise)
             {
-                // Rotate plank up from active pivot
-                if (Input.GetKeyDown("q"))
-
+                // Rotate plank clockwise from active pivot
+                if (Input.GetKeyDown("e"))
+                {
                     StartCoroutine(RotatePlank(-1, Pivot));
+                }
             }
 
-            if (canRotateDown)
+            //  If Plank can rotate counterclockwise
+            if (canRotateCounterclockwise)
             {
-                // Rotate plank down from active pivot
-                if (Input.GetKeyDown("e"))
-
+                // Rotate plank counterclockwise from active pivot
+                if (Input.GetKeyDown("q"))
+                {
                     StartCoroutine(RotatePlank(1, Pivot));
+                }
             }
         }
     }
@@ -97,8 +100,16 @@ public class DPlankRotation : MonoBehaviour
             // Rotate plank around given pivot in given direction
             transform.RotateAround(pivot.position, transform.right * direction, targetRotation);
 
+            int offsetDirection = 1;
+
+            // If Plank is rotating from left pivot
+            if (Pivot.name.Equals(plankCollisionDetection.leftPivotName))
+
+                // Inverse camera offset direction
+                offsetDirection = -1;
+
             // Adjust camera offset
-            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction;
+            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction * offsetDirection;
 
             // Returns to top of while loop
             yield return null;

@@ -7,112 +7,108 @@ public class PlankCollisionDetection : MonoBehaviour
     [SerializeField] string topColliderName = "Plank Collider T";
     [SerializeField] string bottomColliderName = "Plank Collider B";
 
+    [SerializeField] public string leftPivotName = "Pivot L";
+    [SerializeField] public string rightPivotName = "Pivot R";
+
     private DPlankRotation plankRotation;
-    private bool isTopCollider = false;
 
     private void Start()
     {
         plankRotation = GetComponentInParent<DPlankRotation>();
-
-        if (this.gameObject.name == topColliderName)
-        {
-            isTopCollider = true;
-        }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        //Debug.Log(gameObject.name + " found " + collider.gameObject.name);
-
-        if (isTopCollider)
+        // If this collider is a top collider
+        if (this.gameObject.name.Equals(topColliderName))
         {
+            // If this collider collides with another top collider
             if (collider.gameObject.name.Equals(topColliderName))
             {
-                plankRotation.canRotateUp = false;
-                Debug.Log("can't rotate up");
+                // If active pivot is right pivot
+                if (plankRotation.Pivot.name.Equals(rightPivotName))
+                {
+                    // Pivot cannot rotate clockwise
+                    plankRotation.canRotateClockwise = false;
+                }
+
+                // Else if active pivot is left pivot
+                else
+                {
+                    // Pivot cannot rotate counterclockwise
+                    plankRotation.canRotateCounterclockwise = false;
+                }
             }
         }
 
-        if (!isTopCollider)
+        // Else if this collider is a bottom collider
+        else
         {
+            // If this collider collides with another bottom collider
             if (collider.gameObject.name == bottomColliderName)
             {
-                plankRotation.canRotateDown = false;
-                Debug.Log("can't rotate down");
+                // If active pivot is right pivot
+                if (plankRotation.Pivot.name.Equals(rightPivotName))
+                {
+                    // Pivot cannot rotate counterclockwise
+                    plankRotation.canRotateCounterclockwise = false;
+                }
+
+                // Else if active pivot is left pivot
+                else
+                {
+                    // Pivot cannot rotate clockwise
+                    plankRotation.canRotateClockwise = false;
+                }
             }
         }
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        if (isTopCollider)
+        // If this collider is a top collider
+        if (this.gameObject.name.Equals(topColliderName))
         {
-            if (collider.gameObject.name == topColliderName && !this.gameObject)
-
-                plankRotation.canRotateUp = true;
-        }
-
-        if (!isTopCollider)
-        {
-            if (collider.gameObject.name == bottomColliderName && !this.gameObject)
-
-                plankRotation.canRotateDown = true;
-        }
-    }
-
-    /* 
-    [SerializeField] string topColliderName = "Plank Collider T";
-    [SerializeField] string bottomColliderName = "Plank Collider B";
-
-    private bool isTopCollider = false;
-    private DPlankRotation plankRotation;
-
-    private void Start()
-    {
-        if (this.gameObject.name == topColliderName)
-            isTopCollider = true;
-
-        // Defines plankRotation as PlankRotation script from Plank
-        plankRotation = GetComponentInParent<DPlankRotation>();
-    }
-
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (isTopCollider)
-        {
-            if (collider.gameObject.name == topColliderName && !this.gameObject)
+            // If this collider collides with another top collider
+            if (collider.gameObject.name.Equals(topColliderName))
             {
-                plankRotation.canRotateUp = false;
-                Debug.Log("can't rotate up");
+                // If active pivot is right pivot
+                if (plankRotation.Pivot.name.Equals(rightPivotName))
+                {
+                    // Pivot can rotate clockwise
+                    plankRotation.canRotateClockwise = true;
+                }
+
+                // Else if active pivot is left pivot
+                else
+                {
+                    // Pivot can rotate counterclockwise
+                    plankRotation.canRotateCounterclockwise = true;
+                }
             }
         }
 
-        if (!isTopCollider)
+        // If this collider is a bottom collider
+        else
         {
-            if (collider.gameObject.name == bottomColliderName && !this.gameObject)
+            // If this collider collides with another bottom collider
+            if (collider.gameObject.name == bottomColliderName)
             {
-                plankRotation.canRotateDown = false;
-                Debug.Log("can't rotate down");
+                // If active pivot is right pivot
+                if (plankRotation.Pivot.name.Equals(rightPivotName))
+                {
+                    // Pivot can rotate counterclockwise
+                    plankRotation.canRotateCounterclockwise = true;
+                }
+
+                // Else if active pivot is left pivot
+                else
+                {
+                    // Pivot can rotate clockwise
+                    plankRotation.canRotateClockwise = true;
+                }
             }
         }
     }
-
-    private void OnTriggerExit(Collider collider)
-    {
-        if (isTopCollider)
-        {
-            if (collider.gameObject.name == topColliderName && !this.gameObject)
-
-                plankRotation.canRotateUp = true;
-        }
-
-        if (!isTopCollider)
-        {
-            if (collider.gameObject.name == bottomColliderName && !this.gameObject)
-
-                plankRotation.canRotateDown = true;
-        }
-    }
-
-    */
 }
+
