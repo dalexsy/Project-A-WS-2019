@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 8801672624027874071}
   - component: {fileID: 8866932186216258664}
   - component: {fileID: 7610682836276209669}
+  - component: {fileID: 8500008104963955904}
   m_Layer: 0
-  m_Name: DPlankU
+  m_Name: DPlank
   m_TagString: Plank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,11 +115,9 @@ MonoBehaviour:
   rotationSpeed: 30
   pulseParticlePrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
     type: 3}
-  topColliderName: Plank Collider T
-  bottomColliderName: Plank Collider B
   Pivot: {fileID: 0}
-  canRotateUp: 1
-  canRotateDown: 1
+  canRotateClockwise: 1
+  canRotateCounterclockwise: 1
 --- !u!114 &7610682836276209669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,6 +133,20 @@ MonoBehaviour:
   targetTag: Player
   isTrigger: 0
   isCollidingWithTarget: 0
+--- !u!114 &8500008104963955904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879994915121367167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1e86954cd12af488bf490720abe9b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lPivot: {fileID: 6042692232931308837}
+  rPivot: {fileID: 3394664956742007888}
 --- !u!1001 &525993471007694048
 PrefabInstance:
   m_ObjectHideFlags: 0
