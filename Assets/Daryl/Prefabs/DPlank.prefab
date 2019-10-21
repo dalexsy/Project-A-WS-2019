@@ -115,7 +115,7 @@ MonoBehaviour:
   rotationSpeed: 30
   pulseParticlePrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
     type: 3}
-  Pivot: {fileID: 0}
+  activePivot: {fileID: 0}
   canRotateClockwise: 1
   canRotateCounterclockwise: 1
 --- !u!114 &7610682836276209669
@@ -327,12 +327,12 @@ PrefabInstance:
     - target: {fileID: 8976404035179676920, guid: 0b78d7aa530bbdc449d563b24a27cda8,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8976404035179676920, guid: 0b78d7aa530bbdc449d563b24a27cda8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8976404035179676920, guid: 0b78d7aa530bbdc449d563b24a27cda8,
         type: 3}
@@ -362,7 +362,7 @@ PrefabInstance:
     - target: {fileID: 8976404035179676920, guid: 0b78d7aa530bbdc449d563b24a27cda8,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b78d7aa530bbdc449d563b24a27cda8, type: 3}

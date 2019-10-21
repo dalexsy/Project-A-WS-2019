@@ -20,7 +20,7 @@ public class PivotAssignment : MonoBehaviour
         if (collider.gameObject.tag == targetTag)
 
             // Assign this pivot as Plank's rotation pivot
-            plankRotation.pivot = this.transform;
+            plankRotation.activePivot = this.transform;
     }
 
     private void OnTriggerExit(Collider collider)
@@ -29,6 +29,6 @@ public class PivotAssignment : MonoBehaviour
         if (collider.gameObject.tag == targetTag)
 
             // Unassign this pivot as Plank's rotation pivot
-            plankRotation.pivot = null;
+            plankRotation.activePivot = null;
     }
 }

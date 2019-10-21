@@ -9,7 +9,7 @@ public class DPlankRotation : MonoBehaviour
 
     [SerializeField] GameObject pulseParticlePrefab = null;
 
-    public Transform pivot = null;
+    public Transform activePivot = null;
 
     public bool canRotateClockwise = true;
     public bool canRotateCounterclockwise = true;
@@ -45,7 +45,7 @@ public class DPlankRotation : MonoBehaviour
     private void RotationInput()
     {
         // If no pivots are given, accept no input
-        if (!pivot)
+        if (!activePivot)
             return;
 
         // If Plank is not rotating
@@ -57,7 +57,7 @@ public class DPlankRotation : MonoBehaviour
                 // Rotate plank clockwise from active pivot
                 if (Input.GetKeyDown("e"))
                 {
-                    StartCoroutine(RotatePlank(-1, pivot));
+                    StartCoroutine(RotatePlank(-1, activePivot));
                 }
             }
 
@@ -67,7 +67,7 @@ public class DPlankRotation : MonoBehaviour
                 // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q"))
                 {
-                    StartCoroutine(RotatePlank(1, pivot));
+                    StartCoroutine(RotatePlank(1, activePivot));
                 }
             }
         }
@@ -107,7 +107,7 @@ public class DPlankRotation : MonoBehaviour
             int offsetDirection = 1;
 
             // If Plank is rotating from left pivot
-            if (this.pivot.name.Equals(plankCollisionDetection.leftPivotName))
+            if (this.activePivot.name.Equals(plankCollisionDetection.leftPivotName))
 
                 // Inverse camera offset direction
                 offsetDirection = -1;

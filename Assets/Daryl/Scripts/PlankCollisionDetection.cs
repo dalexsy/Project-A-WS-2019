@@ -26,7 +26,7 @@ public class PlankCollisionDetection : MonoBehaviour
             if (collider.gameObject.name.Equals(topColliderName))
             {
                 // If active pivot is right pivot
-                if (plankRotation.pivot.name.Equals(rightPivotName))
+                if (plankRotation.activePivot.name.Equals(rightPivotName))
                 {
                     // Pivot cannot rotate clockwise
                     plankRotation.canRotateClockwise = false;
@@ -48,7 +48,7 @@ public class PlankCollisionDetection : MonoBehaviour
             if (collider.gameObject.name == bottomColliderName)
             {
                 // If active pivot is right pivot
-                if (plankRotation.pivot.name.Equals(rightPivotName))
+                if (plankRotation.activePivot.name.Equals(rightPivotName))
                 {
                     // Pivot cannot rotate counterclockwise
                     plankRotation.canRotateCounterclockwise = false;
@@ -73,7 +73,7 @@ public class PlankCollisionDetection : MonoBehaviour
             if (collider.gameObject.name.Equals(topColliderName))
             {
                 // If active pivot is right pivot
-                if (plankRotation.pivot.name.Equals(rightPivotName))
+                if (plankRotation.activePivot.name.Equals(rightPivotName))
                 {
                     // Pivot can rotate clockwise
                     plankRotation.canRotateClockwise = true;
@@ -95,7 +95,7 @@ public class PlankCollisionDetection : MonoBehaviour
             if (collider.gameObject.name == bottomColliderName)
             {
                 // If active pivot is right pivot
-                if (plankRotation.pivot.name.Equals(rightPivotName))
+                if (plankRotation.activePivot.name.Equals(rightPivotName))
                 {
                     // Pivot can rotate counterclockwise
                     plankRotation.canRotateCounterclockwise = true;

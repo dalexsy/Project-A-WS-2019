@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class PlankConnection : MonoBehaviour
 {
+    [SerializeField] Transform lPivot;
+    [SerializeField] Transform rPivot;
+
+    private Transform passivePivot = null;
+
     public void ConnectPlanks(Transform pivot)
     {
+        if (pivot.name.Equals(lPivot.name))
+        {
+            passivePivot = rPivot;
+        }
+
+        else
+        {
+            passivePivot = lPivot;
+        }
+
         // Look for colliders in range of this Plank's active pivot
-        Collider[] hitColliders = Physics.OverlapSphere(pivot.position, 3);
+        Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, 1);
 
         int i = 0;
         while (i < hitColliders.Length)
@@ -25,9 +40,11 @@ public class PlankConnection : MonoBehaviour
                 {
                     Transform plankChild = connectedPlank.transform.GetChild(c);
 
-                    if (plankChild.name.Equals(pivot.name))
+                    if (plankChild.name.Equals(passivePivot.name))
                     {
-                        Debug.Log(plankChild.name + " is a child of " + connectedPlank);
+                        //Debug.Log(plankChild.name + " is a child of " + connectedPlank);
+
+                        plankChild.parent.parent = transform;
                     }
                 }
             }
