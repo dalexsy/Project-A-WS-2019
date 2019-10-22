@@ -9,12 +9,18 @@ public class DPlankRotation : MonoBehaviour
 
     [SerializeField] GameObject pulseParticlePrefab = null;
 
-    [SerializeField] Transform lPivot = null;
-    [SerializeField] Transform rPivot = null;
+    public Transform activePivot = null;
 
-    private GameObject mainCamera;
+    public bool canRotateClockwise = true;
+    public bool canRotateCounterclockwise = true;
 
     private bool isRotating = false;
+
+    private CollisionDetection collisionDetection;
+    private PlankCollisionDetection plankCollisionDetection;
+    private PlankConnection plankConnection;
+
+    private GameObject mainCamera;
 
     private float objectAngle = 0f;
     private float targetRotation = 0f;
@@ -22,44 +28,47 @@ public class DPlankRotation : MonoBehaviour
     private void Start()
     {
         mainCamera = GameObject.Find("Main Camera");
+        collisionDetection = GetComponent<CollisionDetection>();
+        plankCollisionDetection = GetComponentInChildren<PlankCollisionDetection>();
+        plankConnection = GetComponent<PlankConnection>();
     }
 
     private void Update()
     {
-        RotationInput();
+        // If Plank is not colliding with Player
+        if (collisionDetection.isCollidingWithTarget == false)
+
+            // Accept rotation input
+            RotationInput();
     }
 
     private void RotationInput()
     {
         // If no pivots are given, accept no input
-        if (!lPivot || !rPivot)
+        if (!activePivot)
             return;
 
         // If Plank is not rotating
         if (!isRotating)
         {
-            // Rotate plank up from left pivot
-            if (Input.GetKeyDown("q"))
+            // If Plank can rotate clockwise
+            if (canRotateClockwise)
             {
-                StartCoroutine(RotatePlank(-1, lPivot));
+                // Rotate plank clockwise from active pivot
+                if (Input.GetKeyDown("e"))
+                {
+                    StartCoroutine(RotatePlank(-1, activePivot));
+                }
             }
 
-            // Rotate plank down from left pivot
-            if (Input.GetKeyDown("e"))
+            //  If Plank can rotate counterclockwise
+            if (canRotateCounterclockwise)
             {
-                StartCoroutine(RotatePlank(1, lPivot));
-            }
-
-            // Rotate plank up from right pivot
-            if (Input.GetKeyDown("i"))
-            {
-                StartCoroutine(RotatePlank(-1, rPivot));
-            }
-
-            // Rotate plank down from right pivot
-            if (Input.GetKeyDown("p"))
-            {
-                StartCoroutine(RotatePlank(1, rPivot));
+                // Rotate plank counterclockwise from active pivot
+                if (Input.GetKeyDown("q"))
+                {
+                    StartCoroutine(RotatePlank(1, activePivot));
+                }
             }
         }
     }
@@ -68,6 +77,8 @@ public class DPlankRotation : MonoBehaviour
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
+        plankConnection.ConnectPlanks(pivot);
+
         // Reset object angle
         objectAngle = 0f;
 
@@ -93,8 +104,16 @@ public class DPlankRotation : MonoBehaviour
             // Rotate plank around given pivot in given direction
             transform.RotateAround(pivot.position, transform.right * direction, targetRotation);
 
+            int offsetDirection = 1;
+
+            // If Plank is rotating from left pivot
+            if (this.activePivot.name.Equals(plankCollisionDetection.leftPivotName))
+
+                // Inverse camera offset direction
+                offsetDirection = -1;
+
             // Adjust camera offset
-            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction;
+            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction * offsetDirection;
 
             // Returns to top of while loop
             yield return null;
@@ -103,5 +122,4 @@ public class DPlankRotation : MonoBehaviour
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
     }
-
 }
