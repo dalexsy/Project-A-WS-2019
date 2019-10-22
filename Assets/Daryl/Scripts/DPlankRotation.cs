@@ -122,6 +122,9 @@ public class DPlankRotation : MonoBehaviour
             yield return null;
         }
 
+        // Starts a coroutine to disconnect all connected planks
+        StartCoroutine(plankConnection.DisconnectPlanks(this.transform));
+
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
     }
