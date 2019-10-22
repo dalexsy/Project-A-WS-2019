@@ -18,9 +18,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigid;
     private Vector3 moveDirection;
 
+
+
+
     private void Start()
     {
-        rigid = GetComponent<Rigidbody>();
+        rigid = this.GetComponent<Rigidbody>();
     }
 
     private void Update()
