@@ -20,10 +20,12 @@ public class DPlankRotation : MonoBehaviour
     private PlankCollisionDetection plankCollisionDetection;
     private PlankConnection plankConnection;
 
-    private GameObject mainCamera;
-
     private float objectAngle = 0f;
     private float targetRotation = 0f;
+
+    private GameObject mainCamera;
+
+    private IEnumerator connectionCoroutine;
 
     private void Start()
     {
@@ -77,7 +79,8 @@ public class DPlankRotation : MonoBehaviour
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
-        plankConnection.ConnectPlanks(pivot);
+        // Starts coroutine to connect planks using active pivot
+        StartCoroutine(plankConnection.ConnectPlanks(pivot));
 
         // Reset object angle
         objectAngle = 0f;

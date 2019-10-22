@@ -9,8 +9,9 @@ public class PlankConnection : MonoBehaviour
 
     private Transform passivePivot = null;
 
-    public void ConnectPlanks(Transform pivot)
+    public IEnumerator ConnectPlanks(Transform pivot)
     {
+        // Sets passive pivot as opposite of active pivot
         if (pivot.name.Equals(lPivot.name))
         {
             passivePivot = rPivot;
@@ -24,33 +25,93 @@ public class PlankConnection : MonoBehaviour
         // Look for colliders in range of this Plank's active pivot
         Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, 1);
 
-        int i = 0;
-        while (i < hitColliders.Length)
+        for (int i = 0; i < hitColliders.Length; i++)
         {
             // If a Plank is found that is not this Plank
             if (hitColliders[i].tag.Equals("Plank") && hitColliders[i].gameObject != this.gameObject)
             {
+                // Sets found game object as connectedPlank
                 GameObject connectedPlank = hitColliders[i].gameObject;
+
+                // Checks if connected plank is the Player Plank
                 CollisionDetection collisionDetection = connectedPlank.GetComponent<CollisionDetection>();
 
+                // If so, exit method
                 if (collisionDetection.isCollidingWithTarget == true)
-                    return;
+                    yield break;
 
+                // Sets this plank as connected plank's parent
+                connectedPlank.transform.parent = transform;
+
+                // Searches for pivots in connected plank
                 for (int c = 0; c < connectedPlank.transform.childCount; c++)
                 {
                     Transform plankChild = connectedPlank.transform.GetChild(c);
 
                     if (plankChild.name.Equals(passivePivot.name))
                     {
-                        //Debug.Log(plankChild.name + " is a child of " + connectedPlank);
-
-                        plankChild.parent.parent = transform;
+                        ConnectPlanks(plankChild);
+                        //Debug.Log(connectedPlank + " is connecting " + plankChild.parent);
                     }
                 }
             }
-            i++;
         }
     }
+
+    /* 
+        // Method to connect Planks to active Plank
+        // Uses pivot from PivotAssignment
+        public void ConnectPlanks(Transform pivot)
+        {
+            // Sets passive pivot as opposite of active pivot
+            if (pivot.name.Equals(lPivot.name))
+            {
+                passivePivot = rPivot;
+            }
+
+            else
+            {
+                passivePivot = lPivot;
+            }
+
+            // Look for colliders in range of this Plank's active pivot
+            Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, 1);
+
+            int i = 0;
+            while (i < hitColliders.Length)
+            {
+                // If a Plank is found that is not this Plank
+                if (hitColliders[i].tag.Equals("Plank") && hitColliders[i].gameObject != this.gameObject)
+                {
+                    // Sets found game object as connectedPlank
+                    GameObject connectedPlank = hitColliders[i].gameObject;
+
+                    // Checks if connected plank is the Player Plank
+                    CollisionDetection collisionDetection = connectedPlank.GetComponent<CollisionDetection>();
+
+                    // If so, exit method
+                    if (collisionDetection.isCollidingWithTarget == true)
+                        return;
+
+                    // Sets this plank as connected plank's parent
+                    connectedPlank.transform.parent = transform;
+
+                    // Searches for pivots in connected plank
+                    for (int c = 0; c < connectedPlank.transform.childCount; c++)
+                    {
+                        Transform plankChild = connectedPlank.transform.GetChild(c);
+
+                        if (plankChild.name.Equals(passivePivot.name))
+                        {
+                            ConnectPlanks(plankChild);
+                        }
+                    }
+                }
+
+                i++;
+            }
+        }
+        */
 
     private void DisconnectPlanks()
     {
