@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class L_PlayerMovement : MonoBehaviour
 {
     private float moveX;
     private float moveY;
@@ -18,12 +18,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigid;
     private Vector3 moveDirection;
 
-
-
-
     private void Start()
     {
-        rigid = this.GetComponent<Rigidbody>();
+        rigid = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -136,3 +133,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+

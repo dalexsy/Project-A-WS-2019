@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DPlankRotation : MonoBehaviour
+public class VPlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
@@ -20,12 +20,10 @@ public class DPlankRotation : MonoBehaviour
     private PlankCollisionDetection plankCollisionDetection;
     private PlankConnection plankConnection;
 
-    private float objectAngle = 0f;
-    private float targetRotation = 0f;
-
     private GameObject mainCamera;
 
-    private IEnumerator connectionCoroutine;
+    private float objectAngle = 0f;
+    private float targetRotation = 0f;
 
     private void Start()
     {
@@ -52,7 +50,7 @@ public class DPlankRotation : MonoBehaviour
 
         // If Plank is not rotating
         if (!isRotating)
-        {
+        {/*
             // If Plank can rotate clockwise
             if (canRotateClockwise)
             {
@@ -61,13 +59,32 @@ public class DPlankRotation : MonoBehaviour
                 {
                     StartCoroutine(RotatePlank(-1, activePivot));
                 }
+            } */
+
+            if (canRotateClockwise)
+            {
+                if (Input.GetButtonDown("L2"))
+                {
+                    StartCoroutine(RotatePlank(-1, activePivot));
+                }
             }
 
+
+             
+            /*
             //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwise)
+            
             {
                 // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q"))
+                {
+                    StartCoroutine(RotatePlank(1, activePivot));
+                }
+            } */
+            if (canRotateCounterclockwise)
+            {
+                if (Input.GetButton("R2"))
                 {
                     StartCoroutine(RotatePlank(1, activePivot));
                 }
@@ -79,8 +96,7 @@ public class DPlankRotation : MonoBehaviour
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
-        // Starts coroutine to connect planks using active pivot
-        StartCoroutine(plankConnection.ConnectPlanks(pivot));
+        plankConnection.ConnectPlanks(pivot);
 
         // Reset object angle
         objectAngle = 0f;
@@ -121,9 +137,6 @@ public class DPlankRotation : MonoBehaviour
             // Returns to top of while loop
             yield return null;
         }
-
-        // Starts a coroutine to disconnect all connected planks
-        StartCoroutine(plankConnection.DisconnectPlanks(this.transform));
 
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;

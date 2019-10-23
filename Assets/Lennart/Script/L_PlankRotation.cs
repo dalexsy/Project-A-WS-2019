@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlankRotation : MonoBehaviour
+public class L_PlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
@@ -27,6 +26,7 @@ public class PlankRotation : MonoBehaviour
     private void Update()
     {
         RotationInput();
+        
     }
 
     private void RotationInput()
@@ -63,6 +63,23 @@ public class PlankRotation : MonoBehaviour
             }
         }
     }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag != "PLayer" )
+        {
+            this.isRotating = true;       
+        }
+        else{
+            this.isRotating = false;
+        }
+        /*if(collision.gameObject.tag == "PLayer" )
+        {
+            isRotating = false;
+           
+        }*/
+    
+    }
 
     // Rotates Plank
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)
@@ -89,12 +106,13 @@ public class PlankRotation : MonoBehaviour
 
             // Increase objectAngle by targetRotation
             objectAngle += targetRotation;
-
+           
             // Rotate plank around given pivot in given direction
+
             transform.RotateAround(pivot.position, transform.right * direction, targetRotation);
 
             // Adjust camera offset
-            //var offset = mainCamera.GetComponent<CameraSmoothFollow>().offset += -.027f * direction;
+            //var offset = mainCamera.GetComponent<L_CameraRig>().of += -.027f * direction;
 
             // Returns to top of while loop
             yield return null;
@@ -103,4 +121,5 @@ public class PlankRotation : MonoBehaviour
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
     }
+
 }
