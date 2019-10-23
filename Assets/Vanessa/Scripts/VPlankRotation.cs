@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DPlankRotation : MonoBehaviour
+public class VPlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
@@ -50,7 +50,7 @@ public class DPlankRotation : MonoBehaviour
 
         // If Plank is not rotating
         if (!isRotating)
-        {
+        {/*
             // If Plank can rotate clockwise
             if (canRotateClockwise)
             {
@@ -59,13 +59,32 @@ public class DPlankRotation : MonoBehaviour
                 {
                     StartCoroutine(RotatePlank(-1, activePivot));
                 }
+            } */
+
+            if (canRotateClockwise)
+            {
+                if (Input.GetButtonDown("L2"))
+                {
+                    StartCoroutine(RotatePlank(-1, activePivot));
+                }
             }
 
+
+             
+            /*
             //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwise)
+            
             {
                 // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q"))
+                {
+                    StartCoroutine(RotatePlank(1, activePivot));
+                }
+            } */
+            if (canRotateCounterclockwise)
+            {
+                if (Input.GetButton("R2"))
                 {
                     StartCoroutine(RotatePlank(1, activePivot));
                 }

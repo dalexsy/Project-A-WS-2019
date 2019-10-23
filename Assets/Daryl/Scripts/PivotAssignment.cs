@@ -23,6 +23,8 @@ public class PivotAssignment : MonoBehaviour
             plankRotation.activePivot = this.transform;
     }
 
+
+
     private void OnTriggerExit(Collider collider)
     {
         // If Player leaves collider range
