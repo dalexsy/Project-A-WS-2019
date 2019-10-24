@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 6891537363405630766}
   - component: {fileID: 5027173374222408118}
   m_Layer: 0
-  m_Name: DPulse FX
+  m_Name: Pulse FX 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
