@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Plank
+  - Pivot
   layers:
   - Default
   - TransparentFX

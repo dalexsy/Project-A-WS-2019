@@ -113,9 +113,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRotation: 90
   rotationSpeed: 30
+  mainCamera: {fileID: 0}
   pulseParticlePrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
     type: 3}
   activePivot: {fileID: 0}
+  surrogatePivot: {fileID: 0}
   canRotateClockwise: 1
   canRotateCounterclockwise: 1
 --- !u!114 &7610682836276209669

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlankConnection : MonoBehaviour
 {
-    [SerializeField] Transform lPivot;
-    [SerializeField] Transform rPivot;
+    [SerializeField] Transform lPivot = null;
+    [SerializeField] Transform rPivot = null;
 
     private Transform passivePivot = null;
 
@@ -52,7 +52,6 @@ public class PlankConnection : MonoBehaviour
                     if (connectedPlankPivot.name.Equals(passivePivot.name))
                     {
                         ConnectPlanks(connectedPlankPivot);
-                        //Debug.Log(connectedPlank + " is connecting " + plankChild.parent);
                     }
                 }
             }

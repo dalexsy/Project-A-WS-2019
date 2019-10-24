@@ -10,6 +10,7 @@ public class DPlankRotation : MonoBehaviour
     [SerializeField] GameObject pulseParticlePrefab = null;
 
     public Transform activePivot = null;
+    public Transform surrogatePivot = null;
 
     public bool canRotateClockwise = true;
     public bool canRotateCounterclockwise = true;
@@ -79,8 +80,10 @@ public class DPlankRotation : MonoBehaviour
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
+        Transform rotationPivot = pivot;
+
         // Starts coroutine to connect planks using active pivot
-        StartCoroutine(plankConnection.ConnectPlanks(pivot));
+        StartCoroutine(plankConnection.ConnectPlanks(rotationPivot));
 
         // Reset object angle
         objectAngle = 0f;
@@ -89,7 +92,7 @@ public class DPlankRotation : MonoBehaviour
         this.isRotating = true;
 
         // Create visual feedback on pivot to be rotated from
-        GameObject pulse = Instantiate(pulseParticlePrefab, pivot.transform.position, pulseParticlePrefab.transform.rotation);
+        GameObject pulse = Instantiate(pulseParticlePrefab, rotationPivot.transform.position, pulseParticlePrefab.transform.rotation);
 
         // Destroy particle system once system has run once
         Destroy(pulse, pulse.GetComponent<ParticleSystem>().main.startLifetimeMultiplier);
@@ -105,12 +108,12 @@ public class DPlankRotation : MonoBehaviour
             objectAngle += targetRotation;
 
             // Rotate plank around given pivot in given direction
-            transform.RotateAround(pivot.position, transform.right * direction, targetRotation);
+            transform.RotateAround(rotationPivot.position, transform.right * direction, targetRotation);
 
             int offsetDirection = 1;
 
             // If Plank is rotating from left pivot
-            if (this.activePivot.name.Equals(plankCollisionDetection.leftPivotName))
+            if (rotationPivot.name.Equals(plankCollisionDetection.leftPivotName))
 
                 // Inverse camera offset direction
                 offsetDirection = -1;
