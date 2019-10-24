@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VPlankRotation : MonoBehaviour
+public class MPlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
 
     [SerializeField] GameObject pulseParticlePrefab = null;
-    
+
     public Transform activePivot = null;
 
     public bool canRotateClockwise = true;
@@ -19,11 +19,9 @@ public class VPlankRotation : MonoBehaviour
     private CollisionDetection collisionDetection;
     private PlankCollisionDetection plankCollisionDetection;
     private PlankConnection plankConnection;
-    private VPlayerMovement player;
 
     private float objectAngle = 0f;
     private float targetRotation = 0f;
-    
 
     private GameObject mainCamera;
 
@@ -31,7 +29,6 @@ public class VPlankRotation : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponent<VPlayerMovement>();
         mainCamera = GameObject.Find("Main Camera");
         collisionDetection = GetComponent<CollisionDetection>();
         plankCollisionDetection = GetComponentInChildren<PlankCollisionDetection>();
@@ -40,20 +37,26 @@ public class VPlankRotation : MonoBehaviour
 
     private void Update()
     {
+        // If Plank is not colliding with Player
         if (collisionDetection.isCollidingWithTarget == false)
-            KeyboardRotationInput();
+
+            // Accept rotation input
+            RotationInput();
     }
 
-    private void KeyboardRotationInput()
+    private void RotationInput()
     {
+        // If no pivots are given, accept no input
         if (!activePivot)
             return;
 
-        
+        // If Plank is not rotating
         if (!isRotating)
         {
+            // If Plank can rotate clockwise
             if (canRotateClockwise)
             {
+                // Rotate plank clockwise from active pivot
                 if (Input.GetKeyDown("e"))
                 {
                     StartCoroutine(RotatePlank(-1, activePivot));
@@ -64,8 +67,10 @@ public class VPlankRotation : MonoBehaviour
                 }
             }
 
+            //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwise)
             {
+                // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q"))
                 {
                     StartCoroutine(RotatePlank(1, activePivot));
@@ -76,10 +81,7 @@ public class VPlankRotation : MonoBehaviour
                 }
             }
         }
-        if (!activePivot)
-            return;
     }
-
 
     // Rotates Plank
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)

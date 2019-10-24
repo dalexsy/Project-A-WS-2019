@@ -61,6 +61,10 @@ public class DPlankRotation : MonoBehaviour
                 {
                     StartCoroutine(RotatePlank(-1, activePivot));
                 }
+                if (Input.GetKey(KeyCode.Joystick1Button6))
+                {
+                    StartCoroutine(RotatePlank(-1, activePivot));
+                }
             }
 
             //  If Plank can rotate counterclockwise
@@ -68,6 +72,10 @@ public class DPlankRotation : MonoBehaviour
             {
                 // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q"))
+                {
+                    StartCoroutine(RotatePlank(1, activePivot));
+                }
+                if (Input.GetKey(KeyCode.Joystick1Button7))
                 {
                     StartCoroutine(RotatePlank(1, activePivot));
                 }
