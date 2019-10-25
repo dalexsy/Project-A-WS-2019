@@ -23,13 +23,14 @@ public class PlankCollisionDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        // Only front and back colliders detect connections with other Planks
         if (this.gameObject.name.Equals(frontColliderName) ||
-            this.gameObject.name.Equals(frontColliderName))
+            this.gameObject.name.Equals(backColliderName))
         {
             DetectConnection(collider);
         }
 
-
+        // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(topColliderName) ||
             this.gameObject.name.Equals(bottomColliderName))
         {
@@ -39,12 +40,14 @@ public class PlankCollisionDetection : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
+        // Only front and back colliders detect connections with other Planks
         if (this.gameObject.name.Equals(frontColliderName) ||
-            this.gameObject.name.Equals(frontColliderName))
+            this.gameObject.name.Equals(backColliderName))
         {
             DetectDisconnection(collider);
         }
 
+        // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(topColliderName) ||
             this.gameObject.name.Equals(bottomColliderName))
         {
@@ -52,6 +55,8 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
+    // Method to limit Plank's rotation (clockwise or counterclockwise)
+    // Uses collider found on OnTriggerEnter
     private void LimitRotationOnEnter(Collider collider)
     {
         // If an active pivot is assigned
@@ -110,6 +115,8 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
+    // Method to limit Plank's rotation (clockwise or counterclockwise)
+    // Uses collider found on OnTriggerExit
     private void LimitRotationOnExit(Collider collider)
     {
         // If this collider is a top collider
@@ -157,6 +164,8 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
+    // Method to detect which side a Plank is connected to (this Plank's front or back)
+    // Uses collider found on OnTriggerEnter
     private void DetectConnection(Collider collider)
     {
         if (this.gameObject.name.Equals(frontColliderName) &&
@@ -174,6 +183,8 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
+    // Method to detect which side a Plank is disconnected from (this Plank's front or back)
+    // Uses collider found on OnTriggerExit
     private void DetectDisconnection(Collider collider)
     {
         if (this.gameObject.name.Equals(frontColliderName) &&
