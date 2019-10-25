@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NewCamera : MonoBehaviour
 {
-    [SerializeField] Transform target;
-    [SerializeField] float followSmoothiing;
-    [SerializeField] float orbitSmoothing;
+    [SerializeField] Transform target = null;
+    [SerializeField] float followSmoothiing = 10f;
+    [SerializeField] float orbitSmoothing = 10f;
     Vector3 currentMousePosition;
     Vector3 lastMousePosition;
     Vector3 mouseDelta;
@@ -16,7 +16,7 @@ public class NewCamera : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame

@@ -60,7 +60,7 @@ public class DPlankRotation : MonoBehaviour
                 // Rotate plank clockwise from active pivot
                 if (Input.GetKeyDown("e"))
                 {
-                    StartCoroutine(RotatePlank(-1, activePivot));
+                    StartCoroutine(RotatePlank(1, activePivot));
                 }
             }
 
@@ -70,7 +70,7 @@ public class DPlankRotation : MonoBehaviour
                 // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q"))
                 {
-                    StartCoroutine(RotatePlank(1, activePivot));
+                    StartCoroutine(RotatePlank(-1, activePivot));
                 }
             }
         }
@@ -80,9 +80,23 @@ public class DPlankRotation : MonoBehaviour
     // Requires direction (1 for down, -1 for up) and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
+        Debug.Log(transform.name + " is rotating");
+        // Save local variable rotationPivot from active pivot
+        // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned 
         Transform rotationPivot = pivot;
+        Transform surrogateRotationPivot = null;
+        Vector3 rotationAxis = transform.TransformDirection(Vector3.left);
 
-        // Starts coroutine to connect planks using active pivot
+        // If a surrogate pivot has been assigned
+        if (surrogatePivot)
+        {
+            Debug.Log("surrogate1");
+
+            // Save local variable surrogateRotationPivot as surrogatePivot
+            surrogateRotationPivot = surrogatePivot;
+        }
+
+        // Start coroutine to connect planks using active pivot
         StartCoroutine(plankConnection.ConnectPlanks(rotationPivot));
 
         // Reset object angle
@@ -90,6 +104,14 @@ public class DPlankRotation : MonoBehaviour
 
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
+
+        if (surrogateRotationPivot)
+        {
+            rotationPivot = surrogateRotationPivot;
+            rotationAxis = transform.TransformDirection(Vector3.forward);
+            direction = direction * -1;
+            Debug.Log("surrogate2");
+        }
 
         // Create visual feedback on pivot to be rotated from
         GameObject pulse = Instantiate(pulseParticlePrefab, rotationPivot.transform.position, pulseParticlePrefab.transform.rotation);
@@ -108,15 +130,15 @@ public class DPlankRotation : MonoBehaviour
             objectAngle += targetRotation;
 
             // Rotate plank around given pivot in given direction
-            transform.RotateAround(rotationPivot.position, transform.right * direction, targetRotation);
+            transform.RotateAround(rotationPivot.position, rotationAxis * direction, targetRotation);
 
-            int offsetDirection = 1;
+            int offsetDirection = -1;
 
             // If Plank is rotating from left pivot
             if (rotationPivot.name.Equals(plankCollisionDetection.leftPivotName))
 
                 // Inverse camera offset direction
-                offsetDirection = -1;
+                offsetDirection = 1;
 
             // Adjust camera offset
             var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction * offsetDirection;

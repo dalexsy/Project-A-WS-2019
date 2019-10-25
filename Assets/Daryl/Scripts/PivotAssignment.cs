@@ -41,90 +41,45 @@ public class PivotAssignment : MonoBehaviour
 
     }
 
-    private void CheckForConnectedPlank(Transform activePivot)
-    {
-
-    }
-
     private void AssignSurrogatePivot(Transform activePivot)
     {
         // Look for colliders in range of this pivot's position
         Collider[] firstColliders = Physics.OverlapSphere(activePivot.position, .1f);
 
+        // Find Plank other than this pivot's parent in firstColliders array
         // Lambda expression to find tagged collider
         var foundPlank = Array.Find(firstColliders, collider =>
-            collider.tag.Equals("Plank") && (collider.gameObject.transform != this.transform.parent)
+            collider.tag.Equals("Plank") &&
+            collider.gameObject.transform != this.transform.parent
         );
 
-
-        if (!foundPlank)
-        {
-            Collider[] secondColliders = Physics.OverlapSphere(activePivot.position, 1);
-
-            var foundPivot = Array.Find(secondColliders, collider => collider.tag.Equals("Pivot") && collider.gameObject != this.gameObject);
-
-            Transform surrogatePivot = foundPivot.gameObject.transform;
-
-            if (foundPivot)
-            {
-                // Check if found pivot is child of Player Plank
-                CollisionDetection collisionDetection = surrogatePivot.parent.GetComponent<CollisionDetection>();
-
-                // If found pivot is child of Player Plank
-                if (collisionDetection.isCollidingWithTarget == true)
-                {
-                    Debug.Log(surrogatePivot);
-                    plankRotation.surrogatePivot = surrogatePivot;
-                }
-            }
-        }
-
-        else
+        // If Plank is found, active pivot can be used for rotation
+        if (foundPlank)
         {
             return;
         }
 
-        /* 
-        for (int i = 0; i < firstColliders.Length; i++)
+        // If no Plank is found
+        else
         {
-            // If a Plank is found that is not this pivot's Plank
-            if (firstColliders[i].tag.Equals("Plank") && firstColliders[i].gameObject.transform != this.transform.parent)
+            // Look for colliders in range of this pivot's position
+            Collider[] secondColliders = Physics.OverlapSphere(activePivot.position, 1);
+
+            // Find pivot other than this pivot in firstColliders array
+            var foundPivot = Array.Find(secondColliders, collider =>
+            collider.tag.Equals("Pivot") &&
+            collider.gameObject != this.gameObject);
+
+            // If a pivot has been found
+            if (foundPivot)
             {
-                plankRotation.surrogatePivot = activePivot;
-            }
+                // Set local variable surrogatePivot to foundPivot's transform
+                Transform surrogatePivot = foundPivot.gameObject.transform;
 
-            // Otherwise find a surrogate pivot
-            else
-            {
-                // Look for colliders in range of this pivot
-                Collider[] secondColliders = Physics.OverlapSphere(activePivot.position, 1);
-
-                for (int p = 0; p < secondColliders.Length; p++)
-                {
-
-                    // If a pivot is found in range that is not this pivot
-                    if (secondColliders[p].tag.Equals("Pivot") && secondColliders[p].gameObject != this.gameObject)
-                    {
-
-                        // Set found pivot as surrogatePivot
-                        Transform foundPivot = secondColliders[p].transform;
-
-                        // Check if found pivot is child of Player Plank
-                        CollisionDetection collisionDetection = foundPivot.parent.GetComponent<CollisionDetection>();
-
-                        //Debug.Log(collisionDetection.isCollidingWithTarget);
-
-                        // If found pivot is child of Player Plank
-                        if (collisionDetection.isCollidingWithTarget == true)
-                        {
-                            // Assign found pivot as surrogate of active Plank
-                            plankRotation.surrogatePivot = foundPivot;
-                        }
-                    }
-                }
+                // Set plank's surrogatePivot to local surrogatePivot
+                plankRotation.surrogatePivot = surrogatePivot;
             }
         }
-        */
     }
 }
 
