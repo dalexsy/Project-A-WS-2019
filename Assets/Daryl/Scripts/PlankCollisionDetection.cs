@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlankCollisionDetection : MonoBehaviour
 {
-    [SerializeField] string topColliderName = "Plank Collider T";
-    [SerializeField] string bottomColliderName = "Plank Collider B";
+    [SerializeField] string topColliderName = "Plank Collider Top";
+    [SerializeField] string bottomColliderName = "Plank Collider Bottom";
+    [SerializeField] string frontColliderName = "Plank Collider Front";
+    [SerializeField] string backColliderName = "Plank Collider Back";
 
     [SerializeField] public string leftPivotName = "Pivot L";
     [SerializeField] public string rightPivotName = "Pivot R";
@@ -20,6 +22,37 @@ public class PlankCollisionDetection : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider collider)
+    {
+        if (this.gameObject.name.Equals(frontColliderName) ||
+            this.gameObject.name.Equals(frontColliderName))
+        {
+            DetectConnection(collider);
+        }
+
+
+        if (this.gameObject.name.Equals(topColliderName) ||
+            this.gameObject.name.Equals(bottomColliderName))
+        {
+            LimitRotationOnEnter(collider);
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (this.gameObject.name.Equals(frontColliderName) ||
+            this.gameObject.name.Equals(frontColliderName))
+        {
+            DetectDisconnection(collider);
+        }
+
+        if (this.gameObject.name.Equals(topColliderName) ||
+            this.gameObject.name.Equals(bottomColliderName))
+        {
+            LimitRotationOnExit(collider);
+        }
+    }
+
+    private void LimitRotationOnEnter(Collider collider)
     {
         // If an active pivot is assigned
         if (plankRotation.activePivot)
@@ -55,7 +88,7 @@ public class PlankCollisionDetection : MonoBehaviour
         }
 
         // Else if this collider is a bottom collider
-        else
+        if (this.gameObject.name.Equals(bottomColliderName))
         {
             // If this collider collides with another bottom collider
             if (collider.gameObject.name == bottomColliderName)
@@ -77,7 +110,7 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider collider)
+    private void LimitRotationOnExit(Collider collider)
     {
         // If this collider is a top collider
         if (this.gameObject.name.Equals(topColliderName))
@@ -102,7 +135,7 @@ public class PlankCollisionDetection : MonoBehaviour
         }
 
         // If this collider is a bottom collider
-        else
+        if (this.gameObject.name.Equals(bottomColliderName))
         {
             // If this collider collides with another bottom collider
             if (collider.gameObject.name == bottomColliderName)
@@ -121,6 +154,40 @@ public class PlankCollisionDetection : MonoBehaviour
                     plankRotation.canRotateClockwise = true;
                 }
             }
+        }
+    }
+
+    private void DetectConnection(Collider collider)
+    {
+        if (this.gameObject.name.Equals(frontColliderName) &&
+        collider.tag.Equals("Plank") &&
+        collider.gameObject.transform != transform.parent)
+        {
+            plankRotation.isConnectedFront = true;
+        }
+
+        if (this.gameObject.name.Equals(backColliderName) &&
+        collider.tag.Equals("Plank") &&
+        collider.gameObject.transform != transform.parent)
+        {
+            plankRotation.isConnectedBack = true;
+        }
+    }
+
+    private void DetectDisconnection(Collider collider)
+    {
+        if (this.gameObject.name.Equals(frontColliderName) &&
+        collider.tag.Equals("Plank") &&
+        collider.gameObject.transform != transform.parent)
+        {
+            plankRotation.isConnectedFront = false;
+        }
+
+        if (this.gameObject.name.Equals(backColliderName) &&
+        collider.tag.Equals("Plank") &&
+        collider.gameObject.transform != transform.parent)
+        {
+            plankRotation.isConnectedBack = false;
         }
     }
 }

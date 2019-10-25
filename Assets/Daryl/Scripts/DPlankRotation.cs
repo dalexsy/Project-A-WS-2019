@@ -14,6 +14,8 @@ public class DPlankRotation : MonoBehaviour
 
     public bool canRotateClockwise = true;
     public bool canRotateCounterclockwise = true;
+    public bool isConnectedFront = false;
+    public bool isConnectedBack = false;
 
     private bool isRotating = false;
 
@@ -90,8 +92,6 @@ public class DPlankRotation : MonoBehaviour
         // If a surrogate pivot has been assigned
         if (surrogatePivot)
         {
-            Debug.Log("surrogate1");
-
             // Save local variable surrogateRotationPivot as surrogatePivot
             surrogateRotationPivot = surrogatePivot;
         }

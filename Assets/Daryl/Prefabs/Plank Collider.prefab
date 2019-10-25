@@ -58,8 +58,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a106ddb35c2482448af97079cfbe0e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topColliderName: Plank Collider T
-  bottomColliderName: Plank Collider B
+  topColliderName: Plank Collider Top
+  bottomColliderName: Plank Collider Bottom
+  leftPivotName: Pivot L
+  rightPivotName: Pivot R
 --- !u!54 &4342158685530779931
 Rigidbody:
   m_ObjectHideFlags: 0
