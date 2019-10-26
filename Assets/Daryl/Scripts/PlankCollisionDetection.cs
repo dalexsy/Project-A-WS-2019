@@ -6,8 +6,8 @@ public class PlankCollisionDetection : MonoBehaviour
 {
     [SerializeField] string topColliderName = "Plank Collider Top";
     [SerializeField] string bottomColliderName = "Plank Collider Bottom";
-    [SerializeField] string frontColliderName = "Plank Collider Front";
-    [SerializeField] string backColliderName = "Plank Collider Back";
+    [SerializeField] public string frontColliderName = "Plank Collider Front";
+    [SerializeField] public string backColliderName = "Plank Collider Back";
 
     [SerializeField] public string leftPivotName = "Pivot L";
     [SerializeField] public string rightPivotName = "Pivot R";
@@ -23,12 +23,12 @@ public class PlankCollisionDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        // Only front and back colliders detect connections with other Planks
+/*         // Only front and back colliders detect connections with other Planks
         if (this.gameObject.name.Equals(frontColliderName) ||
             this.gameObject.name.Equals(backColliderName))
         {
             DetectConnection(collider);
-        }
+        } */
 
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(topColliderName) ||
@@ -40,12 +40,12 @@ public class PlankCollisionDetection : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
-        // Only front and back colliders detect connections with other Planks
+/*         // Only front and back colliders detect connections with other Planks
         if (this.gameObject.name.Equals(frontColliderName) ||
             this.gameObject.name.Equals(backColliderName))
         {
             DetectDisconnection(collider);
-        }
+        } */
 
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(topColliderName) ||

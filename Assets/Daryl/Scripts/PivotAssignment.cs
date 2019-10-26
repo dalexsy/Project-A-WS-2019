@@ -7,10 +7,12 @@ public class PivotAssignment : MonoBehaviour
 {
     [SerializeField] string targetTag = null;
 
+    private PlankCollisionDetection plankCollisionDetection;
     private DPlankRotation plankRotation;
 
     private void Start()
     {
+        plankCollisionDetection = transform.parent.GetComponentInChildren<PlankCollisionDetection>();
         // Defines plankRotation as PlankRotation script from Plank
         plankRotation = GetComponentInParent<DPlankRotation>();
     }
@@ -24,7 +26,6 @@ public class PivotAssignment : MonoBehaviour
             plankRotation.activePivot = this.transform;
             AssignSurrogatePivot(transform);
         }
-
     }
 
     private void OnTriggerExit(Collider collider)
@@ -37,8 +38,11 @@ public class PivotAssignment : MonoBehaviour
 
             // Unassign surrogate pivot
             plankRotation.surrogatePivot = null;
-        }
 
+            plankRotation.isConnectedFront = false;
+
+            plankRotation.isConnectedBack = false;
+        }
     }
 
     private void AssignSurrogatePivot(Transform activePivot)
@@ -65,7 +69,7 @@ public class PivotAssignment : MonoBehaviour
             // Look for colliders in range of this pivot's position
             Collider[] secondColliders = Physics.OverlapSphere(activePivot.position, 1);
 
-            // Find pivot other than this pivot in firstColliders array
+            // Find pivot other than this pivot in secondColliders array
             var foundPivot = Array.Find(secondColliders, collider =>
             collider.tag.Equals("Pivot") &&
             collider.gameObject != this.gameObject);
@@ -78,6 +82,24 @@ public class PivotAssignment : MonoBehaviour
 
                 // Set plank's surrogatePivot to local surrogatePivot
                 plankRotation.surrogatePivot = surrogatePivot;
+
+                // Look for colliders in range of surrogate pivot's position
+                Collider[] thirdColliders = Physics.OverlapSphere(surrogatePivot.position, .5f);
+
+                // Find front in thirdColliders array
+                var foundFrontCollider = Array.Find(secondColliders, collider =>
+                collider.name.Equals(plankCollisionDetection.frontColliderName) &&
+                collider.gameObject == this.gameObject);
+
+                if (foundFrontCollider)
+                {
+                    plankRotation.isConnectedFront = true;
+                }
+
+                else
+                {
+                    plankRotation.isConnectedBack = true;
+                }
             }
         }
     }

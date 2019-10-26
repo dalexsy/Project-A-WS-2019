@@ -105,12 +105,17 @@ public class DPlankRotation : MonoBehaviour
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
-        if (surrogateRotationPivot)
+        if (isConnectedFront)
+        {
+            rotationPivot = surrogateRotationPivot;
+            rotationAxis = transform.TransformDirection(Vector3.forward);
+        }
+
+        if (isConnectedBack)
         {
             rotationPivot = surrogateRotationPivot;
             rotationAxis = transform.TransformDirection(Vector3.forward);
             direction = direction * -1;
-            Debug.Log("surrogate2");
         }
 
         // Create visual feedback on pivot to be rotated from
@@ -135,7 +140,7 @@ public class DPlankRotation : MonoBehaviour
             int offsetDirection = -1;
 
             // If Plank is rotating from left pivot
-            if (rotationPivot.name.Equals(plankCollisionDetection.leftPivotName))
+            if (rotationPivot.name.Equals(plankCollisionDetection.leftPivotName) || isConnectedBack)
 
                 // Inverse camera offset direction
                 offsetDirection = 1;
