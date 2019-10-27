@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class DPlayerController : MonoBehaviour
 {
@@ -25,10 +26,10 @@ public class DPlayerController : MonoBehaviour
     private void Update()
     {
         // Gets horizontal input
-        moveX = Input.GetAxis("kHorizontal");
+        moveX = Mathf.RoundToInt(Input.GetAxis("kHorizontal"));
 
         // Gets vertical input
-        moveY = Input.GetAxis("kVertical");
+        moveY = Mathf.RoundToInt(Input.GetAxis("kVertical"));
 
         // Sets vertical direction after key down
         if (moveY != 0)
@@ -40,7 +41,6 @@ public class DPlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Boost();
         Move();
         Rotate();
     }
@@ -48,35 +48,22 @@ public class DPlayerController : MonoBehaviour
     // Moves player
     private void Move()
     {
-        Accelerate();
-        Decelerate();
-
-        // Moves player towards vertical input direction
-        rigid.MovePosition(transform.position + transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
-    }
-
-    // Accelerates player
-    private void Accelerate()
-    {
-        // If vertical input
-        if (moveY != 0)
+        if (moveY > 0)
         {
-            // If movement speed is over maximum speed
-            if (moveSpeed >= maxSpeed)
-
-                // ...stop accelerations
-                return;
-
-            // ...increase movement speed by acceleration rate
             moveSpeed = maxSpeed;
+            transform.position += transform.forward * Time.deltaTime * moveSpeed;
         }
-    }
 
-    // Decelerates player
-    private void Decelerate()
-    {
-        // ...decrease movement speed by deceleration rate
-        moveSpeed = 0f;
+        else if (moveY < 0)
+        {
+            moveSpeed = maxSpeed;
+            transform.position += transform.forward * -1 * Time.deltaTime * moveSpeed;
+        }
+
+        else
+        {
+            moveSpeed = 0f;
+        }
     }
 
     // Rotates player
@@ -93,28 +80,5 @@ public class DPlayerController : MonoBehaviour
 
             // ...rotate player towards the left
             transform.RotateAround(transform.position, -transform.up, rotationSpeed * Time.deltaTime);
-    }
-
-    // Boosts player's speed
-    private void Boost()
-    {
-        // If space bar is pressed
-        if (Input.GetKey(KeyCode.Space))
-        {
-            // ...increase acceleration rate
-            //accelerationRate = .02f;
-
-            // ...increase maximum speed
-            maxSpeed = 2f;
-        }
-
-        else
-        {
-            // ...reset acceleration rate
-            //this.accelerationRate = .01f;
-
-            // ...reset maximum speed
-            this.maxSpeed = 1f;
-        }
     }
 }
