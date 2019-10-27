@@ -14,7 +14,7 @@ public class MPlayerController : MonoBehaviour
     public float moveSpeed;
     public float rotationSpeed;
 
-    [SerializeField] GameObject parent;
+    [SerializeField] GameObject parent = null;
 
 
     private void Start()

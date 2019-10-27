@@ -15,8 +15,8 @@ public class VPlayerMovement : MonoBehaviour
 
     public float moveSpeed;
     public float rotationSpeed;
-    
-    [SerializeField] GameObject child;
+
+    [SerializeField] GameObject child = null;
 
 
     private void Start()
@@ -31,24 +31,24 @@ public class VPlayerMovement : MonoBehaviour
         Rotate();
         MoveKeyboard();
     }
-    
+
     private void Move()
     {
-        if (Input.GetAxis("Vertical")!=0)
+        if (Input.GetAxis("Vertical") != 0)
         {
-            rigid.velocity = (child.transform.position - this.transform.position) * Input.GetAxis("Vertical") * moveSpeed ;
+            rigid.velocity = (child.transform.position - this.transform.position) * Input.GetAxis("Vertical") * moveSpeed;
         }
-        else if (Input.GetAxis("Vertical")==0)
+        else if (Input.GetAxis("Vertical") == 0)
         {
-            rigid.velocity = new Vector3 (0,0,0);
+            rigid.velocity = new Vector3(0, 0, 0);
         }
     }
 
     private void MoveKeyboard()
     {
-        if(Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
-            rigid.velocity = (child.transform.position - this.transform.position) *  moveSpeed ;
+            rigid.velocity = (child.transform.position - this.transform.position) * moveSpeed;
         }
         if (Input.GetKey(KeyCode.S))
         {
@@ -56,10 +56,10 @@ public class VPlayerMovement : MonoBehaviour
         }
 
     }
-    
+
     private void Rotate()
     {
-        moveX = Input.GetAxis("Horizontal") ;
+        moveX = Input.GetAxis("Horizontal");
         if (moveX > 0)
         {
             transform.RotateAround(transform.position, transform.up, rotationSpeed * Time.deltaTime);
@@ -68,20 +68,22 @@ public class VPlayerMovement : MonoBehaviour
         {
             transform.RotateAround(transform.position, -transform.up, rotationSpeed * Time.deltaTime);
         }
-        if(Input.GetKey(KeyCode.D)){
+        if (Input.GetKey(KeyCode.D))
+        {
             transform.RotateAround(transform.position, transform.up, rotationSpeed * Time.deltaTime);
         }
-        if(Input.GetKey(KeyCode.A)){
+        if (Input.GetKey(KeyCode.A))
+        {
             transform.RotateAround(transform.position, -transform.up, rotationSpeed * Time.deltaTime);
         }
-    } 
-    
+    }
+
     private void OnCollisionEnter(Collision coll)
     {
         if (coll.transform.tag != "Plank")
         {
             rigid.constraints = RigidbodyConstraints.FreezePosition;
-            
+
             Debug.Log("bui");
         }
     }
