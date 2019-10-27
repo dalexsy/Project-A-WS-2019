@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Plank
   - Pivot
+  - Collider L
+  - Collider R
   layers:
   - Default
   - TransparentFX

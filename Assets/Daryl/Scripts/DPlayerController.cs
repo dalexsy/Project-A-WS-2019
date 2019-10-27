@@ -7,13 +7,13 @@ public class DPlayerController : MonoBehaviour
     private float setMoveY;
 
     private float moveSpeed = 0f;
-    private float minSpeed = .01f;
+    private float minSpeed = 0f;
     private float maxSpeed = 1f;
 
-    private float accelerationRate = .01f;
-    private float decelerationRate = .02f;
+    //private float accelerationRate = 1f;
+    //private float decelerationRate = 1f;
 
-    private float rotationSpeed = 60f;
+    private float rotationSpeed = 75f;
 
     private Rigidbody rigid;
     private Vector3 moveDirection;
@@ -70,7 +70,7 @@ public class DPlayerController : MonoBehaviour
                 return;
 
             // ...increase movement speed by acceleration rate
-            moveSpeed += accelerationRate;
+            moveSpeed = maxSpeed;
         }
     }
 
@@ -81,7 +81,7 @@ public class DPlayerController : MonoBehaviour
         if (moveY == 0 && moveSpeed > minSpeed || moveSpeed > maxSpeed)
 
             // ...decrease movement speed by deceleration rate
-            moveSpeed -= decelerationRate;
+            moveSpeed = 0f;
     }
 
     // Keeps player in constant motion to prevent camera flipping
@@ -117,7 +117,7 @@ public class DPlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             // ...increase acceleration rate
-            accelerationRate = .02f;
+            //accelerationRate = .02f;
 
             // ...increase maximum speed
             maxSpeed = 2f;
@@ -126,7 +126,7 @@ public class DPlayerController : MonoBehaviour
         else
         {
             // ...reset acceleration rate
-            this.accelerationRate = .01f;
+            //this.accelerationRate = .01f;
 
             // ...reset maximum speed
             this.maxSpeed = 1f;

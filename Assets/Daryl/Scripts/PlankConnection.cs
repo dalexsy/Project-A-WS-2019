@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,8 @@ public class PlankConnection : MonoBehaviour
 
     private Transform passivePivot = null;
 
-    // Coroutine to connect planks using active Plank's active pivot
-    public IEnumerator ConnectPlanks(Transform pivot)
+    // Method to connect planks using active Plank's active pivot
+    public void ConnectPlanks(Transform pivot)
     {
         // Sets passive pivot as opposite of active pivot
         if (pivot.name.Equals(lPivot.name))
@@ -24,42 +25,30 @@ public class PlankConnection : MonoBehaviour
         }
 
         // Look for colliders in range of this Plank's active pivot
-        Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, 1);
+        Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, 2);
 
-        for (int i = 0; i < hitColliders.Length; i++)
+        // Find Plank other than this pivot's parent in firstColliders array
+        // Lambda expression to find tagged collider
+        var foundPivot = Array.Find(hitColliders, collider =>
+        collider.tag.Equals("Pivot") &&
+        collider.gameObject.transform.parent != this.transform);
+        //Debug.Log("this " + this.transform);
+
+        if (foundPivot)
         {
-            // If a Plank is found that is not this Plank
-            if (hitColliders[i].tag.Equals("Plank") && hitColliders[i].gameObject != this.gameObject)
-            {
-                // Sets found game object as connectedPlank
-                GameObject connectedPlank = hitColliders[i].gameObject;
+            Transform foundPlank = foundPivot.gameObject.transform.parent;
 
-                // Checks if connected plank is the Player Plank
-                CollisionDetection collisionDetection = connectedPlank.GetComponent<CollisionDetection>();
+            // Sets this plank as connected plank's parent
+            foundPlank.transform.parent = this.transform;
 
-                // If so, exit method
-                if (collisionDetection.isCollidingWithTarget == true)
-                    yield break;
+            foundPlank.GetComponent<PlankConnection>().ConnectPlanks(foundPivot.transform);
 
-                // Sets this plank as connected plank's parent
-                connectedPlank.transform.parent = transform;
-
-                // Searches for pivots in connected plank
-                for (int c = 0; c < connectedPlank.transform.childCount; c++)
-                {
-                    Transform connectedPlankPivot = connectedPlank.transform.GetChild(c);
-
-                    if (connectedPlankPivot.name.Equals(passivePivot.name))
-                    {
-                        ConnectPlanks(connectedPlankPivot);
-                    }
-                }
-            }
         }
+
     }
 
     // Coroutine to disconnect planks using the active Plank's transform
-    public IEnumerator DisconnectPlanks(Transform activePlank)
+    public void DisconnectPlanks(Transform activePlank)
     {
         // Goes through active Plank's children
         for (int c = 0; c < activePlank.transform.childCount; c++)
@@ -74,9 +63,5 @@ public class PlankConnection : MonoBehaviour
                 connectedPlank.parent = null;
             }
         }
-
-        // Exits coroutine upon completion
-        yield break;
     }
-
 }

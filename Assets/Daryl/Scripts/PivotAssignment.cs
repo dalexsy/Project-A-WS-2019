@@ -24,6 +24,7 @@ public class PivotAssignment : MonoBehaviour
         {
             // Assign this pivot as Plank's rotation pivot
             plankRotation.activePivot = this.transform;
+            //plankCollisionDetection.checkRotation(this.transform);
             AssignSurrogatePivot(transform);
         }
     }
