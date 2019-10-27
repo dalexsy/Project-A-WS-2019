@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class L_CameraRig : MonoBehaviour
 {
-    [SerializeField] Transform target;
-    [SerializeField] float followSmoothing;
-    [SerializeField] float orbitSmoothing;
+    [SerializeField] Transform target = null;
+    [SerializeField] float followSmoothing = 10f;
+    [SerializeField] float orbitSmoothing = 10f;
 
 
     Vector3 currentMousePosition;
@@ -17,10 +17,10 @@ public class L_CameraRig : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
- 
+
     void Update()
     {
         FollowTarget();
