@@ -8,7 +8,7 @@ public class VPlankRotation : MonoBehaviour
     [SerializeField] float rotationSpeed = 30f;
 
     [SerializeField] GameObject pulseParticlePrefab = null;
-    
+
     public Transform activePivot = null;
 
     public bool canRotateClockwise = true;
@@ -23,7 +23,7 @@ public class VPlankRotation : MonoBehaviour
 
     private float objectAngle = 0f;
     private float targetRotation = 0f;
-    
+
 
     private GameObject mainCamera;
 
@@ -49,7 +49,7 @@ public class VPlankRotation : MonoBehaviour
         if (!activePivot)
             return;
 
-        
+
         if (!isRotating)
         {
             if (canRotateClockwise)
@@ -86,7 +86,7 @@ public class VPlankRotation : MonoBehaviour
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
         // Starts coroutine to connect planks using active pivot
-        StartCoroutine(plankConnection.ConnectPlanks(pivot));
+        plankConnection.ConnectPlanks(pivot);
 
         // Reset object angle
         objectAngle = 0f;
@@ -129,7 +129,7 @@ public class VPlankRotation : MonoBehaviour
         }
 
         // Starts a coroutine to disconnect all connected planks
-        StartCoroutine(plankConnection.DisconnectPlanks(this.transform));
+        plankConnection.DisconnectPlanks(this.transform);
 
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
