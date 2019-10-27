@@ -7,7 +7,6 @@ public class DPlayerController : MonoBehaviour
     private float setMoveY;
 
     private float moveSpeed = 0f;
-    private float minSpeed = 0f;
     private float maxSpeed = 1f;
 
     //private float accelerationRate = 1f;
@@ -26,10 +25,10 @@ public class DPlayerController : MonoBehaviour
     private void Update()
     {
         // Gets horizontal input
-        moveX = Input.GetAxis("Horizontal");
+        moveX = Input.GetAxis("kHorizontal");
 
         // Gets vertical input
-        moveY = Input.GetAxis("Vertical");
+        moveY = Input.GetAxis("kVertical");
 
         // Sets vertical direction after key down
         if (moveY != 0)
@@ -51,7 +50,6 @@ public class DPlayerController : MonoBehaviour
     {
         Accelerate();
         Decelerate();
-        ThrottleSpeed();
 
         // Moves player towards vertical input direction
         rigid.MovePosition(transform.position + transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
@@ -77,21 +75,8 @@ public class DPlayerController : MonoBehaviour
     // Decelerates player
     private void Decelerate()
     {
-        // If no vertical input and player is still moving or if movement speed exceeds maximum
-        if (moveY == 0 && moveSpeed > minSpeed || moveSpeed > maxSpeed)
-
-            // ...decrease movement speed by deceleration rate
-            moveSpeed = 0f;
-    }
-
-    // Keeps player in constant motion to prevent camera flipping
-    private void ThrottleSpeed()
-    {
-        // If movement speed is over minimum speed
-        if (moveSpeed < minSpeed)
-
-            // ...set movement speed to minimum speed
-            moveSpeed = minSpeed;
+        // ...decrease movement speed by deceleration rate
+        moveSpeed = 0f;
     }
 
     // Rotates player
