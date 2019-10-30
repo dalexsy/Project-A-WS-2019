@@ -9,14 +9,14 @@ public class PivotAssignment : MonoBehaviour
 
     private CollisionDetection collisionDetection;
     private PlankCollisionDetection plankCollisionDetection;
-    private DPlankRotation plankRotation;
+    private PlankRotation plankRotation;
 
     private void Start()
     {
         collisionDetection = GetComponentInParent<CollisionDetection>();
         plankCollisionDetection = transform.parent.GetComponentInChildren<PlankCollisionDetection>();
         // Defines plankRotation as PlankRotation script from Plank
-        plankRotation = GetComponentInParent<DPlankRotation>();
+        plankRotation = GetComponentInParent<PlankRotation>();
     }
 
     private void OnTriggerEnter(Collider collider)

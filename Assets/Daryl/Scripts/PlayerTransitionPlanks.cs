@@ -46,42 +46,42 @@ public class PlayerTransitionPlanks : MonoBehaviour
 
         if (collider.name.Equals(transitionPointName) && !isRotating)
         {
-            if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().activePivot.name.Equals("Pivot R"))
+            if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot.name.Equals("Pivot R"))
             {
-                if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateClockwiseR &&
-                    playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateCounterclockwiseR)
+                if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateClockwiseR &&
+                    playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateCounterclockwiseR)
                 {
                     return;
                 }
 
-                if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateClockwiseR)
+                if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateClockwiseR)
                 {
                     StartCoroutine(RotatePlayer(1));
                     //Debug.Log("R coroutine1");
                 }
 
-                if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateCounterclockwiseR)
+                if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateCounterclockwiseR)
                 {
                     StartCoroutine(RotatePlayer(-1));
                     //Debug.Log("R coroutine2");
                 }
             }
 
-            if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().activePivot.name.Equals("Pivot L"))
+            if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot.name.Equals("Pivot L"))
             {
-                if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateClockwiseL &&
-                    playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateCounterclockwiseL)
+                if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateClockwiseL &&
+                    playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateCounterclockwiseL)
                 {
                     return;
                 }
 
-                if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateClockwiseL)
+                if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateClockwiseL)
                 {
                     StartCoroutine(RotatePlayer(-1));
                     //Debug.Log("L coroutine1");
                 }
 
-                if (playerPlankDetection.currentPlank.GetComponent<DPlankRotation>().canRotateCounterclockwiseL)
+                if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().canRotateCounterclockwiseL)
                 {
                     StartCoroutine(RotatePlayer(1));
                     //Debug.Log("L coroutine2");

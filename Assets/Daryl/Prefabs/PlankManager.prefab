@@ -43,5 +43,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d19e96fbd0422f49b9358f189eaf002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  usageNotes1: The first and last Plank are the start and end Plank in the level.
+    Assign their transforms here.
   firstPlank: {fileID: 0}
   lastPlank: {fileID: 0}
+  usageNotes2: Pivots must be named exactly as listed here.
+  leftPivotName: Pivot L
+  rightPivotName: Pivot R
+  usageNotes3: Plank colliders must be named exactly as listed here.
+  topColliderName: Plank Collider Top
+  bottomColliderName: Plank Collider Bottom
+  frontColliderName: Plank Collider Front
+  backColliderName: Plank Collider Back
+  usageNotes4: Top, bottom, front, and back colliders must be tagged with their respective
+    sides.
+  leftColliderTag: Collider L
+  rightColliderTag: Collider R

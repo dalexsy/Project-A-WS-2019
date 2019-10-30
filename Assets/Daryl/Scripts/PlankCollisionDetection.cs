@@ -16,13 +16,13 @@ public class PlankCollisionDetection : MonoBehaviour
     [SerializeField] public string leftColliderTag = "Collider L";
     [SerializeField] public string rightColliderTag = "Collider R";
 
-    private DPlankRotation plankRotation;
+    private PlankRotation plankRotation;
 
     private Transform rotatingPivot;
 
     private void Start()
     {
-        plankRotation = GetComponentInParent<DPlankRotation>();
+        plankRotation = GetComponentInParent<PlankRotation>();
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -66,7 +66,7 @@ public class PlankCollisionDetection : MonoBehaviour
     public void checkRotation(Transform pivot)
     {
         Transform[] children = pivot.parent.GetComponentsInChildren<Transform>();
-        var muh = Array.FindAll(children, childs => childs.name.Equals(topColliderName) || childs.name.Equals(bottomColliderName));
+        var muh = Array.FindAll(children, foundChild => foundChild.name.Equals(topColliderName) || foundChild.name.Equals(bottomColliderName));
         foreach (var bla in muh)
         {
             Debug.Log(bla.name);

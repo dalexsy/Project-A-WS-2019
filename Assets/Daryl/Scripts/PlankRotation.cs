@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DPlankRotation : MonoBehaviour
+public class PlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
