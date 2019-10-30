@@ -9,13 +9,15 @@ public class PivotAssignment : MonoBehaviour
 
     private CollisionDetection collisionDetection;
     private PlankCollisionDetection plankCollisionDetection;
+    private PlankManager plankManager;
     private PlankRotation plankRotation;
 
     private void Start()
     {
         collisionDetection = GetComponentInParent<CollisionDetection>();
-        plankCollisionDetection = transform.parent.GetComponentInChildren<PlankCollisionDetection>();
-        // Defines plankRotation as PlankRotation script from Plank
+
+        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
@@ -26,7 +28,6 @@ public class PivotAssignment : MonoBehaviour
         {
             // Assign this pivot as Plank's rotation pivot
             plankRotation.activePivot = this.transform;
-            //plankCollisionDetection.checkRotation(this.transform);
             AssignSurrogatePivot(transform);
         }
     }
@@ -91,7 +92,7 @@ public class PivotAssignment : MonoBehaviour
 
                 // Find front in thirdColliders array
                 var foundFrontCollider = Array.Find(secondColliders, collider =>
-                collider.name.Equals(plankCollisionDetection.frontColliderName) &&
+                collider.name.Equals(plankManager.frontColliderName) &&
                 collider.gameObject == this.gameObject);
 
                 if (foundFrontCollider)

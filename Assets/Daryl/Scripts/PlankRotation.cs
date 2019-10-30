@@ -23,7 +23,6 @@ public class PlankRotation : MonoBehaviour
 
     private CollisionDetection collisionDetection;
     private PivotAssignment pivotAssignment;
-    private PlankCollisionDetection plankCollisionDetection;
     private PlankConnection plankConnection;
 
     private float objectAngle = 0f;
@@ -38,7 +37,6 @@ public class PlankRotation : MonoBehaviour
         mainCamera = GameObject.Find("Main Camera");
         collisionDetection = GetComponent<CollisionDetection>();
         pivotAssignment = GetComponentInChildren<PivotAssignment>();
-        plankCollisionDetection = GetComponentInChildren<PlankCollisionDetection>();
         plankConnection = GetComponent<PlankConnection>();
     }
 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlankManager : MonoBehaviour
 {
+    // Disabled unused variable warning
+#pragma warning disable 0414
+
     [Header("First & Last Plank")]
     [TextArea(0, 5)]
     [SerializeField]
