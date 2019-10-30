@@ -7,11 +7,13 @@ public class PivotAssignment : MonoBehaviour
 {
     [SerializeField] string targetTag = null;
 
+    private CollisionDetection collisionDetection;
     private PlankCollisionDetection plankCollisionDetection;
     private DPlankRotation plankRotation;
 
     private void Start()
     {
+        collisionDetection = GetComponentInParent<CollisionDetection>();
         plankCollisionDetection = transform.parent.GetComponentInChildren<PlankCollisionDetection>();
         // Defines plankRotation as PlankRotation script from Plank
         plankRotation = GetComponentInParent<DPlankRotation>();

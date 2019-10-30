@@ -26,7 +26,7 @@ public class DCameraSmoothFollow : MonoBehaviour
         if (target)
         {
             // Set wanted rotation angle as target's y rotation
-            wantedRotationAngle = target.eulerAngles.y;
+            wantedRotationAngle = target.eulerAngles.y + 45;
 
             // Set wanted height as target's y position plus height modifier
             wantedHeight = target.position.y + height;
@@ -56,7 +56,7 @@ public class DCameraSmoothFollow : MonoBehaviour
             this.transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);
 
             // Redefines camera's position based on vertical offset from target
-            var offsetFromTarget = target.position + Vector3.up * offset;
+            var offsetFromTarget = target.position + target.forward * offset;
 
             // If the camera should rotate
             if (shouldRotate)
@@ -65,5 +65,4 @@ public class DCameraSmoothFollow : MonoBehaviour
                 transform.LookAt(offsetFromTarget);
         }
     }
-
 }

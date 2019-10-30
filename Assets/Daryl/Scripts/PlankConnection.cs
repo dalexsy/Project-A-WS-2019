@@ -10,9 +10,23 @@ public class PlankConnection : MonoBehaviour
 
     private Transform passivePivot = null;
 
+    private CollisionDetection collisionDetection;
+    [SerializeField] private PlankManager plankManager = null;
+
+    private void Start()
+    {
+        collisionDetection = GetComponent<CollisionDetection>();
+    }
+
     // Method to connect planks using active Plank's active pivot
     public void ConnectPlanks(Transform pivot)
     {
+        if (collisionDetection.isCollidingWithTarget)
+        {
+            this.transform.parent = null;
+            return;
+        }
+
         // Sets passive pivot as opposite of active pivot
         if (pivot.name.Equals(lPivot.name))
         {
@@ -25,7 +39,7 @@ public class PlankConnection : MonoBehaviour
         }
 
         // Look for colliders in range of this Plank's active pivot
-        Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, 2);
+        Collider[] hitColliders = Physics.OverlapSphere(this.passivePivot.position, .01f);
 
         // Find Plank other than this pivot's parent in firstColliders array
         // Lambda expression to find tagged collider
@@ -41,7 +55,16 @@ public class PlankConnection : MonoBehaviour
             // Sets this plank as connected plank's parent
             foundPlank.transform.parent = this.transform;
 
-            foundPlank.GetComponent<PlankConnection>().ConnectPlanks(foundPivot.transform);
+            if (foundPlank == plankManager.lastPlank ||
+                foundPlank == plankManager.firstPlank)
+            {
+                return;
+            }
+
+            else
+            {
+                foundPlank.GetComponent<PlankConnection>().ConnectPlanks(foundPivot.transform);
+            }
 
         }
 

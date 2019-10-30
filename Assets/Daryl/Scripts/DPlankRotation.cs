@@ -65,7 +65,9 @@ public class DPlankRotation : MonoBehaviour
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
                 // Rotate plank clockwise from active pivot
-                if (Input.GetKeyDown("e"))
+                if (Input.GetKeyDown("e")
+                ||
+                    Input.GetKey(KeyCode.Joystick1Button6))
                 {
                     if (isConnectedFront)
                     {
@@ -84,7 +86,8 @@ public class DPlankRotation : MonoBehaviour
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
                 // Rotate plank counterclockwise from active pivot
-                if (Input.GetKeyDown("q"))
+                if (Input.GetKeyDown("q") ||
+                    Input.GetKey(KeyCode.Joystick1Button7))
                 {
                     if (isConnectedFront)
                     {
