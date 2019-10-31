@@ -21,8 +21,11 @@ public class PlankConnection : MonoBehaviour
     // Method to connect planks using active Plank's active pivot
     public void ConnectPlanks(Transform pivot)
     {
+        // If this Plank is the Player Plank
         if (collisionDetection.isCollidingWithTarget)
         {
+            // Unset any parents from Plank and exit method
+            // The Player Plank never needs to be connected to other Planks
             this.transform.parent = null;
             return;
         }
@@ -55,22 +58,23 @@ public class PlankConnection : MonoBehaviour
             // Sets this plank as connected plank's parent
             foundPlank.transform.parent = this.transform;
 
+            // If found Plank is the first or last Plank
             if (foundPlank == plankManager.lastPlank ||
                 foundPlank == plankManager.firstPlank)
             {
+                // No need to connect it to anything else
                 return;
             }
 
             else
             {
+                // Run this method from the found Plank's script using the found pivot
                 foundPlank.GetComponent<PlankConnection>().ConnectPlanks(foundPivot.transform);
             }
-
         }
-
     }
 
-    // Coroutine to disconnect planks using the active Plank's transform
+    // Method to disconnect Planks using the active Plank's transform
     public void DisconnectPlanks(Transform activePlank)
     {
         // Goes through active Plank's children

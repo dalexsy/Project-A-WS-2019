@@ -62,18 +62,21 @@ public class PlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                // Rotate plank clockwise from active pivot
-                if (Input.GetKeyDown("e")
-                ||
+                if (Input.GetKeyDown("e") ||
                     Input.GetKey(KeyCode.Joystick1Button6))
                 {
+                    // If Plank is connected front (requires surrogate pivot)
                     if (isConnectedFront)
                     {
+                        // Rotate Plank clockwise
+                        // Will rotate from surrogate pivot's position
                         StartCoroutine(RotatePlank(1, activePivot));
                     }
 
                     else
                     {
+                        // Rotate Plank clockwise 
+                        // Will rotate from active pivot's position
                         StartCoroutine(RotatePlank(-1, activePivot));
                     }
                 }
@@ -83,15 +86,18 @@ public class PlankRotation : MonoBehaviour
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                // Rotate plank counterclockwise from active pivot
                 if (Input.GetKeyDown("q") ||
                     Input.GetKey(KeyCode.Joystick1Button7))
                 {
+                    // Rotate Plank counterclockwise
+                    // Will rotate from surrogate pivot's position
                     if (isConnectedFront)
                     {
                         StartCoroutine(RotatePlank(-1, activePivot));
                     }
 
+                    // Rotate Plank clockwise
+                    // Will rotate from active pivot's position
                     else
                     {
                         StartCoroutine(RotatePlank(1, activePivot));
@@ -124,7 +130,7 @@ public class PlankRotation : MonoBehaviour
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
-        // Start coroutine to connect planks using active pivot
+        // Start coroutine to connect planks using rotation pivot
         plankConnection.ConnectPlanks(rotationPivot);
 
         // If using a surrogate pivot
@@ -133,7 +139,7 @@ public class PlankRotation : MonoBehaviour
             // Assign surrogate pivot as rotationpivot
             rotationPivot = surrogateRotationPivot;
 
-            // Change rotation axis to right
+            // Redefines rotationAxis using surrogate pivot
             rotationAxis = rotationPivot.transform.right;
         }
 

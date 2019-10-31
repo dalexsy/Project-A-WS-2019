@@ -29,61 +29,82 @@ public class PlayerTransitionPlanks : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // If current Plank has been assigned
         if (playerPlankDetection.currentPlank)
         {
+            // Add force downwards towards current Plank
             rigid.AddForce(-gravity * rigid.mass * playerPlankDetection.currentPlank.forward);
-
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
+        // If no current Plank, exit method
         if (!playerPlankDetection.currentPlank)
         {
             return;
         }
 
+        // If Player collides with transition point and is not rotating
         if (collider.name.Equals(transitionPointName) && !isRotating)
         {
+            // Gets plankRotation from current Plank
+            // Used for its rotation limitation bools
             PlankRotation plankRotation = playerPlankDetection.currentPlank.GetComponent<PlankRotation>();
 
+            // If right pivot is active
             if (plankRotation.activePivot.name.Equals("Pivot R"))
             {
+                // If current Plank can rotate both clockwise and counterclockwise
+                // Current Plank and next Plank are parallel to one another 
+                // Player does not need to rotate
                 if (plankRotation.canRotateClockwiseR &&
                     plankRotation.canRotateCounterclockwiseR)
                 {
                     return;
                 }
 
+                // If current Plank can rotate clockwise
                 if (plankRotation.canRotateClockwiseR)
                 {
+                    // Start rotation coroutine upwards
                     StartCoroutine(RotatePlayer(1));
                     //Debug.Log("R coroutine1");
                 }
 
+                // If current Plank can rotate counterclockwise
                 if (plankRotation.canRotateCounterclockwiseR)
                 {
+                    // Start rotation coroutine downwards
                     StartCoroutine(RotatePlayer(-1));
                     //Debug.Log("R coroutine2");
                 }
             }
 
+            // If left pivot is active
             if (plankRotation.activePivot.name.Equals("Pivot L"))
             {
+                // If current Plank can rotate both clockwise and counterclockwise
+                // Current Plank and next Plank are parallel to one another 
+                // Player does not need to rotate
                 if (plankRotation.canRotateClockwiseL &&
                     plankRotation.canRotateCounterclockwiseL)
                 {
                     return;
                 }
 
+                // If current Plank can rotate clockwise
                 if (plankRotation.canRotateClockwiseL)
                 {
+                    // Start rotation coroutine downwards
                     StartCoroutine(RotatePlayer(-1));
                     //Debug.Log("L coroutine1");
                 }
 
+                // If current Plank can rotate counterclockwise
                 if (plankRotation.canRotateCounterclockwiseL)
                 {
+                    // Start rotation coroutine upwards
                     StartCoroutine(RotatePlayer(1));
                     //Debug.Log("L coroutine2");
                 }
@@ -91,10 +112,14 @@ public class PlayerTransitionPlanks : MonoBehaviour
         }
     }
 
+    // Coroutine to rotate Player
+    // Needs a direction
     IEnumerator RotatePlayer(int direction)
     {
+        // Reset object angle
         objectAngle = 0f;
 
+        // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
         float currentAngle = transform.eulerAngles.x;
@@ -122,11 +147,13 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
+        // Sets rotation cooldown to 2 seconds
         Invoke("ResetRotation", 2f);
     }
 
     private void ResetRotation()
     {
+        // Resets rotation status
         this.isRotating = false;
     }
 }
