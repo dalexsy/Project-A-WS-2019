@@ -17,6 +17,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
     private float objectAngle = 0f;
     private float targetRotation = 0f;
     private float gravity = 10;
+
     private Vector3 myNormal;
 
     private void Start()
@@ -136,12 +137,8 @@ public class PlayerTransitionPlanks : MonoBehaviour
             // Increase objectAngle by targetRotation
             objectAngle += targetRotation;
 
-            // Rotate plank around given pivot in given direction
-            //transform.RotateAround(transform.position, playerPlankDetection.currentPlank.right * direction, targetRotation);
-
+            // Rotates Player forward in given direction
             transform.Rotate(targetRotation * direction, 0, 0);
-
-            //transform.position += transform.forward * Time.deltaTime * .01f;
 
             // Returns to top of while loop
             yield return null;

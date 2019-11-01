@@ -49,13 +49,22 @@ public class PlankConnection : MonoBehaviour
         var foundPivot = Array.Find(hitColliders, collider =>
         collider.tag.Equals("Pivot") &&
         collider.gameObject.transform.parent != this.transform);
-        //Debug.Log("this " + this.transform);
 
+        // If a pivot has been found
         if (foundPivot)
         {
+            // If last Plank finds first Plank or first Plank finds last Plank
+            if ((this.transform == plankManager.lastPlank && foundPivot.transform.parent == plankManager.firstPlank) ||
+                (this.transform == plankManager.firstPlank && foundPivot.transform.parent == plankManager.lastPlank))
+            {
+                // No need to connect them
+                return;
+            }
+
+            // Set parent of found pivot as foundPlank
             Transform foundPlank = foundPivot.gameObject.transform.parent;
 
-            // Sets this plank as connected plank's parent
+            // Sets this Plank as connected Plank's parent
             foundPlank.transform.parent = this.transform;
 
             // If found Plank is the first or last Plank
@@ -86,6 +95,9 @@ public class PlankConnection : MonoBehaviour
             // If a child is found tagged with Plank
             if (connectedPlank.tag.Equals("Plank"))
             {
+                // Run this script in connected Plank
+                connectedPlank.GetComponent<PlankConnection>().DisconnectPlanks(connectedPlank);
+
                 // Unset connected plank's parent
                 connectedPlank.parent = null;
             }
