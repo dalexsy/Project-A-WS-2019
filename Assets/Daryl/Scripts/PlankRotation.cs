@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DPlankRotation : MonoBehaviour
+public class PlankRotation : MonoBehaviour
 {
     [SerializeField] float maxRotation = 90f;
     [SerializeField] float rotationSpeed = 30f;
@@ -23,7 +23,6 @@ public class DPlankRotation : MonoBehaviour
 
     private CollisionDetection collisionDetection;
     private PivotAssignment pivotAssignment;
-    private PlankCollisionDetection plankCollisionDetection;
     private PlankConnection plankConnection;
 
     private float objectAngle = 0f;
@@ -38,7 +37,6 @@ public class DPlankRotation : MonoBehaviour
         mainCamera = GameObject.Find("Main Camera");
         collisionDetection = GetComponent<CollisionDetection>();
         pivotAssignment = GetComponentInChildren<PivotAssignment>();
-        plankCollisionDetection = GetComponentInChildren<PlankCollisionDetection>();
         plankConnection = GetComponent<PlankConnection>();
     }
 
@@ -64,16 +62,21 @@ public class DPlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                // Rotate plank clockwise from active pivot
-                if (Input.GetKeyDown("e"))
+                if (Input.GetKeyDown("e") ||
+                    Input.GetKey(KeyCode.Joystick1Button6))
                 {
+                    // If Plank is connected front (requires surrogate pivot)
                     if (isConnectedFront)
                     {
+                        // Rotate Plank clockwise
+                        // Will rotate from surrogate pivot's position
                         StartCoroutine(RotatePlank(1, activePivot));
                     }
 
                     else
                     {
+                        // Rotate Plank clockwise 
+                        // Will rotate from active pivot's position
                         StartCoroutine(RotatePlank(-1, activePivot));
                     }
                 }
@@ -83,14 +86,18 @@ public class DPlankRotation : MonoBehaviour
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                // Rotate plank counterclockwise from active pivot
-                if (Input.GetKeyDown("q"))
+                if (Input.GetKeyDown("q") ||
+                    Input.GetKey(KeyCode.Joystick1Button7))
                 {
+                    // Rotate Plank counterclockwise
+                    // Will rotate from surrogate pivot's position
                     if (isConnectedFront)
                     {
                         StartCoroutine(RotatePlank(-1, activePivot));
                     }
 
+                    // Rotate Plank clockwise
+                    // Will rotate from active pivot's position
                     else
                     {
                         StartCoroutine(RotatePlank(1, activePivot));
@@ -123,7 +130,7 @@ public class DPlankRotation : MonoBehaviour
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
-        // Start coroutine to connect planks using active pivot
+        // Start coroutine to connect planks using rotation pivot
         plankConnection.ConnectPlanks(rotationPivot);
 
         // If using a surrogate pivot
@@ -132,7 +139,7 @@ public class DPlankRotation : MonoBehaviour
             // Assign surrogate pivot as rotationpivot
             rotationPivot = surrogateRotationPivot;
 
-            // Change rotation axis to right
+            // Redefines rotationAxis using surrogate pivot
             rotationAxis = rotationPivot.transform.right;
         }
 
@@ -172,7 +179,7 @@ public class DPlankRotation : MonoBehaviour
             yield return null;
         }
 
-        // Starts a coroutine to disconnect all connected planks
+        // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
 
         // Sets isRotating to false after Plank has reached max rotation

@@ -94,7 +94,7 @@ public class HPlankRotation : MonoBehaviour
             transform.RotateAround(pivot.position, transform.right * direction, targetRotation);
 
             // Adjust camera offset
-            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction;
+            //var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction;
 
             // Returns to top of while loop
             yield return null;
