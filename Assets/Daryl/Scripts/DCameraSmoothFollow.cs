@@ -3,11 +3,11 @@
 public class DCameraSmoothFollow : MonoBehaviour
 {
     [SerializeField] bool shouldRotate = true;
-    [SerializeField] Transform target = null;
     [SerializeField] float distance = 10.0f;
     [SerializeField] float height = 5.0f;
     [SerializeField] float heightDamping = 2.0f;
     [SerializeField] float rotationDamping = 3.0f;
+    [SerializeField] Transform target = null;
 
     public float offset = 0f;
 
