@@ -2,9 +2,6 @@
 
 public class DCameraSmoothFollow : MonoBehaviour
 {
-    [HeaderAttribute("Animation Curve")]
-    public AnimationCurve animationCurve;
-
     [SerializeField] bool shouldRotate = true;
     [SerializeField] float distance = 10.0f;
     [SerializeField] float height = 5.0f;
