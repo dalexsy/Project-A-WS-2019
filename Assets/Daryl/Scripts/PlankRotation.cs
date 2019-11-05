@@ -162,19 +162,6 @@ public class PlankRotation : MonoBehaviour
             // Rotate plank around given pivot in given direction
             transform.RotateAround(rotationPivot.position, rotationAxis * direction, targetRotation);
 
-            /*
-            int offsetDirection = -1;
-
-            // If Plank is rotating from left pivot
-            if (rotationPivot.name.Equals(plankCollisionDetection.leftPivotName))
-
-                // Inverse camera offset direction
-                offsetDirection = 1;
-
-            // Adjust camera offset
-            var offset = mainCamera.GetComponent<DCameraSmoothFollow>().offset += -.027f * direction * offsetDirection;
-             */
-
             // Returns to top of while loop
             yield return null;
         }
