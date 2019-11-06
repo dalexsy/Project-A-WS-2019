@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.023854906, g: 0.031095076, b: 0.04379671, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -120,6 +120,82 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &263088464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df29e7cc05fbec4aa43e06ea875565d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  rotation:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 360
+  skyIntensityMode:
+    m_OverrideState: 0
+    m_Value: 0
+  exposure:
+    m_OverrideState: 0
+    m_Value: 0
+  multiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  upperHemisphereLuxValue:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  desiredLuxValue:
+    m_OverrideState: 0
+    m_Value: 20000
+  updateMode:
+    m_OverrideState: 0
+    m_Value: 0
+  updatePeriod:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+  includeSunInBaking:
+    m_OverrideState: 0
+    m_Value: 0
+  sunSize:
+    m_OverrideState: 0
+    m_Value: 0.04
+    min: 0
+    max: 1
+  sunSizeConvergence:
+    m_OverrideState: 0
+    m_Value: 5
+    min: 1
+    max: 10
+  atmosphereThickness:
+    m_OverrideState: 0
+    m_Value: 0.84
+    min: 0
+    max: 5
+  skyTint:
+    m_OverrideState: 0
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  groundColor:
+    m_OverrideState: 0
+    m_Value: {r: 0.369, g: 0.349, b: 0.341, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  enableSunDisk:
+    m_OverrideState: 0
+    m_Value: 1
 --- !u!1001 &301695942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -497,6 +573,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3618562282970611706, guid: 98366cd5a85dd504182ae78c6aaa1db0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618562282970611706, guid: 98366cd5a85dd504182ae78c6aaa1db0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618562282970611706, guid: 98366cd5a85dd504182ae78c6aaa1db0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 9178256432567906626, guid: 98366cd5a85dd504182ae78c6aaa1db0,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -625,8 +716,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
         type: 3}
+      propertyPath: animationCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
       propertyPath: canRotateCounterclockwiseR
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].value
+      value: 0.030578613
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].value
+      value: 1.0305786
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].outSlope
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1416818451393032597, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
         type: 3}
@@ -768,7 +889,6 @@ GameObject:
   - component: {fileID: 1488552558}
   - component: {fileID: 1488552557}
   - component: {fileID: 1488552561}
-  - component: {fileID: 1488552562}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -788,37 +908,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b02e106a9947b449b85bff4ee24c836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   shouldRotate: 1
   distance: 10
   height: 5
   heightDamping: 2
-  rotationDamping: 0.1
+  rotationDamping: 0.01
   target: {fileID: 1125884958}
-  offset: 0
 --- !u!81 &1488552558
 AudioListener:
   m_ObjectHideFlags: 0
@@ -854,7 +949,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6.33
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -877,13 +972,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488552556}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -5}
+  m_LocalRotation: {x: 0.15131998, y: 0.24438578, z: -0.038641304, w: 0.95701873}
+  m_LocalPosition: {x: 0, y: 1, z: 0.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.97, y: 28.65, z: 0}
 --- !u!114 &1488552561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,43 +1078,6 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
---- !u!114 &1488552562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488552556}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c1c190596b06164b8536ca2e4387850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationCurve:
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  target: {fileID: 1125884958}
-  finalPosition: {x: 0, y: 0, z: 0}
-  initialPosition: {x: 0, y: 0, z: 0}
-  time: 0.5
 --- !u!114 &1683738276 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4027534644960811409, guid: 0d9af5ce727af9c4295511976d3776c1,
@@ -1401,7 +1459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: d4d55bc4cee6468428b1db023dce07ff, type: 2}
   m_StaticLightingSkyUniqueID: 2
-  m_SkySettings: {fileID: 2068922848}
+  m_SkySettings: {fileID: 263088464}
   m_SkySettingsFromProfile: {fileID: 7206488871959496600, guid: d4d55bc4cee6468428b1db023dce07ff,
     type: 2}
 --- !u!114 &2025832992
@@ -1504,82 +1562,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd9a4fefa5a4bb44b97057f1e196e9b8, type: 3}
---- !u!114 &2068922848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df29e7cc05fbec4aa43e06ea875565d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  rotation:
-    m_OverrideState: 0
-    m_Value: 0
-    min: 0
-    max: 360
-  skyIntensityMode:
-    m_OverrideState: 0
-    m_Value: 0
-  exposure:
-    m_OverrideState: 0
-    m_Value: 0
-  multiplier:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-  upperHemisphereLuxValue:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-  desiredLuxValue:
-    m_OverrideState: 0
-    m_Value: 20000
-  updateMode:
-    m_OverrideState: 0
-    m_Value: 0
-  updatePeriod:
-    m_OverrideState: 0
-    m_Value: 0
-    min: 0
-  includeSunInBaking:
-    m_OverrideState: 0
-    m_Value: 0
-  sunSize:
-    m_OverrideState: 0
-    m_Value: 0.04
-    min: 0
-    max: 1
-  sunSizeConvergence:
-    m_OverrideState: 0
-    m_Value: 5
-    min: 1
-    max: 10
-  atmosphereThickness:
-    m_OverrideState: 0
-    m_Value: 0.84
-    min: 0
-    max: 5
-  skyTint:
-    m_OverrideState: 0
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
-  groundColor:
-    m_OverrideState: 0
-    m_Value: {r: 0.369, g: 0.349, b: 0.341, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
-  enableSunDisk:
-    m_OverrideState: 0
-    m_Value: 1
 --- !u!1001 &474612193898090859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1671,6 +1653,11 @@ PrefabInstance:
         type: 3}
       propertyPath: canRotateCounterclockwiseR
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: lerpTime
+      value: 4.72
       objectReference: {fileID: 0}
     - target: {fileID: 1416818451393032597, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
         type: 3}

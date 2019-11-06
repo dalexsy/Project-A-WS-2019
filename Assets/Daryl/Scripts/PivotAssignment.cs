@@ -7,6 +7,7 @@ public class PivotAssignment : MonoBehaviour
 {
     [SerializeField] string targetTag = null;
 
+    private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
     private PlankCollisionDetection plankCollisionDetection;
     private PlankManager plankManager;
@@ -14,14 +15,10 @@ public class PivotAssignment : MonoBehaviour
 
     private void Start()
     {
-        // Defines collisionDetection as script in parent Plank
         collisionDetection = GetComponentInParent<CollisionDetection>();
-
-        // Defines plankManager as script in PlankManager object
         plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
-
-        // Defines plankRotation as script in parent Plank
         plankRotation = GetComponentInParent<PlankRotation>();
+        activePivotFX = GetComponentInParent<ActivePivotFX>();
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -53,6 +50,8 @@ public class PivotAssignment : MonoBehaviour
             // Resets isConnectedBack in Plank
             // Only used with surrogate pivot
             plankRotation.isConnectedBack = false;
+
+            if (activePivotFX.pulse) activePivotFX.DespawnPulse();
         }
     }
 
@@ -71,6 +70,8 @@ public class PivotAssignment : MonoBehaviour
         // If Plank is found, active pivot can be used for rotation
         if (foundPlank)
         {
+            plankRotation.activePivot = this.transform;
+            if (collisionDetection.isCollidingWithTarget != true) activePivotFX.SpawnPulse(transform.position);
             return;
         }
 
@@ -88,6 +89,8 @@ public class PivotAssignment : MonoBehaviour
             // If a pivot has been found
             if (foundPivot)
             {
+                if (collisionDetection.isCollidingWithTarget != true) activePivotFX.SpawnPulse(foundPivot.transform.position);
+
                 // Set local variable surrogatePivot to foundPivot's transform
                 Transform surrogatePivot = foundPivot.gameObject.transform;
 
@@ -102,18 +105,11 @@ public class PivotAssignment : MonoBehaviour
                 collider.name.Equals(plankManager.frontColliderName) &&
                 collider.gameObject == this.gameObject);
 
-                // If a front collider is found
-                if (foundFrontCollider)
-                {
-                    // Plank is connected front
-                    plankRotation.isConnectedFront = true;
-                }
+                // If a front collider is found Plank is connected front
+                if (foundFrontCollider) plankRotation.isConnectedFront = true;
 
-                else
-                {
-                    // Plank is connected back
-                    plankRotation.isConnectedBack = true;
-                }
+                // Else Plank is connected back
+                else plankRotation.isConnectedBack = true;
             }
         }
     }

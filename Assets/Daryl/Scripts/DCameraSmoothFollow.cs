@@ -9,8 +9,6 @@ public class DCameraSmoothFollow : MonoBehaviour
     [SerializeField] float rotationDamping = 3.0f;
     [SerializeField] Transform target = null;
 
-    public float offset = 0f;
-
     private float wantedRotationAngle;
     private float wantedHeight;
     private float currentRotationAngle;
@@ -56,13 +54,13 @@ public class DCameraSmoothFollow : MonoBehaviour
             this.transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);
 
             // Redefines camera's position based on vertical offset from target
-            var offsetFromTarget = target.position + target.forward * offset;
+            //var offsetFromTarget = target.position + target.forward;
 
             // If the camera should rotate
             if (shouldRotate)
 
                 // Look at target with vertical offset
-                transform.LookAt(offsetFromTarget);
+                transform.LookAt(target);
         }
     }
 }
