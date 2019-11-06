@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class PlankRotation : MonoBehaviour
 {
-    [SerializeField] AnimationCurve animationCurve;
-
-    [SerializeField] float maxRotation = 90f;
-    [SerializeField] float rotationSpeed = 1f;
-
-    [SerializeField] GameObject pulseParticlePrefab = null;
-
     public Transform activePivot = null;
     public Transform surrogatePivot = null;
 
@@ -28,16 +21,15 @@ public class PlankRotation : MonoBehaviour
     private PivotAssignment pivotAssignment;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
-
+    private PlankRotationManager plankRotationManager;
 
     private void Start()
     {
         collisionDetection = GetComponent<CollisionDetection>();
         pivotAssignment = GetComponentInChildren<PivotAssignment>();
         plankConnection = GetComponent<PlankConnection>();
-
-        // Defines plankManager as script in PlankManager object
         plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+        plankRotationManager = GameObject.Find("PlankManager").GetComponent<PlankRotationManager>();
     }
 
     private void Update()
@@ -148,17 +140,17 @@ public class PlankRotation : MonoBehaviour
         }
 
         // Create visual feedback on pivot to be rotated from
-        GameObject pulse = Instantiate(pulseParticlePrefab, rotationPivot.transform.position, pulseParticlePrefab.transform.rotation);
+        GameObject pulse = Instantiate(plankRotationManager.pulseParticlePrefab, rotationPivot.transform.position, plankRotationManager.pulseParticlePrefab.transform.rotation);
 
         // Destroy particle system once system has run once
         Destroy(pulse, pulse.GetComponent<ParticleSystem>().main.startLifetimeMultiplier);
 
         // While the Plank has not reached max rotation
-        while (currentRotation < maxRotation)
+        while (currentRotation < plankRotationManager.maxRotation)
         {
             // Increase currentLerpTime per frame
             // Rotation speed adjusts animation curve frame rate
-            currentLerpTime += Time.deltaTime * rotationSpeed;
+            currentLerpTime += Time.deltaTime * plankRotationManager.rotationSpeed;
 
             // Gate maximum lerp time
             if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
@@ -168,17 +160,17 @@ public class PlankRotation : MonoBehaviour
             float t = currentLerpTime / lerpTime;
 
             // Increase current rotation by value from animation curve
-            currentRotation += animationCurve.Evaluate(t);
+            currentRotation += plankRotationManager.animationCurve.Evaluate(t);
 
             // Rotate plank around given pivot in given direction
-            transform.RotateAround(rotationPivot.position, rotationAxis * direction, animationCurve.Evaluate(t));
+            transform.RotateAround(rotationPivot.position, rotationAxis * direction, plankRotationManager.animationCurve.Evaluate(t));
 
             // Returns to top of while loop
             yield return null;
         }
 
         // If current rotation exceeds max rotation
-        if (currentRotation > maxRotation)
+        if (currentRotation > plankRotationManager.maxRotation)
         {
             // Set x-axis angle to start rotation + 90 degrees
             transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(transform.eulerAngles.x), transform.eulerAngles.y, transform.eulerAngles.z);
@@ -186,9 +178,6 @@ public class PlankRotation : MonoBehaviour
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
-
-        // Wait two seconds
-        yield return new WaitForSeconds(2);
 
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;

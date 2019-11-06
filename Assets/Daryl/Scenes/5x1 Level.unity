@@ -224,7 +224,7 @@ PrefabInstance:
       objectReference: {fileID: 1683738276}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 541a94fbda638f844b8b3e89d0aa8c1e, type: 3}
---- !u!114 &403058507
+--- !u!114 &456736088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: d4d55bc4cee6468428b1db023dce07ff, type: 2}
   m_StaticLightingSkyUniqueID: 2
-  m_SkySettings: {fileID: 403058507}
+  m_SkySettings: {fileID: 456736088}
   m_SkySettingsFromProfile: {fileID: 7206488871959496600, guid: d4d55bc4cee6468428b1db023dce07ff,
     type: 2}
 --- !u!114 &2025832992
@@ -1653,6 +1653,11 @@ PrefabInstance:
         type: 3}
       propertyPath: canRotateCounterclockwiseR
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216271361645159875, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
+        type: 3}
+      propertyPath: lerpTime
+      value: 4.72
       objectReference: {fileID: 0}
     - target: {fileID: 1416818451393032597, guid: 541a94fbda638f844b8b3e89d0aa8c1e,
         type: 3}
