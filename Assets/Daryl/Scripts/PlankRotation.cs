@@ -13,9 +13,9 @@ public class PlankRotation : MonoBehaviour
     public bool canRotateCounterclockwiseL = true;
     public bool isConnectedFront = false;
     public bool isConnectedBack = false;
+    public bool isRotating = false;
 
-    private bool isRotating = false;
-
+    private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
     private IEnumerator connectionCoroutine;
     private PivotAssignment pivotAssignment;
@@ -25,6 +25,7 @@ public class PlankRotation : MonoBehaviour
 
     private void Start()
     {
+        activePivotFX = GetComponent<ActivePivotFX>();
         collisionDetection = GetComponent<CollisionDetection>();
         pivotAssignment = GetComponentInChildren<PivotAssignment>();
         plankConnection = GetComponent<PlankConnection>();
@@ -56,20 +57,13 @@ public class PlankRotation : MonoBehaviour
                 if (Input.GetKeyDown("e") ||
                     Input.GetKey(KeyCode.Joystick1Button6))
                 {
-                    // If Plank is connected front (requires surrogate pivot)
-                    if (isConnectedFront)
-                    {
-                        // Rotate Plank clockwise
-                        // Will rotate from surrogate pivot's position
-                        StartCoroutine(RotatePlank(1, activePivot));
-                    }
+                    // Rotate Plank clockwise
+                    // Will rotate from surrogate pivot's position
+                    if (isConnectedFront) StartCoroutine(RotatePlank(1, activePivot));
 
-                    else
-                    {
-                        // Rotate Plank clockwise 
-                        // Will rotate from active pivot's position
-                        StartCoroutine(RotatePlank(-1, activePivot));
-                    }
+                    // Rotate Plank counterclockwise 
+                    // Will rotate from active pivot's position
+                    else StartCoroutine(RotatePlank(-1, activePivot));
                 }
             }
 
@@ -82,17 +76,11 @@ public class PlankRotation : MonoBehaviour
                 {
                     // Rotate Plank counterclockwise
                     // Will rotate from surrogate pivot's position
-                    if (isConnectedFront)
-                    {
-                        StartCoroutine(RotatePlank(-1, activePivot));
-                    }
+                    if (isConnectedFront) StartCoroutine(RotatePlank(-1, activePivot));
 
                     // Rotate Plank clockwise
                     // Will rotate from active pivot's position
-                    else
-                    {
-                        StartCoroutine(RotatePlank(1, activePivot));
-                    }
+                    else StartCoroutine(RotatePlank(1, activePivot));
                 }
             }
         }
@@ -108,6 +96,8 @@ public class PlankRotation : MonoBehaviour
         Transform surrogateRotationPivot = null;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
+        if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Stop();
+
         // Variable used to move through animation curve
         float lerpTime = 1f;
 
@@ -122,6 +112,8 @@ public class PlankRotation : MonoBehaviour
 
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
+
+        //if (activePivotFX.pulse) activePivotFX.DespawnPulse();
 
         // Start coroutine to connect planks using rotation pivot
         plankConnection.ConnectPlanks(rotationPivot);
@@ -140,7 +132,7 @@ public class PlankRotation : MonoBehaviour
         }
 
         // Create visual feedback on pivot to be rotated from
-        GameObject pulse = Instantiate(plankRotationManager.pulseParticlePrefab, rotationPivot.transform.position, plankRotationManager.pulseParticlePrefab.transform.rotation);
+        GameObject pulse = Instantiate(plankRotationManager.rotateParticlePrefab, rotationPivot.transform.position, plankRotationManager.rotateParticlePrefab.transform.rotation);
 
         // Destroy particle system once system has run once
         Destroy(pulse, pulse.GetComponent<ParticleSystem>().main.startLifetimeMultiplier);
@@ -173,11 +165,16 @@ public class PlankRotation : MonoBehaviour
         if (currentRotation > plankRotationManager.maxRotation)
         {
             // Set x-axis angle to start rotation + 90 degrees
-            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(transform.eulerAngles.x), transform.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(
+                                    transform.eulerAngles.x),
+                                    transform.eulerAngles.y,
+                                    transform.eulerAngles.z);
         }
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
+
+        if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
 
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
