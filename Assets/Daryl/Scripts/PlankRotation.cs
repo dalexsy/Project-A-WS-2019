@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlankRotation : MonoBehaviour
 {
+    [SerializeField] AnimationCurve animationCurve;
+
     [SerializeField] float maxRotation = 90f;
-    [SerializeField] float rotationSpeed = 30f;
+    [SerializeField] float rotationSpeed = 1f;
 
     [SerializeField] GameObject pulseParticlePrefab = null;
 
@@ -22,22 +24,20 @@ public class PlankRotation : MonoBehaviour
     private bool isRotating = false;
 
     private CollisionDetection collisionDetection;
+    private IEnumerator connectionCoroutine;
     private PivotAssignment pivotAssignment;
     private PlankConnection plankConnection;
+    private PlankManager plankManager;
 
-    private float objectAngle = 0f;
-    private float targetRotation = 0f;
-
-    private GameObject mainCamera;
-
-    private IEnumerator connectionCoroutine;
 
     private void Start()
     {
-        mainCamera = GameObject.Find("Main Camera");
         collisionDetection = GetComponent<CollisionDetection>();
         pivotAssignment = GetComponentInChildren<PivotAssignment>();
         plankConnection = GetComponent<PlankConnection>();
+
+        // Defines plankManager as script in PlankManager object
+        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
     }
 
     private void Update()
@@ -52,8 +52,7 @@ public class PlankRotation : MonoBehaviour
     private void RotationInput()
     {
         // If no pivots are given, accept no input
-        if (!activePivot)
-            return;
+        if (!activePivot) return;
 
         // If Plank is not rotating
         if (!isRotating)
@@ -117,15 +116,17 @@ public class PlankRotation : MonoBehaviour
         Transform surrogateRotationPivot = null;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
-        // If a surrogate pivot has been assigned
-        if (surrogatePivot)
-        {
-            // Save local variable surrogateRotationPivot as surrogatePivot
-            surrogateRotationPivot = surrogatePivot;
-        }
+        // Variable used to move through animation curve
+        float lerpTime = 1f;
 
-        // Reset object angle
-        objectAngle = 0f;
+        // Reset current lerp time
+        float currentLerpTime = 0f;
+
+        // Reset current rotation
+        float currentRotation = 0f;
+
+        // Set start rotation as Plank's x-axis rotation
+        float startRotation = Mathf.RoundToInt(transform.rotation.eulerAngles.x);
 
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
@@ -136,6 +137,9 @@ public class PlankRotation : MonoBehaviour
         // If using a surrogate pivot
         if (surrogatePivot)
         {
+            // Save local variable surrogateRotationPivot as surrogatePivot
+            surrogateRotationPivot = surrogatePivot;
+
             // Assign surrogate pivot as rotationpivot
             rotationPivot = surrogateRotationPivot;
 
@@ -150,26 +154,62 @@ public class PlankRotation : MonoBehaviour
         Destroy(pulse, pulse.GetComponent<ParticleSystem>().main.startLifetimeMultiplier);
 
         // While the Plank has not reached max rotation
-        while (objectAngle < maxRotation)
+        while (currentRotation < maxRotation)
         {
-            // Increase targetRotation by rotationSpeed
-            // Round to integer to prevent non-integer angles from deltaTime 
-            targetRotation = Mathf.RoundToInt(rotationSpeed * Time.deltaTime);
+            // Increase currentLerpTime per frame
+            // Rotation speed adjusts animation curve frame rate
+            currentLerpTime += Time.deltaTime * rotationSpeed;
 
-            // Increase objectAngle by targetRotation
-            objectAngle += targetRotation;
+            // Gate maximum lerp time
+            if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
+
+            // Define t as percentage of lerpTime
+            // Used to move through frames of animation curve
+            float t = currentLerpTime / lerpTime;
+
+            // Increase current rotation by value from animation curve
+            currentRotation += animationCurve.Evaluate(t);
 
             // Rotate plank around given pivot in given direction
-            transform.RotateAround(rotationPivot.position, rotationAxis * direction, targetRotation);
+            transform.RotateAround(rotationPivot.position, rotationAxis * direction, animationCurve.Evaluate(t));
 
             // Returns to top of while loop
             yield return null;
         }
 
+        // If current rotation exceeds max rotation
+        if (currentRotation > maxRotation)
+        {
+            // Set x-axis angle to start rotation + 90 degrees
+            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(transform.eulerAngles.x), transform.eulerAngles.y, transform.eulerAngles.z);
+        }
+
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
 
+        // Wait two seconds
+        yield return new WaitForSeconds(2);
+
         // Sets isRotating to false after Plank has reached max rotation
         this.isRotating = false;
+    }
+
+    // Rounds a float to its nearest 90 degree integer
+    private int roundToNearestRightAngle(float angle)
+    {
+        // Rounds angle to nearest int
+        int roundedAngle = Mathf.FloorToInt(angle);
+
+        // Takes remainder of rounded angle divided by 90
+        int remainder = roundedAngle % 90;
+
+        // If no remainder, return rounded angle
+        if (remainder == 0) return roundedAngle;
+
+        // If remainder is 45 or less, round angle down to nearest right angle
+        if (remainder <= 45) return roundedAngle - remainder;
+
+        // Else round angle up towards nearest right angle
+        else return roundedAngle + (90 - remainder);
     }
 }
