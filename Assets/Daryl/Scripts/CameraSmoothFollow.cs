@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DCameraSmoothFollow : MonoBehaviour
+public class CameraSmoothFollow : MonoBehaviour
 {
     [SerializeField] bool shouldRotate = true;
     [SerializeField] float distance = 10.0f;

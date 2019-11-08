@@ -6,7 +6,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
 {
     [SerializeField] string transitionPointName = "TransitionPoint";
 
-    DPlayerController playerController;
+    PlayerController playerController;
     PlayerPlankDetection playerPlankDetection;
     Rigidbody rigid;
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class DPlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private float moveSpeed = 1f;
     private float rotationSpeed = 100f;
