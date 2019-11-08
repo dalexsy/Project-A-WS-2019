@@ -18,8 +18,7 @@ public class CameraSmoothFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!target)
-            return;
+        if (!target) return;
 
         if (target)
         {
