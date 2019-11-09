@@ -174,6 +174,7 @@ public class PlankRotation : MonoBehaviour
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
 
+        // If active pulse FX is paused, restart
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
 
         // Sets isRotating to false after Plank has reached max rotation
