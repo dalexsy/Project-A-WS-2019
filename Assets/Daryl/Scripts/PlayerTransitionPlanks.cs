@@ -125,8 +125,6 @@ public class PlayerTransitionPlanks : MonoBehaviour
 
         float currentAngle = transform.eulerAngles.x;
 
-        float targetAngle = currentAngle + 90 * direction;
-
         // While the Plank has not reached max rotation
         while (objectAngle < maxRotation)
         {
@@ -144,13 +142,8 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
-        // Sets rotation cooldown to 2 seconds
-        Invoke("ResetRotation", 2f);
-    }
+        yield return new WaitForSeconds(2);
 
-    private void ResetRotation()
-    {
-        // Resets rotation status
         this.isRotating = false;
     }
 }
