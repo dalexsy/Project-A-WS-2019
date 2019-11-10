@@ -14,7 +14,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
 
     private float maxRotation = 90f;
     private float rotationSpeed = 90f;
-    private float objectAngle = 0f;
+    private float currentRotation = 0f;
     private float targetRotation = 0f;
     private float gravity = 10;
 
@@ -118,7 +118,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
     IEnumerator RotatePlayer(int direction)
     {
         // Reset object angle
-        objectAngle = 0f;
+        currentRotation = 0f;
 
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
@@ -126,14 +126,14 @@ public class PlayerTransitionPlanks : MonoBehaviour
         float currentAngle = transform.eulerAngles.x;
 
         // While the Plank has not reached max rotation
-        while (objectAngle < maxRotation)
+        while (currentRotation < maxRotation)
         {
             // Increase targetRotation by rotationSpeed
             // Round to integer to prevent non-integer angles from deltaTime 
             targetRotation = Mathf.RoundToInt(rotationSpeed * Time.deltaTime);
 
             // Increase objectAngle by targetRotation
-            objectAngle += targetRotation;
+            currentRotation += targetRotation;
 
             // Rotates Player forward in given direction
             transform.Rotate(targetRotation * direction, 0, 0);
