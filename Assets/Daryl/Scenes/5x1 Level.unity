@@ -445,7 +445,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1350735031}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &912783233
+--- !u!114 &1072431498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -631,6 +631,62 @@ PrefabInstance:
     - target: {fileID: 7714112373859711789, guid: 98366cd5a85dd504182ae78c6aaa1db0,
         type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1233197741, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].time
+      value: 0.9909668
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].value
+      value: 0.9906616
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].inSlope
+      value: -1.7270434
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].outSlope
+      value: -1.7270434
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].outWeight
+      value: 0.07913669
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].inSlope
+      value: 1.8299968
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].outSlope
+      value: 1.8299968
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].inWeight
+      value: 0.06892759
+      objectReference: {fileID: 0}
+    - target: {fileID: 944829718, guid: 98366cd5a85dd504182ae78c6aaa1db0, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].time
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1509,7 +1565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: d4d55bc4cee6468428b1db023dce07ff, type: 2}
   m_StaticLightingSkyUniqueID: 2
-  m_SkySettings: {fileID: 912783233}
+  m_SkySettings: {fileID: 1072431498}
   m_SkySettingsFromProfile: {fileID: 7206488871959496600, guid: d4d55bc4cee6468428b1db023dce07ff,
     type: 2}
 --- !u!114 &2025832992

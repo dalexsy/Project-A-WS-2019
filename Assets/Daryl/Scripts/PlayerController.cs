@@ -4,10 +4,11 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
+    public float moveSpeed = .5f;
+
     private String lastInputAxis = "Vertical";
     private float lastInput = 1f;
     private float movement;
-    private float moveSpeed = .5f;
 
     PlankRotationManager plankRotationManager;
     PlayerTransitionPlanks playerTransitionPlanks;
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        if (plankRotationManager.isRotating) return;
+        if (plankRotationManager.isRotating || playerTransitionPlanks.isRotating) return;
 
         if (verticalInput != 0)
         {

@@ -6,13 +6,14 @@ using UnityEngine;
 public class PlayerTransitionPlanks : MonoBehaviour
 {
     [SerializeField] string transitionPointName = "TransitionPoint";
-
-    PlayerController playerController;
-    PlankManager plankManager;
-    PlayerPlankDetection playerPlankDetection;
-    Rigidbody rigid;
+    [SerializeField] AnimationCurve animationCurve;
 
     public bool isRotating = false;
+
+    private PlayerController playerController;
+    private PlankManager plankManager;
+    private PlayerPlankDetection playerPlankDetection;
+    private Rigidbody rigid;
 
     private float maxRotation = 90f;
     private float rotationSpeed = 90f;
@@ -102,15 +103,36 @@ public class PlayerTransitionPlanks : MonoBehaviour
             (collider.gameObject.transform != playerPlankDetection.currentPlank.transform));
             */
 
+        // Variable used to move through animation curve
+        float lerpTime = 1f;
+
+        // Reset current lerp time
+        float currentLerpTime = 0f;
+
         // Reset object angle
         currentRotation = 0f;
 
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
+        Vector3 hug = new Vector3(0, -.1f * direction, 0);
+
         // While the Plank has not reached max rotation
         while (currentRotation < maxRotation)
         {
+            // Increase currentLerpTime per frame
+            // Rotation speed adjusts animation curve frame rate
+            currentLerpTime += Time.deltaTime;
+
+            // Gate maximum lerp time
+            if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
+
+            // Define t as percentage of lerpTime
+            // Used to move through frames of animation curve
+            float t = currentLerpTime / lerpTime;
+
+            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime * playerController.moveSpeed, Space.Self);
+
             // Increase targetRotation by rotationSpeed
             // Round to integer to prevent non-integer angles from deltaTime 
             targetRotation = Mathf.RoundToInt(rotationSpeed * Time.deltaTime);
@@ -125,8 +147,45 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(1);
+        // If current rotation exceeds max rotation
+        if (currentRotation > maxRotation)
+        {
+            // Set x-axis angle to start rotation + 90 degrees
+            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(
+                                    transform.eulerAngles.x),
+                                    transform.eulerAngles.y,
+                                    transform.eulerAngles.z);
+        }
+
+        float cooldown = 0f;
+        while (cooldown < .1f)
+        {
+            cooldown += Time.deltaTime;
+            transform.Translate((Vector3.forward + hug) * Time.deltaTime * playerController.moveSpeed, Space.Self);
+            yield return null;
+        }
 
         this.isRotating = false;
+
+        yield return null;
+    }
+
+    // Rounds a float to its nearest 90 degree integer
+    private int roundToNearestRightAngle(float angle)
+    {
+        // Rounds angle to nearest int
+        int roundedAngle = Mathf.FloorToInt(angle);
+
+        // Takes remainder of rounded angle divided by 90
+        int remainder = roundedAngle % 90;
+
+        // If no remainder, return rounded angle
+        if (remainder == 0) return roundedAngle;
+
+        // If remainder is 45 or less, round angle down to nearest right angle
+        if (remainder <= 45) return roundedAngle - remainder;
+
+        // Else round angle up towards nearest right angle
+        else return roundedAngle + (90 - remainder);
     }
 }
