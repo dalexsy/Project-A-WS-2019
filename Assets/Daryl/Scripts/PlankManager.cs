@@ -33,11 +33,21 @@ public class PlankManager : MonoBehaviour
     public string frontColliderName = "Plank Collider Front";
     public string backColliderName = "Plank Collider Back";
 
+    [Header("Plank Transition Point Names")]
+    [TextArea(0, 5)]
+    [SerializeField]
+    private string usageNotes4 = "Plank transition points must be named exactly as listed here.";
+
+    public string leftTransitionPointName = "Plank Transition Point L";
+    public string rightTransitionPointName = "Plank Transition Point R";
+
     [Header("Plank Collider Tags")]
     [TextArea(0, 5)]
     [SerializeField]
-    private string usageNotes4 = "Top, bottom, front, and back colliders must be tagged with their respective sides.";
+    private string usageNotes5 = "Top, bottom, front, and back colliders must be tagged with their respective sides.";
 
     public string leftColliderTag = "Collider L";
     public string rightColliderTag = "Collider R";
+
+
 }

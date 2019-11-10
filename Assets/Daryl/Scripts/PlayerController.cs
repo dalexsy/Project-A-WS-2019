@@ -4,25 +4,28 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-    private float moveX;
-    private float moveY;
-    private float setMoveY;
-    private Vector3 moveDirection;
     private String lastInputAxis = "Vertical";
     private float lastInput = 1f;
     private float movement;
+    private float moveSpeed = .5f;
+
+    PlankRotationManager plankRotationManager;
+    PlayerTransitionPlanks playerTransitionPlanks;
+
     //PlayerPlankDetection playerPlankDetection;
 
-    /*
-        private void Start()
-        {
-            playerPlankDetection = GetComponent<PlayerPlankDetection>();
-        }
-        */
+    private void Start()
+    {
+        plankRotationManager = GameObject.Find("PlankManager").GetComponent<PlankRotationManager>();
+        playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
+    }
+
     private void Update()
     {
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
+
+        if (plankRotationManager.isRotating) return;
 
         if (verticalInput != 0)
         {
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour
             this.lastInputAxis = "Vertical";
             this.lastInput = verticalInput;
         }
+
         if (horizontalInput != 0)
         {
             if (this.lastInputAxis.Equals("Horizontal") && Math.Sign(this.lastInput) != Math.Sign(horizontalInput))
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
         if (verticalInput != 0 || horizontalInput != 0) movement = 1;
         else if (verticalInput == 0 && horizontalInput == 0) movement = 0;
 
-        movement *= Time.deltaTime;
+        movement *= Time.deltaTime * moveSpeed;
 
         transform.Translate(0, 0, movement);
 
