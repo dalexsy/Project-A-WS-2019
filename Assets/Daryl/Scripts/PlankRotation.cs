@@ -11,8 +11,8 @@ public class PlankRotation : MonoBehaviour
     public bool canRotateCounterclockwiseR = true;
     public bool canRotateClockwiseL = true;
     public bool canRotateCounterclockwiseL = true;
-    public bool isConnectedFront = false;
-    public bool isConnectedBack = false;
+    public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
+    public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;

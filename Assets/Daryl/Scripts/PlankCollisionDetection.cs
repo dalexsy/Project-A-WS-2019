@@ -11,10 +11,7 @@ public class PlankCollisionDetection : MonoBehaviour
 
     private void Start()
     {
-        // Defines plankManager as script in PlankManager object
         plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
-
-        // Defines plankRotation as script in parent Plank
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
@@ -23,9 +20,7 @@ public class PlankCollisionDetection : MonoBehaviour
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-        {
             LimitRotationOnEnter(collider);
-        }
     }
 
     private void OnTriggerExit(Collider collider)
@@ -33,9 +28,7 @@ public class PlankCollisionDetection : MonoBehaviour
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-        {
             LimitRotationOnExit(collider);
-        }
     }
 
     // Method to limit Plank's rotation (clockwise or counterclockwise)
@@ -83,31 +76,17 @@ public class PlankCollisionDetection : MonoBehaviour
             // If active pivot is right pivot
             if (rotatingPivot.name.Equals(plankManager.rightPivotName))
             {
-                if (tag.Equals(plankManager.rightColliderTag))
-                {
-                    // Pivot can rotate clockwise
-                    plankRotation.canRotateClockwiseR = canRotate;
-                }
-
-                else
-                {
-                    plankRotation.canRotateClockwiseL = canRotate;
-                }
-
+                // Pivot can rotate clockwise
+                if (tag.Equals(plankManager.rightColliderTag)) plankRotation.canRotateClockwiseR = canRotate;
+                else plankRotation.canRotateClockwiseL = canRotate;
             }
+
             // Else if active pivot is left pivot
             else
             {
-                if (tag.Equals(plankManager.rightColliderTag))
-                {
-                    // Pivot can rotate counterclockwise
-                    plankRotation.canRotateCounterclockwiseR = canRotate;
-                }
-
-                else
-                {
-                    plankRotation.canRotateCounterclockwiseL = canRotate;
-                }
+                // Pivot can rotate counterclockwise
+                if (tag.Equals(plankManager.rightColliderTag)) plankRotation.canRotateCounterclockwiseR = canRotate;
+                else plankRotation.canRotateCounterclockwiseL = canRotate;
             }
         }
 
@@ -118,35 +97,17 @@ public class PlankCollisionDetection : MonoBehaviour
             // If active pivot is right pivot
             if (rotatingPivot.name.Equals(plankManager.rightPivotName))
             {
-                // If collider is on right side
-                if (tag.Equals(plankManager.rightColliderTag))
-                {
-                    // Pivot can rotate counterclockwise R
-                    plankRotation.canRotateCounterclockwiseR = canRotate;
-                }
-
-                else
-                {
-                    // Pivot can rotate counterclockwise L
-                    plankRotation.canRotateCounterclockwiseL = canRotate;
-                }
-
+                // Pivot can rotate counterclockwise
+                if (tag.Equals(plankManager.rightColliderTag)) plankRotation.canRotateCounterclockwiseR = canRotate;
+                else plankRotation.canRotateCounterclockwiseL = canRotate;
             }
+
             // Else if active pivot is left pivot
             else
             {
-                // If collider is on right side
-                if (tag.Equals(plankManager.rightColliderTag))
-                {
-                    // Pivot can rotate clockwise R
-                    plankRotation.canRotateClockwiseR = canRotate;
-                }
-
-                else
-                {
-                    // Pivot can rotate clockwise L
-                    plankRotation.canRotateClockwiseL = canRotate;
-                }
+                // Pivot can rotate clockwise
+                if (tag.Equals(plankManager.rightColliderTag)) plankRotation.canRotateClockwiseR = canRotate;
+                else plankRotation.canRotateClockwiseL = canRotate;
             }
         }
     }

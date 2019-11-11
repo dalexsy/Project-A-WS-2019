@@ -65,7 +65,6 @@ public class PlayerTransitionPlanks : MonoBehaviour
                 // If current Plank can rotate clockwise, start rotation coroutine upwards
                 if (plankRotation.canRotateClockwiseR) StartCoroutine(RotatePlayer(1));
 
-
                 // If current Plank can rotate counterclockwise, start rotation coroutine downwards
                 if (plankRotation.canRotateCounterclockwiseR) StartCoroutine(RotatePlayer(-1));
             }
@@ -115,9 +114,10 @@ public class PlayerTransitionPlanks : MonoBehaviour
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
+        // Vector3 to keep Player on Plank throughout rotation
         Vector3 hug = new Vector3(0, -.1f * direction, 0);
 
-        // While the Plank has not reached max rotation
+        // While the Player has not reached max rotation
         while (currentRotation < maxRotation)
         {
             // Increase currentLerpTime per frame
@@ -131,13 +131,14 @@ public class PlayerTransitionPlanks : MonoBehaviour
             // Used to move through frames of animation curve
             float t = currentLerpTime / lerpTime;
 
-            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime * playerController.moveSpeed, Space.Self);
+            // Move Player forward using animation curve
+            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime, Space.Self);
 
             // Increase targetRotation by rotationSpeed
             // Round to integer to prevent non-integer angles from deltaTime 
             targetRotation = Mathf.RoundToInt(rotationSpeed * Time.deltaTime);
 
-            // Increase objectAngle by targetRotation
+            // Increase currentRotation by targetRotation
             currentRotation += targetRotation;
 
             // Rotates Player forward in given direction

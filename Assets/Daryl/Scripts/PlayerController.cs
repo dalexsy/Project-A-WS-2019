@@ -5,29 +5,36 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = .5f;
-
+    private float verticalInput;
+    private float horizontalInput;
     private String lastInputAxis = "Vertical";
     private float lastInput = 1f;
     private float movement;
 
     PlankRotationManager plankRotationManager;
     PlayerTransitionPlanks playerTransitionPlanks;
-
-    //PlayerPlankDetection playerPlankDetection;
+    PlayerPlankDetection playerPlankDetection;
 
     private void Start()
     {
+        playerPlankDetection = GetComponent<PlayerPlankDetection>();
         plankRotationManager = GameObject.Find("PlankManager").GetComponent<PlankRotationManager>();
         playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
     }
 
     private void Update()
     {
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
 
         if (plankRotationManager.isRotating || playerTransitionPlanks.isRotating) return;
 
+        InputMove();
+        //SwitchMove();
+    }
+
+    private void InputMove()
+    {
         if (verticalInput != 0)
         {
             if (this.lastInputAxis.Equals("Vertical") && Math.Sign(this.lastInput) != Math.Sign(verticalInput))
@@ -54,42 +61,42 @@ public class PlayerController : MonoBehaviour
         movement *= Time.deltaTime * moveSpeed;
 
         transform.Translate(0, 0, movement);
+    }
 
-        /*
-        transform plank = playerPlankDetection.currentPlank.transform;
+    private void SwitchMove()
+    {
+        Transform plank = playerPlankDetection.currentPlank.transform;
         switch (Math.Sign(verticalInput))
         {
-        case 0:
-            break;
-        case 1:
-            transform.forward = plank.up;
-            Translate()
-            break;
-        case -1:
-            transform.forward = -plank.up;
-            Translate()
-            break;
+            case 0:
+                break;
+            case 1:
+                transform.forward = plank.up;
+                Translate();
+                break;
+            case -1:
+                transform.forward = -plank.up;
+                Translate();
+                break;
         }
         switch (Math.Sign(horizontalInput))
         {
-        case 0:
-            break;
-        case 1:
-            transform.forward = plank.right;
-            Translate()
-            break;
-        case -1:
-            transform.forward = -plank.right;
-            Translate()
-            break;
+            case 0:
+                break;
+            case 1:
+                transform.forward = plank.right;
+                Translate();
+                break;
+            case -1:
+                transform.forward = -plank.right;
+                Translate();
+                break;
         }
-        */
+
     }
 
     IEnumerator Rotate(float angle)
     {
-        //Debug.Log("rotate");
-        //hasRotated = true;
         transform.RotateAround(transform.position, transform.up, angle);
         yield return null;
     }
