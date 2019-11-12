@@ -1,50 +1,49 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTransitionPlanks : MonoBehaviour
 {
     [SerializeField] string transitionPointName = "TransitionPoint";
+    [SerializeField] AnimationCurve animationCurve;
 
-    DPlayerController playerController;
-    PlayerPlankDetection playerPlankDetection;
-    Rigidbody rigid;
+    public bool isRotating = false;
 
-    private bool isRotating = false;
+    private PlayerController playerController;
+    private PlankManager plankManager;
+    private PlayerPlankDetection playerPlankDetection;
+    private Rigidbody rigid;
 
     private float maxRotation = 90f;
     private float rotationSpeed = 90f;
-    private float objectAngle = 0f;
+    private float currentRotation = 0f;
     private float targetRotation = 0f;
     private float gravity = 10;
 
-    private Vector3 myNormal;
+    private Vector3 playerNormal;
 
     private void Start()
     {
+        playerController = GetComponent<PlayerController>();
+        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+        playerNormal = transform.up;
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
         rigid = GetComponent<Rigidbody>();
-        myNormal = transform.up;
         rigid.freezeRotation = true;
     }
 
     private void FixedUpdate()
     {
-        // If current Plank has been assigned
+        // If current Plank has been assigned add force downwards towards current Plank
         if (playerPlankDetection.currentPlank)
-        {
-            // Add force downwards towards current Plank
             rigid.AddForce(-gravity * rigid.mass * playerPlankDetection.currentPlank.forward);
-        }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         // If no current Plank, exit method
-        if (!playerPlankDetection.currentPlank)
-        {
-            return;
-        }
+        if (!playerPlankDetection.currentPlank) return;
 
         // If Player collides with transition point and is not rotating
         if (collider.name.Equals(transitionPointName) && !isRotating)
@@ -56,30 +55,18 @@ public class PlayerTransitionPlanks : MonoBehaviour
             // If right pivot is active
             if (plankRotation.activePivot.name.Equals("Pivot R"))
             {
+
                 // If current Plank can rotate both clockwise and counterclockwise
                 // Current Plank and next Plank are parallel to one another 
                 // Player does not need to rotate
                 if (plankRotation.canRotateClockwiseR &&
-                    plankRotation.canRotateCounterclockwiseR)
-                {
-                    return;
-                }
+                    plankRotation.canRotateCounterclockwiseR) return;
 
-                // If current Plank can rotate clockwise
-                if (plankRotation.canRotateClockwiseR)
-                {
-                    // Start rotation coroutine upwards
-                    StartCoroutine(RotatePlayer(1));
-                    //Debug.Log("R coroutine1");
-                }
+                // If current Plank can rotate clockwise, start rotation coroutine upwards
+                if (plankRotation.canRotateClockwiseR) StartCoroutine(RotatePlayer(1));
 
-                // If current Plank can rotate counterclockwise
-                if (plankRotation.canRotateCounterclockwiseR)
-                {
-                    // Start rotation coroutine downwards
-                    StartCoroutine(RotatePlayer(-1));
-                    //Debug.Log("R coroutine2");
-                }
+                // If current Plank can rotate counterclockwise, start rotation coroutine downwards
+                if (plankRotation.canRotateCounterclockwiseR) StartCoroutine(RotatePlayer(-1));
             }
 
             // If left pivot is active
@@ -89,26 +76,13 @@ public class PlayerTransitionPlanks : MonoBehaviour
                 // Current Plank and next Plank are parallel to one another 
                 // Player does not need to rotate
                 if (plankRotation.canRotateClockwiseL &&
-                    plankRotation.canRotateCounterclockwiseL)
-                {
-                    return;
-                }
+                    plankRotation.canRotateCounterclockwiseL) return;
 
-                // If current Plank can rotate clockwise
-                if (plankRotation.canRotateClockwiseL)
-                {
-                    // Start rotation coroutine downwards
-                    StartCoroutine(RotatePlayer(-1));
-                    //Debug.Log("L coroutine1");
-                }
+                // If current Plank can rotate clockwise Start rotation coroutine downwards
+                if (plankRotation.canRotateClockwiseL) StartCoroutine(RotatePlayer(-1));
 
                 // If current Plank can rotate counterclockwise
-                if (plankRotation.canRotateCounterclockwiseL)
-                {
-                    // Start rotation coroutine upwards
-                    StartCoroutine(RotatePlayer(1));
-                    //Debug.Log("L coroutine2");
-                }
+                if (plankRotation.canRotateCounterclockwiseL) StartCoroutine(RotatePlayer(1));
             }
         }
     }
@@ -117,25 +91,55 @@ public class PlayerTransitionPlanks : MonoBehaviour
     // Needs a direction
     IEnumerator RotatePlayer(int direction)
     {
+        /*
+        // Look for colliders in range of Player's position
+        Collider[] firstColliders = Physics.OverlapSphere(transform.position, .1f);
+
+        // Find point on active Plank
+        // Lambda expression to find named collider
+        var foundTransitionPoint = Array.Find(firstColliders, collider =>
+            collider.name.Equals(plankManager.leftTransitionPointName) &&
+            (collider.gameObject.transform != playerPlankDetection.currentPlank.transform));
+            */
+
+        // Variable used to move through animation curve
+        float lerpTime = 1f;
+
+        // Reset current lerp time
+        float currentLerpTime = 0f;
+
         // Reset object angle
-        objectAngle = 0f;
+        currentRotation = 0f;
 
         // Set isRotating to true to prevent multiple rotations
         this.isRotating = true;
 
-        float currentAngle = transform.eulerAngles.x;
+        // Vector3 to keep Player on Plank throughout rotation
+        Vector3 hug = new Vector3(0, -.1f * direction, 0);
 
-        float targetAngle = currentAngle + 90 * direction;
-
-        // While the Plank has not reached max rotation
-        while (objectAngle < maxRotation)
+        // While the Player has not reached max rotation
+        while (currentRotation < maxRotation)
         {
+            // Increase currentLerpTime per frame
+            // Rotation speed adjusts animation curve frame rate
+            currentLerpTime += Time.deltaTime;
+
+            // Gate maximum lerp time
+            if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
+
+            // Define t as percentage of lerpTime
+            // Used to move through frames of animation curve
+            float t = currentLerpTime / lerpTime;
+
+            // Move Player forward using animation curve
+            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime, Space.Self);
+
             // Increase targetRotation by rotationSpeed
             // Round to integer to prevent non-integer angles from deltaTime 
             targetRotation = Mathf.RoundToInt(rotationSpeed * Time.deltaTime);
 
-            // Increase objectAngle by targetRotation
-            objectAngle += targetRotation;
+            // Increase currentRotation by targetRotation
+            currentRotation += targetRotation;
 
             // Rotates Player forward in given direction
             transform.Rotate(targetRotation * direction, 0, 0);
@@ -144,13 +148,45 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
-        // Sets rotation cooldown to 2 seconds
-        Invoke("ResetRotation", 2f);
+        // If current rotation exceeds max rotation
+        if (currentRotation > maxRotation)
+        {
+            // Set x-axis angle to start rotation + 90 degrees
+            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(
+                                    transform.eulerAngles.x),
+                                    transform.eulerAngles.y,
+                                    transform.eulerAngles.z);
+        }
+
+        float cooldown = 0f;
+        while (cooldown < .1f)
+        {
+            cooldown += Time.deltaTime;
+            transform.Translate((Vector3.forward + hug) * Time.deltaTime * playerController.moveSpeed, Space.Self);
+            yield return null;
+        }
+
+        this.isRotating = false;
+
+        yield return null;
     }
 
-    private void ResetRotation()
+    // Rounds a float to its nearest 90 degree integer
+    private int roundToNearestRightAngle(float angle)
     {
-        // Resets rotation status
-        this.isRotating = false;
+        // Rounds angle to nearest int
+        int roundedAngle = Mathf.FloorToInt(angle);
+
+        // Takes remainder of rounded angle divided by 90
+        int remainder = roundedAngle % 90;
+
+        // If no remainder, return rounded angle
+        if (remainder == 0) return roundedAngle;
+
+        // If remainder is 45 or less, round angle down to nearest right angle
+        if (remainder <= 45) return roundedAngle - remainder;
+
+        // Else round angle up towards nearest right angle
+        else return roundedAngle + (90 - remainder);
     }
 }

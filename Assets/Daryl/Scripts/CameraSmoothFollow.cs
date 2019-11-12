@@ -3,13 +3,11 @@
 public class CameraSmoothFollow : MonoBehaviour
 {
     [SerializeField] bool shouldRotate = true;
-    [SerializeField] Transform target = null;
     [SerializeField] float distance = 10.0f;
     [SerializeField] float height = 5.0f;
     [SerializeField] float heightDamping = 2.0f;
     [SerializeField] float rotationDamping = 3.0f;
-
-    public float offset = 0f;
+    [SerializeField] Transform target = null;
 
     private float wantedRotationAngle;
     private float wantedHeight;
@@ -20,13 +18,12 @@ public class CameraSmoothFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!target)
-            return;
+        if (!target) return;
 
         if (target)
         {
             // Set wanted rotation angle as target's y rotation
-            wantedRotationAngle = target.eulerAngles.y;
+            wantedRotationAngle = target.eulerAngles.y + 45;
 
             // Set wanted height as target's y position plus height modifier
             wantedHeight = target.position.y + height;
@@ -56,14 +53,13 @@ public class CameraSmoothFollow : MonoBehaviour
             this.transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);
 
             // Redefines camera's position based on vertical offset from target
-            var offsetFromTarget = target.position + Vector3.up * offset;
+            //var offsetFromTarget = target.position + target.forward;
 
             // If the camera should rotate
             if (shouldRotate)
 
                 // Look at target with vertical offset
-                transform.LookAt(offsetFromTarget);
+                transform.LookAt(target);
         }
     }
-
 }

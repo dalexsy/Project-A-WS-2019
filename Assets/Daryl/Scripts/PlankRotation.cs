@@ -11,9 +11,8 @@ public class PlankRotation : MonoBehaviour
     public bool canRotateCounterclockwiseR = true;
     public bool canRotateClockwiseL = true;
     public bool canRotateCounterclockwiseL = true;
-    public bool isConnectedFront = false;
-    public bool isConnectedBack = false;
-    public bool isRotating = false;
+    public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
+    public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
@@ -48,7 +47,7 @@ public class PlankRotation : MonoBehaviour
         if (!activePivot) return;
 
         // If Plank is not rotating
-        if (!isRotating)
+        if (!plankRotationManager.isRotating)
         {
             // If Plank can rotate clockwise
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
@@ -111,7 +110,7 @@ public class PlankRotation : MonoBehaviour
         float startRotation = Mathf.RoundToInt(transform.rotation.eulerAngles.x);
 
         // Set isRotating to true to prevent multiple rotations
-        this.isRotating = true;
+        plankRotationManager.isRotating = true;
 
         //if (activePivotFX.pulse) activePivotFX.DespawnPulse();
 
@@ -174,10 +173,11 @@ public class PlankRotation : MonoBehaviour
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
 
+        // If active pulse FX is paused, restart
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
 
         // Sets isRotating to false after Plank has reached max rotation
-        this.isRotating = false;
+        plankRotationManager.isRotating = false;
     }
 
     // Rounds a float to its nearest 90 degree integer

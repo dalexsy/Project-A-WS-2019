@@ -56,7 +56,10 @@ MonoBehaviour:
   bottomColliderName: Plank Collider Bottom
   frontColliderName: Plank Collider Front
   backColliderName: Plank Collider Back
-  usageNotes4: Top, bottom, front, and back colliders must be tagged with their respective
+  usageNotes4: Plank transition points must be named exactly as listed here.
+  leftTransitionPointName: Plank Transition Point L
+  rightTransitionPointName: Plank Transition Point R
+  usageNotes5: Top, bottom, front, and back colliders must be tagged with their respective
     sides.
   leftColliderTag: Collider L
   rightColliderTag: Collider R
@@ -98,6 +101,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxRotation: 90
   rotationSpeed: 0.25
+  isRotating: 0
   rotateParticlePrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
     type: 3}
   activePivotParticlePrefab: {fileID: 5851382750196069416, guid: 6fc0da88c031a65498f41e5bd4efe7d3,
