@@ -4,7 +4,7 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = .5f;
+    public float moveSpeed = 1f;
     private float verticalInput;
     private float horizontalInput;
     private String lastInputAxis = "Vertical";
@@ -37,22 +37,32 @@ public class PlayerController : MonoBehaviour
     {
         if (verticalInput != 0)
         {
-            if (this.lastInputAxis.Equals("Vertical") && Math.Sign(this.lastInput) != Math.Sign(verticalInput))
-            {
-                StartCoroutine(Rotate(180f));
-            }
-            this.lastInputAxis = "Vertical";
-            this.lastInput = verticalInput;
+            // Same axis, different sign
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(verticalInput)) StartCoroutine(Rotate(180f));
+
+            // Different axis, same sign
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) == Math.Sign(verticalInput)) StartCoroutine(Rotate(-90f));
+
+            // Different axis, different sign
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(verticalInput)) StartCoroutine(Rotate(90f));
+
+            lastInputAxis = "Vertical";
+            lastInput = verticalInput;
         }
 
         if (horizontalInput != 0)
         {
-            if (this.lastInputAxis.Equals("Horizontal") && Math.Sign(this.lastInput) != Math.Sign(horizontalInput))
-            {
-                StartCoroutine(Rotate(90f));
-            }
-            this.lastInputAxis = "Horizontal";
-            this.lastInput = horizontalInput;
+            // Same axis, different sign
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) StartCoroutine(Rotate(180f));
+
+            // Different axis, same sign
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) == Math.Sign(horizontalInput)) StartCoroutine(Rotate(90f));
+
+            // Different axis, different sign
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) StartCoroutine(Rotate(-90f));
+
+            lastInputAxis = "Horizontal";
+            lastInput = horizontalInput;
         }
 
         if (verticalInput != 0 || horizontalInput != 0) movement = 1;
