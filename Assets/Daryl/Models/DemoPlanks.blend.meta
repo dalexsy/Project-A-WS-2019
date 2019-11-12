@@ -1,11 +1,31 @@
 fileFormatVersion: 2
-guid: 2d6810a1cef66bd47807a4e208e0a39c
+guid: 12d30de5d1665724dbd2768fdf7eaaa9
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 2x1
+    second: {fileID: 2100000, guid: 698f2cdb53dc7ae4ab5bd823eb9f3556, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 3x1
+    second: {fileID: 2100000, guid: 89fb4dc54c7bbc5458789564d3c443dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 3x2_down
+    second: {fileID: 2100000, guid: 1343ce74724f0be448d3d6d4cc749046, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 3x2_up
+    second: {fileID: 2100000, guid: bb36864916c0237439cc3aa70db53d14, type: 2}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -68,7 +88,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 3

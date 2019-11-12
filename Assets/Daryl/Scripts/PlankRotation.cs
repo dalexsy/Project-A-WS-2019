@@ -161,7 +161,7 @@ public class PlankRotation : MonoBehaviour
             // Returns to top of while loop
             yield return null;
         }
-
+        
         // If current rotation exceeds max rotation
         if (currentRotation > plankRotationManager.maxRotation)
         {
@@ -171,6 +171,7 @@ public class PlankRotation : MonoBehaviour
                                     transform.eulerAngles.y,
                                     transform.eulerAngles.z);
         }
+
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
