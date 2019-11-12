@@ -11,11 +11,15 @@ public class PlankConnection : MonoBehaviour
     private Transform passivePivot = null;
 
     private CollisionDetection collisionDetection;
-    [SerializeField] private PlankManager plankManager = null;
+    private PlankManager plankManager;
 
     private void Start()
     {
         collisionDetection = GetComponent<CollisionDetection>();
+        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+
+        lPivot = transform.Find(plankManager.leftPivotName);
+        rPivot = transform.Find(plankManager.rightPivotName);
     }
 
     // Method to connect planks using active Plank's active pivot
