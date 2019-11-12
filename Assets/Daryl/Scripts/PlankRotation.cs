@@ -89,6 +89,8 @@ public class PlankRotation : MonoBehaviour
     // Requires direction and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
+
+        Debug.Log(gameObject.name + " is rotating");
         // Save local variable rotationPivot from active pivot
         // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned 
         Transform rotationPivot = pivot;

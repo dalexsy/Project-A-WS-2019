@@ -37,7 +37,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
     {
         // If current Plank has been assigned add force downwards towards current Plank
         if (playerPlankDetection.currentPlank)
-            rigid.AddForce(-gravity * rigid.mass * playerPlankDetection.currentPlank.forward);
+            rigid.AddForce(-gravity * rigid.mass * playerPlankDetection.currentPlank.up);
     }
 
     private void OnTriggerEnter(Collider collider)

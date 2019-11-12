@@ -5,10 +5,12 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 1f;
+
+    [SerializeField] private string lastInputAxis = "Vertical";
+    [SerializeField] private float lastInput = 1f;
+
     private float verticalInput;
     private float horizontalInput;
-    private String lastInputAxis = "Vertical";
-    private float lastInput = 1f;
     private float movement;
 
     PlankRotationManager plankRotationManager;
