@@ -147,6 +147,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
+        /*
         // If current rotation exceeds max rotation
         if (currentRotation > maxRotation)
         {
@@ -156,7 +157,9 @@ public class PlayerTransitionPlanks : MonoBehaviour
                                     transform.eulerAngles.y,
                                     transform.eulerAngles.z);
         }
+ */
 
+        // Moves Player forward during cooldown period
         float cooldown = 0f;
         while (cooldown < .1f)
         {
