@@ -23,14 +23,11 @@ public class PlayerTransitionPlanks : MonoBehaviour
     private float gravity = 10;
     private int gravityDirection = -1;
 
-    private Vector3 playerNormal;
-
     private void Start()
     {
         collisionDetection = GetComponent<CollisionDetection>();
         playerController = GetComponent<PlayerController>();
         plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
-        playerNormal = transform.up;
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
         rigid = GetComponent<Rigidbody>();
         rigid.freezeRotation = true;
@@ -58,7 +55,6 @@ public class PlayerTransitionPlanks : MonoBehaviour
             // If right pivot is active
             if (plankRotation.activePivot.name.Equals("Pivot R"))
             {
-
                 // If current Plank can rotate both clockwise and counterclockwise
                 // Current Plank and next Plank are parallel to one another 
                 // Player does not need to rotate

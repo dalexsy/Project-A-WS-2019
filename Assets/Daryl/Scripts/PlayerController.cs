@@ -75,6 +75,12 @@ public class PlayerController : MonoBehaviour
         transform.Translate(0, 0, movement);
     }
 
+    IEnumerator Rotate(float angle)
+    {
+        transform.RotateAround(transform.position, transform.up, angle);
+        yield return null;
+    }
+
     private void SwitchMove()
     {
         Transform plank = playerPlankDetection.currentPlank.transform;
@@ -105,12 +111,6 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-    }
-
-    IEnumerator Rotate(float angle)
-    {
-        transform.RotateAround(transform.position, transform.up, angle);
-        yield return null;
     }
 
     private void Translate()
