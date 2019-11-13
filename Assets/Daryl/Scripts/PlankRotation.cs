@@ -53,7 +53,7 @@ public class PlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                if (Input.GetKeyDown("e") ||
+                if (Input.GetKeyDown("q") ||
                     Input.GetKey(KeyCode.Joystick1Button6))
                 {
                     // Rotate Plank clockwise
@@ -70,7 +70,7 @@ public class PlankRotation : MonoBehaviour
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                if (Input.GetKeyDown("q") ||
+                if (Input.GetKeyDown("e") ||
                     Input.GetKey(KeyCode.Joystick1Button7))
                 {
                     // Rotate Plank counterclockwise
@@ -160,6 +160,7 @@ public class PlankRotation : MonoBehaviour
             yield return null;
         }
 
+        /*
         // If current rotation exceeds max rotation
         if (currentRotation > plankRotationManager.maxRotation)
         {
@@ -169,6 +170,7 @@ public class PlankRotation : MonoBehaviour
                                     transform.eulerAngles.y,
                                     transform.eulerAngles.z);
         }
+*/
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
