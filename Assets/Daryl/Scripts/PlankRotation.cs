@@ -34,11 +34,8 @@ public class PlankRotation : MonoBehaviour
 
     private void Update()
     {
-        // If Plank is not colliding with Player
-        if (collisionDetection.isCollidingWithTarget == false)
-
-            // Accept rotation input
-            RotationInput();
+        // If Plank is not colliding with Player, accept rotation input
+        if (collisionDetection.isCollidingWithTarget == false) RotationInput();
     }
 
     private void RotationInput()
@@ -160,7 +157,6 @@ public class PlankRotation : MonoBehaviour
             yield return null;
         }
 
-        /*
         // If current rotation exceeds max rotation
         if (currentRotation > plankRotationManager.maxRotation)
         {
@@ -170,7 +166,6 @@ public class PlankRotation : MonoBehaviour
                                     transform.eulerAngles.y,
                                     transform.eulerAngles.z);
         }
-*/
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(this.transform);
