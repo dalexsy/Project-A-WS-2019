@@ -70,6 +70,10 @@ public class PlayerController : MonoBehaviour
         if (verticalInput != 0 || horizontalInput != 0) movement = 1;
         else if (verticalInput == 0 && horizontalInput == 0) movement = 0;
 
+        
+        //Vector3 test;
+        //float diff = Vector3.Angle(-test, transform.forward); // <0.01
+
         movement *= Time.deltaTime * moveSpeed;
 
         transform.Translate(0, 0, movement);

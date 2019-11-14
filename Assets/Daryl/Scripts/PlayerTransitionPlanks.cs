@@ -147,17 +147,13 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
-        /*
+        float maxAngleCorrection = 0f;
+
         // If current rotation exceeds max rotation
         if (currentRotation > maxRotation)
         {
-            // Set x-axis angle to start rotation + 90 degrees
-            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(
-                                    transform.eulerAngles.x),
-                                    transform.eulerAngles.y,
-                                    transform.eulerAngles.z);
+            maxAngleCorrection = currentRotation - maxRotation;
         }
- */
 
         // Moves Player forward during cooldown period
         float cooldown = 0f;

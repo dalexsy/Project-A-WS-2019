@@ -150,21 +150,16 @@ public class PlankRotation : MonoBehaviour
             // Increase current rotation by value from animation curve
             currentRotation += plankRotationManager.animationCurve.Evaluate(t);
 
+            float maxAngleCorrection = 0f;
+
+            if (currentRotation > plankRotationManager.maxRotation)
+                maxAngleCorrection = currentRotation - plankRotationManager.maxRotation;
+
             // Rotate plank around given pivot in given direction
-            transform.RotateAround(rotationPivot.position, rotationAxis * direction, plankRotationManager.animationCurve.Evaluate(t));
+            transform.RotateAround(rotationPivot.position, rotationAxis * direction, plankRotationManager.animationCurve.Evaluate(t) - maxAngleCorrection);
 
             // Returns to top of while loop
             yield return null;
-        }
-
-        // If current rotation exceeds max rotation
-        if (currentRotation > plankRotationManager.maxRotation)
-        {
-            // Set x-axis angle to start rotation + 90 degrees
-            transform.eulerAngles = new Vector3((float)roundToNearestRightAngle(
-                                    transform.eulerAngles.x),
-                                    transform.eulerAngles.y,
-                                    transform.eulerAngles.z);
         }
 
         // Disconnect all connected planks
@@ -177,22 +172,4 @@ public class PlankRotation : MonoBehaviour
         plankRotationManager.isRotating = false;
     }
 
-    // Rounds a float to its nearest 90 degree integer
-    private int roundToNearestRightAngle(float angle)
-    {
-        // Rounds angle to nearest int
-        int roundedAngle = Mathf.FloorToInt(angle);
-
-        // Takes remainder of rounded angle divided by 90
-        int remainder = roundedAngle % 90;
-
-        // If no remainder, return rounded angle
-        if (remainder == 0) return roundedAngle;
-
-        // If remainder is 45 or less, round angle down to nearest right angle
-        if (remainder <= 45) return roundedAngle - remainder;
-
-        // Else round angle up towards nearest right angle
-        else return roundedAngle + (90 - remainder);
-    }
 }
