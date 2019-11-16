@@ -147,14 +147,6 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
-        float maxAngleCorrection = 0f;
-
-        // If current rotation exceeds max rotation
-        if (currentRotation > maxRotation)
-        {
-            maxAngleCorrection = currentRotation - maxRotation;
-        }
-
         // Moves Player forward during cooldown period
         float cooldown = 0f;
         while (cooldown < .1f)

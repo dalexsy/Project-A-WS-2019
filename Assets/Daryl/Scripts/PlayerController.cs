@@ -40,13 +40,13 @@ public class PlayerController : MonoBehaviour
         if (verticalInput != 0)
         {
             // Same axis, different sign
-            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(verticalInput)) StartCoroutine(Rotate(180f));
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(verticalInput)) transform.RotateAround(transform.position, transform.up, 180f);
 
             // Different axis, same sign
-            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) == Math.Sign(verticalInput)) StartCoroutine(Rotate(-90f));
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) == Math.Sign(verticalInput)) transform.RotateAround(transform.position, transform.up, -90f);
 
             // Different axis, different sign
-            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(verticalInput)) StartCoroutine(Rotate(90f));
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(verticalInput)) transform.RotateAround(transform.position, transform.up, 90f);
 
             lastInputAxis = "Vertical";
             lastInput = verticalInput;
@@ -55,13 +55,13 @@ public class PlayerController : MonoBehaviour
         if (horizontalInput != 0)
         {
             // Same axis, different sign
-            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) StartCoroutine(Rotate(180f));
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) transform.RotateAround(transform.position, transform.up, 180f);
 
             // Different axis, same sign
-            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) == Math.Sign(horizontalInput)) StartCoroutine(Rotate(90f));
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) == Math.Sign(horizontalInput)) transform.RotateAround(transform.position, transform.up, 90f);
 
             // Different axis, different sign
-            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) StartCoroutine(Rotate(-90f));
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) transform.RotateAround(transform.position, transform.up, -90f);
 
             lastInputAxis = "Horizontal";
             lastInput = horizontalInput;
@@ -70,19 +70,13 @@ public class PlayerController : MonoBehaviour
         if (verticalInput != 0 || horizontalInput != 0) movement = 1;
         else if (verticalInput == 0 && horizontalInput == 0) movement = 0;
 
-        
+
         //Vector3 test;
         //float diff = Vector3.Angle(-test, transform.forward); // <0.01
 
         movement *= Time.deltaTime * moveSpeed;
 
         transform.Translate(0, 0, movement);
-    }
-
-    IEnumerator Rotate(float angle)
-    {
-        transform.RotateAround(transform.position, transform.up, angle);
-        yield return null;
     }
 
     private void SwitchMove()

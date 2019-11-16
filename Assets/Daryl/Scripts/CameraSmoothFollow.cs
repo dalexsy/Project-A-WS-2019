@@ -9,6 +9,7 @@ public class CameraSmoothFollow : MonoBehaviour
     [SerializeField] float rotationDamping = 3.0f;
     [SerializeField] Transform target = null;
 
+    private float angleOffset;
     private float wantedRotationAngle;
     private float wantedHeight;
     private float currentRotationAngle;
@@ -22,8 +23,11 @@ public class CameraSmoothFollow : MonoBehaviour
 
         if (target)
         {
+            if (Input.GetKeyDown(KeyCode.Z)) angleOffset += 90f;
+            if (Input.GetKeyDown(KeyCode.X)) angleOffset -= 90f;
+
             // Set wanted rotation angle as target's y rotation
-            wantedRotationAngle = target.eulerAngles.y + 45;
+            wantedRotationAngle = angleOffset;
 
             // Set wanted height as target's y position plus height modifier
             wantedHeight = target.position.y + height;

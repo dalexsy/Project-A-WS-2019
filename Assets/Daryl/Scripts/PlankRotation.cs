@@ -152,6 +152,8 @@ public class PlankRotation : MonoBehaviour
 
             float maxAngleCorrection = 0f;
 
+            // If current rotation exceeds max rotation, set max angle correction to difference
+            // Will only be used for last frame of animation
             if (currentRotation > plankRotationManager.maxRotation)
                 maxAngleCorrection = currentRotation - plankRotationManager.maxRotation;
 
