@@ -6,8 +6,11 @@ public class PlayerRotationLimitation : MonoBehaviour
 {
     private PlayerPlankDetection playerPlankDetection;
     private PlankManager plankManager;
-    public Transform currentLeftPivot;
-    public Transform currentRightPivot;
+
+    private Transform currentPivot;
+    private Transform plankTransitionPoint;
+    public Vector3 pivotDirection;
+    public Vector3 playerDifference;
 
     private void Start()
     {
@@ -19,12 +22,20 @@ public class PlayerRotationLimitation : MonoBehaviour
     {
         if (playerPlankDetection.currentPlank)
         {
-            currentLeftPivot = playerPlankDetection.currentPlank.transform.Find(plankManager.leftPivotName);
-            currentRightPivot = playerPlankDetection.currentPlank.transform.Find(plankManager.rightPivotName);
+            if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot)
+                currentPivot = playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot;
 
-            var pivotDifference = currentLeftPivot.position - currentRightPivot.position;
+            plankTransitionPoint = playerPlankDetection.currentPlank.Find("Plank Transition Point");
+
+            var pivotDifference = plankTransitionPoint.position - currentPivot.position;
             var pivotDistance = pivotDifference.magnitude;
-            var pivotDirection = pivotDifference / pivotDistance;
+            pivotDirection = pivotDifference / pivotDistance;
+            Debug.DrawRay(this.transform.position, pivotDirection, Color.green);
+            //Debug.DrawLine(this.transform.position, plankTransitionPoint.position, Color.green);
+
+            playerDifference = this.transform.position - plankTransitionPoint.position;
+
+
 
             // Need current plank's connected planks
             // If pivots are in the same location (current R, next L), no rotation limitation needed

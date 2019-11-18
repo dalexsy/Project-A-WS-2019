@@ -14,17 +14,20 @@ public class CameraRigRotation : MonoBehaviour
     private void Start()
     {
         planks = GameObject.FindGameObjectsWithTag("Plank");
-
     }
 
     private void Update()
     {
+        // Probably shouldn't be running the entire time
+        // Could be triggered on plank rotation
+        // Currently too slow
         foreach (var plank in planks)
         {
             plankPositions.Add(plank.transform.position);
         }
         var averagePosition = GetMeanVector(plankPositions);
         this.transform.position = averagePosition;
+
         if (isRotating) return;
         if (Input.GetKeyDown(KeyCode.Z)) StartCoroutine(RotateRig(1));
         if (Input.GetKeyDown(KeyCode.X)) StartCoroutine(RotateRig(-1));
@@ -67,10 +70,7 @@ public class CameraRigRotation : MonoBehaviour
 
     private Vector3 GetMeanVector(List<Vector3> positions)
     {
-        if (positions.Count == 0)
-        {
-            return Vector3.zero;
-        }
+        if (positions.Count == 0) return Vector3.zero;
 
         Vector3 meanVector = Vector3.zero;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerTransitionPlanks : MonoBehaviour
 {
-    [SerializeField] string transitionPointName = "TransitionPoint";
+    [SerializeField] string transitionPointName = "Player Transition Point";
     [SerializeField] AnimationCurve animationCurve;
 
     public bool isRotating = false;
@@ -140,8 +140,15 @@ public class PlayerTransitionPlanks : MonoBehaviour
             // Increase currentRotation by targetRotation
             currentRotation += targetRotation;
 
+            float maxAngleCorrection = 0f;
+
+            // If current rotation exceeds max rotation, set max angle correction to difference
+            // Will only be used for last frame of animation
+            if (currentRotation > maxRotation)
+                maxAngleCorrection = currentRotation - maxRotation;
+
             // Rotates Player forward in given direction
-            transform.Rotate(targetRotation * direction, 0, 0);
+            transform.Rotate((targetRotation - maxAngleCorrection) * direction, 0, 0);
 
             // Returns to top of while loop
             yield return null;

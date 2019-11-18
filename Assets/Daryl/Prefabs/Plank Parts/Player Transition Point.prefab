@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3541918567988090372}
   - component: {fileID: 346679135}
   m_Layer: 0
-  m_Name: TransitionPoint
+  m_Name: Player Transition Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
