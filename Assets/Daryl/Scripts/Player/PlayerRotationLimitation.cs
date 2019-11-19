@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerRotationLimitation : MonoBehaviour
@@ -7,8 +8,12 @@ public class PlayerRotationLimitation : MonoBehaviour
     private PlayerPlankDetection playerPlankDetection;
     private PlankManager plankManager;
 
+    [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private List<Vector3> waypointPositions = new List<Vector3>();
+
+
     private Transform currentPivot;
-    private Transform plankTransitionPoint;
+    private Transform waypoint;
     public Vector3 pivotDirection;
     public Vector3 playerDifference;
 
@@ -16,26 +21,30 @@ public class PlayerRotationLimitation : MonoBehaviour
     {
         plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
+        waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
+        Array.Sort(waypoints, (x, y) => String.Compare(x.transform.name, y.transform.name));
+
+        foreach (var waypoint in waypoints)
+            waypointPositions.Add(waypoint.transform.position);
     }
 
     private void Update()
     {
+        return;
         if (playerPlankDetection.currentPlank)
         {
             if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot)
                 currentPivot = playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot;
 
-            plankTransitionPoint = playerPlankDetection.currentPlank.Find("Plank Transition Point");
+            waypoint = playerPlankDetection.currentPlank.Find("Waypoint");
 
-            var pivotDifference = plankTransitionPoint.position - currentPivot.position;
+            var pivotDifference = waypoint.position - currentPivot.position;
             var pivotDistance = pivotDifference.magnitude;
             pivotDirection = pivotDifference / pivotDistance;
             Debug.DrawRay(this.transform.position, pivotDirection, Color.green);
             //Debug.DrawLine(this.transform.position, plankTransitionPoint.position, Color.green);
 
-            playerDifference = this.transform.position - plankTransitionPoint.position;
-
-
+            playerDifference = this.transform.position - waypoint.position;
 
             // Need current plank's connected planks
             // If pivots are in the same location (current R, next L), no rotation limitation needed

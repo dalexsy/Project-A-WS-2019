@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 157825430689932584}
   - component: {fileID: 3509540806132974840}
   m_Layer: 0
-  m_Name: Plank Transition Point
-  m_TagString: Plank Transition Point
+  m_Name: Waypoint
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

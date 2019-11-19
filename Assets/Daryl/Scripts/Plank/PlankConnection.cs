@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class PlankConnection : MonoBehaviour
 {
-    [SerializeField] Transform lPivot = null;
-    [SerializeField] Transform rPivot = null;
-
-    private Transform passivePivot = null;
+    public Transform passivePivot = null;
 
     private CollisionDetection collisionDetection;
     private PlankManager plankManager;
+    private Transform lPivot = null;
+    private Transform rPivot = null;
 
     private void Start()
     {

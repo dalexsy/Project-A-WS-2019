@@ -7,29 +7,40 @@ public class CameraRigRotation : MonoBehaviour
 {
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
     [SerializeField] private AnimationCurve animationCurve;
-    [SerializeField] GameObject[] planks;
-    List<Vector3> plankPositions = new List<Vector3>();
+    [SerializeField] private GameObject[] planks;
     private bool isRotating = false;
 
     private void Start()
     {
+        // Find all Planks in scene
         planks = GameObject.FindGameObjectsWithTag("Plank");
+
+        // Sort Planks alphabetically
+        Array.Sort(planks, (x, y) => String.Compare(x.transform.name, y.transform.name));
     }
 
     private void Update()
     {
-        // Probably shouldn't be running the entire time
-        // Could be triggered on plank rotation
-        // Currently too slow
+        // Create new list of Plank positions
+        List<Vector3> plankPositions = new List<Vector3>();
+
+        // Add each Plank's position to plankPositions
         foreach (var plank in planks)
-        {
             plankPositions.Add(plank.transform.position);
-        }
+
+        // Return average position of all Planks
         var averagePosition = GetMeanVector(plankPositions);
+
+        // Set rig's position to average Plank position
         this.transform.position = averagePosition;
 
+        // If rotating, accept no input
         if (isRotating) return;
+
+        // Rotate rig counterclockwise on Z
         if (Input.GetKeyDown(KeyCode.Z)) StartCoroutine(RotateRig(1));
+
+        // Rotate right clockwise on X
         if (Input.GetKeyDown(KeyCode.X)) StartCoroutine(RotateRig(-1));
     }
 
@@ -60,7 +71,7 @@ public class CameraRigRotation : MonoBehaviour
             // Rotate towards end rotation using animation curve
             transform.rotation = Quaternion.Slerp(startRotation, endRotation, animationCurve.Evaluate(t));
 
-            // Returns to top of while loop
+            // Return to top of while loop
             yield return null;
         }
 
@@ -68,17 +79,20 @@ public class CameraRigRotation : MonoBehaviour
         yield return null;
     }
 
+    // Returns mean position of list of vectors
     private Vector3 GetMeanVector(List<Vector3> positions)
     {
+        // If list is empty, return (0,0,0)
         if (positions.Count == 0) return Vector3.zero;
 
+        // Reset meanVector
         Vector3 meanVector = Vector3.zero;
 
+        // Add each position to meanVector
         foreach (Vector3 pos in positions)
-        {
             meanVector += pos;
-        }
 
+        // Return meanVector divided by number of positions
         return (meanVector / positions.Count);
     }
 }

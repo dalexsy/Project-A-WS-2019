@@ -167,23 +167,4 @@ public class PlayerTransitionPlanks : MonoBehaviour
 
         yield return null;
     }
-
-    // Rounds a float to its nearest 90 degree integer
-    private int roundToNearestRightAngle(float angle)
-    {
-        // Rounds angle to nearest int
-        int roundedAngle = Mathf.FloorToInt(angle);
-
-        // Takes remainder of rounded angle divided by 90
-        int remainder = roundedAngle % 90;
-
-        // If no remainder, return rounded angle
-        if (remainder == 0) return roundedAngle;
-
-        // If remainder is 45 or less, round angle down to nearest right angle
-        if (remainder <= 45) return roundedAngle - remainder;
-
-        // Else round angle up towards nearest right angle
-        else return roundedAngle + (90 - remainder);
-    }
 }
