@@ -6,23 +6,24 @@ using UnityEngine;
 public class PlayerRotationLimitation : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
-
-    public GameObject currentWaypoint;
-
     private bool isMoving = false;
     private float moveSpeed = 1f;
+    private GameObject currentWaypoint;
     private GameObject nextWaypoint;
-    private Transform playerPivot;
+    public GameObject firstWaypoint;
+    public GameObject lastWaypoint;
 
     private void Start()
     {
-        playerPivot = transform.Find("Player Pivot");
-
         // Find all waypoints in scene
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
 
         // Sort waypoints alphabetically
         Array.Sort(waypoints, (x, y) => String.Compare(x.transform.name, y.transform.name));
+
+        // Set first and last waypoint
+        firstWaypoint = waypoints[0];
+        lastWaypoint = waypoints[waypoints.Length - 1];
     }
 
     private void Update()
@@ -34,14 +35,21 @@ public class PlayerRotationLimitation : MonoBehaviour
 
     IEnumerator TransitionWaypoints(int direction)
     {
-        isMoving = true;
-        // Needs to check for first and last element
+        // If Player tries to move past first or last waypoint, exit coroutine
+        if ((currentWaypoint == firstWaypoint && direction == -1) ||
+            (currentWaypoint == lastWaypoint && direction == 1)) yield break;
 
         // Find index of current waypoint
         var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
 
         // Set next waypoint as previous or next element in array based on given direction
         nextWaypoint = waypoints[currentIndex + direction];
+
+        // If first and last waypoint are used to transition between, exit coroutine
+        if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
+            (currentWaypoint == lastWaypoint && nextWaypoint == firstWaypoint)) yield break;
+
+        isMoving = true;
 
         // Set target position as next waypoint's position with player's Y position
         // Will probably stop working
@@ -79,6 +87,7 @@ public class PlayerRotationLimitation : MonoBehaviour
 
     private void OnTriggerStay(Collider collider)
     {
+        // Set current waypoint as last waypoint Player has collided with
         if (collider.gameObject.tag == "Waypoint")
             currentWaypoint = collider.gameObject;
     }
