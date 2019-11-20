@@ -5,56 +5,81 @@ using UnityEngine;
 
 public class PlayerRotationLimitation : MonoBehaviour
 {
-    private PlayerPlankDetection playerPlankDetection;
-    private PlankManager plankManager;
-
     [SerializeField] private GameObject[] waypoints;
-    [SerializeField] private List<Vector3> waypointPositions = new List<Vector3>();
 
+    public GameObject currentWaypoint;
 
-    private Transform currentPivot;
-    private Transform waypoint;
-    public Vector3 pivotDirection;
-    public Vector3 playerDifference;
+    private bool isMoving = false;
+    private float moveSpeed = 1f;
+    private GameObject nextWaypoint;
+    private Transform playerPivot;
 
     private void Start()
     {
-        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
-        playerPlankDetection = GetComponent<PlayerPlankDetection>();
-        waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
-        Array.Sort(waypoints, (x, y) => String.Compare(x.transform.name, y.transform.name));
+        playerPivot = transform.Find("Player Pivot");
 
-        foreach (var waypoint in waypoints)
-            waypointPositions.Add(waypoint.transform.position);
+        // Find all waypoints in scene
+        waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
+
+        // Sort waypoints alphabetically
+        Array.Sort(waypoints, (x, y) => String.Compare(x.transform.name, y.transform.name));
     }
 
     private void Update()
     {
-        return;
-        if (playerPlankDetection.currentPlank)
+        if (isMoving) return;
+        if (Input.GetKeyDown(KeyCode.W)) StartCoroutine(TransitionWaypoints(1));
+        if (Input.GetKeyDown(KeyCode.S)) StartCoroutine(TransitionWaypoints(-1));
+    }
+
+    IEnumerator TransitionWaypoints(int direction)
+    {
+        isMoving = true;
+        // Needs to check for first and last element
+
+        // Find index of current waypoint
+        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+        // Set next waypoint as previous or next element in array based on given direction
+        nextWaypoint = waypoints[currentIndex + direction];
+
+        // Set target position as next waypoint's position with player's Y position
+        // Will probably stop working
+        Vector3 targetPosition = new Vector3(nextWaypoint.transform.position.x,
+                                               this.transform.position.y,
+                                               nextWaypoint.transform.position.z);
+
+
+        // Rotate Player towards target position
+        // Should be a coroutine
+        this.transform.LookAt(targetPosition);
+
+        // Set current position as Player's position
+        var currentPosition = transform.position;
+
+        // While Player has not reached target postion
+        while (Vector3.Distance(currentPosition, targetPosition) >= .1f)
         {
-            if (playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot)
-                currentPivot = playerPlankDetection.currentPlank.GetComponent<PlankRotation>().activePivot;
+            // Update current position
+            currentPosition = this.transform.position;
 
-            waypoint = playerPlankDetection.currentPlank.Find("Waypoint");
+            // Set rate as move speed over time
+            float rate = moveSpeed * Time.deltaTime;
 
-            var pivotDifference = waypoint.position - currentPivot.position;
-            var pivotDistance = pivotDifference.magnitude;
-            pivotDirection = pivotDifference / pivotDistance;
-            Debug.DrawRay(this.transform.position, pivotDirection, Color.green);
-            //Debug.DrawLine(this.transform.position, plankTransitionPoint.position, Color.green);
+            // Move Player towards target position
+            transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, rate);
 
-            playerDifference = this.transform.position - waypoint.position;
-
-            // Need current plank's connected planks
-            // If pivots are in the same location (current R, next L), no rotation limitation needed
-            // If pivots are in different locations, planks are not aligned and rotation limited is needed
-            // Script could go on transition points
-
-            if (playerPlankDetection.currentPlank != playerPlankDetection.nextPlank)
-            {
-                return;
-            }
+            // Return to top of while loop
+            yield return null;
         }
+
+        isMoving = false;
+        yield return null;
+    }
+
+    private void OnTriggerStay(Collider collider)
+    {
+        if (collider.gameObject.tag == "Waypoint")
+            currentWaypoint = collider.gameObject;
     }
 }

@@ -139,10 +139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
-  waypointPositions: []
-  pivotDirection: {x: 0, y: 0, z: 0}
-  playerDifference: {x: 0, y: 0, z: 0}
---- !u!114 &665108267
+  currentWaypoint: {fileID: 0}
+--- !u!114 &1072736147
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -403,6 +401,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lastInputAxis
       value: Vertical
+      objectReference: {fileID: 0}
+    - target: {fileID: 483976728532999481, guid: 98366cd5a85dd504182ae78c6aaa1db0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3349201915183428050, guid: 98366cd5a85dd504182ae78c6aaa1db0,
         type: 3}
@@ -729,7 +732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: d4d55bc4cee6468428b1db023dce07ff, type: 2}
   m_StaticLightingSkyUniqueID: 2
-  m_SkySettings: {fileID: 665108267}
+  m_SkySettings: {fileID: 1072736147}
   m_SkySettingsFromProfile: {fileID: 7206488871959496600, guid: d4d55bc4cee6468428b1db023dce07ff,
     type: 2}
 --- !u!114 &2025832992
@@ -913,12 +916,12 @@ PrefabInstance:
     - target: {fileID: 473023075882646364, guid: 47d7c6d9866c435489500bf3cc9fbf23,
         type: 3}
       propertyPath: m_Name
-      value: Waypoint_6
+      value: Waypoint_06
       objectReference: {fileID: 0}
     - target: {fileID: 8703934201359895450, guid: 47d7c6d9866c435489500bf3cc9fbf23,
         type: 3}
       propertyPath: m_Name
-      value: Waypoint_7
+      value: Waypoint_07
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47d7c6d9866c435489500bf3cc9fbf23, type: 3}
@@ -1348,7 +1351,7 @@ PrefabInstance:
     - target: {fileID: 6935698727229686922, guid: e9312be17114b2246b5f713f425cfdab,
         type: 3}
       propertyPath: m_Name
-      value: Waypoint_9
+      value: Waypoint_09
       objectReference: {fileID: 0}
     - target: {fileID: 3428552805936756138, guid: e9312be17114b2246b5f713f425cfdab,
         type: 3}
@@ -1478,7 +1481,7 @@ PrefabInstance:
     - target: {fileID: 2799181108809590652, guid: e9312be17114b2246b5f713f425cfdab,
         type: 3}
       propertyPath: m_Name
-      value: Waypoint_8
+      value: Waypoint_08
       objectReference: {fileID: 0}
     - target: {fileID: 7819048601899915609, guid: e9312be17114b2246b5f713f425cfdab,
         type: 3}
@@ -1672,12 +1675,12 @@ PrefabInstance:
     - target: {fileID: 3388976901946042714, guid: 66d72e9064bf52b458a2347b38aab315,
         type: 3}
       propertyPath: m_Name
-      value: Waypoint_4
+      value: Waypoint_04
       objectReference: {fileID: 0}
     - target: {fileID: 5407607218646377120, guid: 66d72e9064bf52b458a2347b38aab315,
         type: 3}
       propertyPath: m_Name
-      value: Waypoint_5
+      value: Waypoint_05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66d72e9064bf52b458a2347b38aab315, type: 3}

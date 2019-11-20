@@ -20,7 +20,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
     private float rotationSpeed = 90f;
     private float currentRotation = 0f;
     private float targetRotation = 0f;
-    private float gravity = 10;
+    private float gravity = 0;
     private int gravityDirection = -1;
 
     private void Start()
