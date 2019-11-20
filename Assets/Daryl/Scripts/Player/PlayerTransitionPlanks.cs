@@ -20,7 +20,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
     private float rotationSpeed = 90f;
     private float currentRotation = 0f;
     private float targetRotation = 0f;
-    private float gravity = 0;
+    private float gravity = 0f;
     private int gravityDirection = -1;
 
     private void Start()
@@ -90,17 +90,6 @@ public class PlayerTransitionPlanks : MonoBehaviour
     // Needs a direction
     IEnumerator RotatePlayer(int direction)
     {
-        /*
-        // Look for colliders in range of Player's position
-        Collider[] firstColliders = Physics.OverlapSphere(transform.position, .1f);
-
-        // Find point on active Plank
-        // Lambda expression to find named collider
-        var foundTransitionPoint = Array.Find(firstColliders, collider =>
-            collider.name.Equals(plankManager.leftTransitionPointName) &&
-            (collider.gameObject.transform != playerPlankDetection.currentPlank.transform));
-            */
-
         // Variable used to move through animation curve
         float lerpTime = 1f;
 
@@ -131,7 +120,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
             float t = currentLerpTime / lerpTime;
 
             // Move Player forward using animation curve
-            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime, Space.Self);
+            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime * .1f, Space.Self);
 
             // Increase targetRotation by rotationSpeed
             // Round to integer to prevent non-integer angles from deltaTime 
@@ -159,7 +148,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
         while (cooldown < .1f)
         {
             cooldown += Time.deltaTime;
-            transform.Translate((Vector3.forward + hug) * Time.deltaTime * playerController.moveSpeed, Space.Self);
+            //transform.Translate((Vector3.forward + hug) * Time.deltaTime * playerController.moveSpeed, Space.Self);
             yield return null;
         }
 

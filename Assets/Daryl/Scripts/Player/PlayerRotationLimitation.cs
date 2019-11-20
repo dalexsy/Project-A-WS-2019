@@ -6,15 +6,18 @@ using UnityEngine;
 public class PlayerRotationLimitation : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
-    private bool isMoving = false;
+    public bool isMoving = false;
     private float moveSpeed = 1f;
     private GameObject currentWaypoint;
     private GameObject nextWaypoint;
-    public GameObject firstWaypoint;
-    public GameObject lastWaypoint;
+    private GameObject firstWaypoint;
+    private GameObject lastWaypoint;
+    private PlayerTransitionPlanks playerTransitionPlanks;
 
     private void Start()
     {
+        playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
+
         // Find all waypoints in scene
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
 
@@ -53,10 +56,7 @@ public class PlayerRotationLimitation : MonoBehaviour
 
         // Set target position as next waypoint's position with player's Y position
         // Will probably stop working
-        Vector3 targetPosition = new Vector3(nextWaypoint.transform.position.x,
-                                               this.transform.position.y,
-                                               nextWaypoint.transform.position.z);
-
+        Vector3 targetPosition = nextWaypoint.transform.position;
 
         // Rotate Player towards target position
         // Should be a coroutine
@@ -66,16 +66,19 @@ public class PlayerRotationLimitation : MonoBehaviour
         var currentPosition = transform.position;
 
         // While Player has not reached target postion
-        while (Vector3.Distance(currentPosition, targetPosition) >= .1f)
+        while (Vector3.Distance(this.transform.position, nextWaypoint.transform.position) >= .06f)
         {
-            // Update current position
-            currentPosition = this.transform.position;
+            while (playerTransitionPlanks.isRotating) yield return null;
+
+            Debug.Log(Vector3.Distance(this.transform.position, nextWaypoint.transform.position));
 
             // Set rate as move speed over time
             float rate = moveSpeed * Time.deltaTime;
 
             // Move Player towards target position
-            transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, rate);
+            //
+
+            transform.Translate(0, 0, rate);
 
             // Return to top of while loop
             yield return null;

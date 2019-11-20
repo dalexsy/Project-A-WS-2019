@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
         if (plankRotationManager.isRotating || playerTransitionPlanks.isRotating) return;
 
         InputMove();
-        //SwitchMove();
     }
 
     private void InputMove()
@@ -70,50 +69,9 @@ public class PlayerController : MonoBehaviour
         if (verticalInput != 0 || horizontalInput != 0) movement = 1;
         else if (verticalInput == 0 && horizontalInput == 0) movement = 0;
 
-
-        //Vector3 test;
-        //float diff = Vector3.Angle(-test, transform.forward); // <0.01
-
         movement *= Time.deltaTime * moveSpeed;
 
         transform.Translate(0, 0, movement);
-    }
-
-    private void SwitchMove()
-    {
-        Transform plank = playerPlankDetection.currentPlank.transform;
-        switch (Math.Sign(verticalInput))
-        {
-            case 0:
-                break;
-            case 1:
-                transform.forward = plank.up;
-                Translate();
-                break;
-            case -1:
-                transform.forward = -plank.up;
-                Translate();
-                break;
-        }
-        switch (Math.Sign(horizontalInput))
-        {
-            case 0:
-                break;
-            case 1:
-                transform.forward = plank.right;
-                Translate();
-                break;
-            case -1:
-                transform.forward = -plank.right;
-                Translate();
-                break;
-        }
-
-    }
-
-    private void Translate()
-    {
-        transform.Translate(transform.InverseTransformDirection(transform.forward) * 0.5f * Time.deltaTime);
     }
 }
 
