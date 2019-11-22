@@ -5,47 +5,35 @@ using UnityEngine;
 
 public class PlayerTransitionPlanks : MonoBehaviour
 {
-    [SerializeField] private AnimationCurve animationCurve;
-    [SerializeField] private bool isUsingGravity;
-    [SerializeField] private bool isUsingInvertedGravity;
-
-    public bool isRotating = false;
+    [SerializeField] private AnimationCurve animationCurve; // Should move to Player Manager
 
     private CollisionDetection collisionDetection;
-    private PlayerController playerController;
     private PlankManager plankManager;
+    private PlayerManager playerManager;
     private PlayerPlankDetection playerPlankDetection;
     private Rigidbody rigid;
 
     private float maxRotation = 90f;
-    private float rotationSpeed = 90f;
+    private float rotationSpeed = 90f; // Should move to Player Manager
     private float currentRotation = 0f;
     private float targetRotation = 0f;
-    private float gravity = 10f;
-    private int gravityDirection = 1;
     private string transitionPointName = "Player Transition Point";
 
     private void Start()
     {
         collisionDetection = GetComponent<CollisionDetection>();
-        playerController = GetComponent<PlayerController>();
-        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
+        playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
         rigid = GetComponent<Rigidbody>();
         rigid.freezeRotation = true;
-    }
-
-    private void Update()
-    {
-        if (!isUsingGravity) gravity = 0f;
-        if (isUsingInvertedGravity) gravityDirection = -1;
     }
 
     private void FixedUpdate()
     {
         // If current Plank has been assigned add force downwards towards current Plank
         if (playerPlankDetection.currentPlank)
-            rigid.AddForce(-gravity * rigid.mass * playerPlankDetection.currentPlank.up * gravityDirection);
+            rigid.AddForce(-playerManager.gravity * rigid.mass * playerPlankDetection.currentPlank.up * playerManager.gravityDirection);
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -54,7 +42,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
         if (!playerPlankDetection.currentPlank) return;
 
         // If Player collides with transition point and is not rotating
-        if (collider.name.Equals(transitionPointName) && !isRotating)
+        if (collider.name.Equals(transitionPointName) && !playerManager.isRotating)
         {
             // Gets plankRotation from current Plank
             // Used for its rotation limitation bools
@@ -70,10 +58,10 @@ public class PlayerTransitionPlanks : MonoBehaviour
                     plankRotation.canRotateCounterclockwiseR) return;
 
                 // If current Plank can rotate clockwise, start rotation coroutine upwards
-                if (plankRotation.canRotateClockwiseR) StartCoroutine(RotatePlayer(1 * gravityDirection));
+                if (plankRotation.canRotateClockwiseR) StartCoroutine(RotatePlayer(1 * playerManager.gravityDirection));
 
                 // If current Plank can rotate counterclockwise, start rotation coroutine downwards
-                if (plankRotation.canRotateCounterclockwiseR) StartCoroutine(RotatePlayer(-1 * gravityDirection));
+                if (plankRotation.canRotateCounterclockwiseR) StartCoroutine(RotatePlayer(-1 * playerManager.gravityDirection));
             }
 
             // If left pivot is active
@@ -86,10 +74,10 @@ public class PlayerTransitionPlanks : MonoBehaviour
                     plankRotation.canRotateCounterclockwiseL) return;
 
                 // If current Plank can rotate clockwise Start rotation coroutine downwards
-                if (plankRotation.canRotateClockwiseL) StartCoroutine(RotatePlayer(-1 * gravityDirection));
+                if (plankRotation.canRotateClockwiseL) StartCoroutine(RotatePlayer(-1 * playerManager.gravityDirection));
 
                 // If current Plank can rotate counterclockwise
-                if (plankRotation.canRotateCounterclockwiseL) StartCoroutine(RotatePlayer(1 * gravityDirection));
+                if (plankRotation.canRotateCounterclockwiseL) StartCoroutine(RotatePlayer(1 * playerManager.gravityDirection));
             }
         }
     }
@@ -108,7 +96,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
         currentRotation = 0f;
 
         // Set isRotating to true to prevent multiple rotations
-        this.isRotating = true;
+        playerManager.isRotating = true;
 
         // Vector3 to keep Player on Plank throughout rotation
         Vector3 hug = new Vector3(0, -.1f * direction, 0);
@@ -160,7 +148,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
             yield return null;
         }
 
-        this.isRotating = false;
+        playerManager.isRotating = false;
 
         yield return null;
     }

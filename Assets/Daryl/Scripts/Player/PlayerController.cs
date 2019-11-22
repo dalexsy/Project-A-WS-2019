@@ -4,8 +4,6 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 1f;
-
     [SerializeField] private string lastInputAxis = "Vertical";
     [SerializeField] private float lastInput = 1f;
 
@@ -14,13 +12,15 @@ public class PlayerController : MonoBehaviour
     private float movement;
 
     PlankRotationManager plankRotationManager;
+    PlayerManager playerManager;
     PlayerTransitionPlanks playerTransitionPlanks;
     PlayerPlankDetection playerPlankDetection;
 
     private void Start()
     {
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
-        plankRotationManager = GameObject.Find("PlankManager").GetComponent<PlankRotationManager>();
+        playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
+        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
     }
 
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
 
-        if (plankRotationManager.isRotating || playerTransitionPlanks.isRotating) return;
+        if (plankRotationManager.isRotating || playerManager.isRotating) return;
 
         InputMove();
     }
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
         if (verticalInput != 0 || horizontalInput != 0) movement = 1;
         else if (verticalInput == 0 && horizontalInput == 0) movement = 0;
 
-        movement *= Time.deltaTime * moveSpeed;
+        movement *= Time.deltaTime * playerManager.moveSpeed;
 
         transform.Translate(0, 0, movement);
     }

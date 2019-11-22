@@ -16,7 +16,7 @@ public class PivotAssignment : MonoBehaviour
     private void Start()
     {
         collisionDetection = GetComponentInParent<CollisionDetection>();
-        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotation = GetComponentInParent<PlankRotation>();
         activePivotFX = GetComponentInParent<ActivePivotFX>();
     }

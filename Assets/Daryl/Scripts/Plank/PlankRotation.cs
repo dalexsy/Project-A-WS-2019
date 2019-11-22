@@ -28,8 +28,8 @@ public class PlankRotation : MonoBehaviour
         collisionDetection = GetComponent<CollisionDetection>();
         pivotAssignment = GetComponentInChildren<PivotAssignment>();
         plankConnection = GetComponent<PlankConnection>();
-        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
-        plankRotationManager = GameObject.Find("PlankManager").GetComponent<PlankRotationManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
+        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
     }
 
     private void Update()

@@ -15,7 +15,7 @@ public class PlankConnection : MonoBehaviour
     private void Start()
     {
         collisionDetection = GetComponent<CollisionDetection>();
-        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
 
         lPivot = transform.Find(plankManager.leftPivotName);
         rPivot = transform.Find(plankManager.rightPivotName);

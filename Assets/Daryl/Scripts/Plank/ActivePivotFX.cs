@@ -5,12 +5,12 @@ using UnityEngine;
 public class ActivePivotFX : MonoBehaviour
 {
     public GameObject pulse;
-    
+
     PlankRotationManager plankRotationManager;
 
     private void Start()
     {
-        plankRotationManager = GameObject.Find("PlankManager").GetComponent<PlankRotationManager>();
+        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
     }
 
     // Creates pulse FX

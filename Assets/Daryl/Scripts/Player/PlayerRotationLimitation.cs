@@ -7,16 +7,16 @@ public class PlayerRotationLimitation : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     [SerializeField] private float distance;
-    public bool isMoving = false;
-    public float moveSpeed = .1f;
     public GameObject currentWaypoint;
     public GameObject nextWaypoint;
     private GameObject firstWaypoint;
     private GameObject lastWaypoint;
+    private PlayerManager playerManager;
     private PlayerTransitionPlanks playerTransitionPlanks;
 
     private void Start()
     {
+        playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
         playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
 
         // Find all waypoints in scene
@@ -32,7 +32,7 @@ public class PlayerRotationLimitation : MonoBehaviour
 
     private void Update()
     {
-        if (isMoving) return;
+        if (playerManager.isMoving) return;
         if (Input.GetKeyDown(KeyCode.W)) StartCoroutine(TransitionWaypoints(1));
         if (Input.GetKeyDown(KeyCode.S)) StartCoroutine(TransitionWaypoints(-1));
     }
@@ -53,7 +53,7 @@ public class PlayerRotationLimitation : MonoBehaviour
         if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
             (currentWaypoint == lastWaypoint && nextWaypoint == firstWaypoint)) yield break;
 
-        isMoving = true;
+        playerManager.isMoving = true;
 
 
         // Set target position as next waypoint's position with player's Y position
@@ -79,10 +79,10 @@ public class PlayerRotationLimitation : MonoBehaviour
             distance = Vector3.Distance(this.transform.position, nextWaypoint.transform.position);
 
             // Pause movement while Player is rotating
-            while (playerTransitionPlanks.isRotating) yield return null;
+            while (playerManager.isRotating) yield return null;
 
             // Set rate as move speed over time
-            float rate = moveSpeed * Time.deltaTime;
+            float rate = playerManager.moveSpeed * Time.deltaTime;
 
             // Translate Player forward
             transform.Translate(0, 0, rate);
@@ -93,7 +93,7 @@ public class PlayerRotationLimitation : MonoBehaviour
 
         this.transform.position = nextWaypoint.transform.position + (this.transform.up * .05f);
         //this.transform.up = nextWaypoint.transform.forward;
-        isMoving = false;
+        playerManager.isMoving = false;
 
         yield return null;
     }

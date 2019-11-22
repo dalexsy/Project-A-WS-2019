@@ -11,16 +11,16 @@ public class PlankCollisionDetection : MonoBehaviour
 
     private void Start()
     {
-        plankManager = GameObject.Find("PlankManager").GetComponent<PlankManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerStay(Collider collider)
     {
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-            LimitRotationOnEnter(collider);
+            LimitRotationOnStay(collider);
     }
 
     private void OnTriggerExit(Collider collider)
@@ -32,8 +32,8 @@ public class PlankCollisionDetection : MonoBehaviour
     }
 
     // Method to limit Plank's rotation (clockwise or counterclockwise)
-    // Uses collider found on OnTriggerEnter
-    private void LimitRotationOnEnter(Collider collider)
+    // Uses collider found on OnTriggerStay
+    private void LimitRotationOnStay(Collider collider)
     {
         // If an active pivot is assigned
         if (plankRotation.activePivot)
