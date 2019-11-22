@@ -6,10 +6,11 @@ using UnityEngine;
 public class PlayerRotationLimitation : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private float distance;
     public bool isMoving = false;
-    private float moveSpeed = 1f;
-    private GameObject currentWaypoint;
-    private GameObject nextWaypoint;
+    public float moveSpeed = .1f;
+    public GameObject currentWaypoint;
+    public GameObject nextWaypoint;
     private GameObject firstWaypoint;
     private GameObject lastWaypoint;
     private PlayerTransitionPlanks playerTransitionPlanks;
@@ -54,37 +55,46 @@ public class PlayerRotationLimitation : MonoBehaviour
 
         isMoving = true;
 
+
         // Set target position as next waypoint's position with player's Y position
         // Will probably stop working
-        Vector3 targetPosition = nextWaypoint.transform.position;
+        Vector3 targetPosition = nextWaypoint.transform.position + this.transform.up * .05f;
+
+        //Vector3 targetPosition = nextWaypoint.transform.position;
 
         // Rotate Player towards target position
-        // Should be a coroutine
-        this.transform.LookAt(targetPosition);
+        if (this.transform.up == nextWaypoint.transform.up) this.transform.LookAt(targetPosition);
+        //else if ((direction == -1) && (this.transform.up != nextWaypoint.transform.forward)) transform.RotateAround(transform.position, transform.up, 180f);
+        //this.transform.LookAt(targetPosition);
 
         // Set current position as Player's position
         var currentPosition = transform.position;
 
-        // While Player has not reached target postion
-        while (Vector3.Distance(this.transform.position, nextWaypoint.transform.position) >= .06f)
-        {
-            while (playerTransitionPlanks.isRotating) yield return null;
+        distance = 100f;
 
-            Debug.Log(Vector3.Distance(this.transform.position, nextWaypoint.transform.position));
+        // While Player has not reached target postion
+        while (Vector3.Distance(this.transform.position, nextWaypoint.transform.position) < distance &&
+           Vector3.Distance(this.transform.position, nextWaypoint.transform.position) >= .001f)
+        {
+            distance = Vector3.Distance(this.transform.position, nextWaypoint.transform.position);
+
+            // Pause movement while Player is rotating
+            while (playerTransitionPlanks.isRotating) yield return null;
 
             // Set rate as move speed over time
             float rate = moveSpeed * Time.deltaTime;
 
-            // Move Player towards target position
-            //
-
+            // Translate Player forward
             transform.Translate(0, 0, rate);
 
             // Return to top of while loop
             yield return null;
         }
 
+        this.transform.position = nextWaypoint.transform.position + (this.transform.up * .05f);
+        //this.transform.up = nextWaypoint.transform.forward;
         isMoving = false;
+
         yield return null;
     }
 

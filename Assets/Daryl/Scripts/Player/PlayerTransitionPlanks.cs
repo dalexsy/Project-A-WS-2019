@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class PlayerTransitionPlanks : MonoBehaviour
 {
-    [SerializeField] string transitionPointName = "Player Transition Point";
-    [SerializeField] AnimationCurve animationCurve;
+    [SerializeField] private AnimationCurve animationCurve;
+    [SerializeField] private bool isUsingGravity;
+    [SerializeField] private bool isUsingInvertedGravity;
 
     public bool isRotating = false;
 
@@ -20,8 +21,9 @@ public class PlayerTransitionPlanks : MonoBehaviour
     private float rotationSpeed = 90f;
     private float currentRotation = 0f;
     private float targetRotation = 0f;
-    private float gravity = 0f;
-    private int gravityDirection = -1;
+    private float gravity = 10f;
+    private int gravityDirection = 1;
+    private string transitionPointName = "Player Transition Point";
 
     private void Start()
     {
@@ -31,6 +33,12 @@ public class PlayerTransitionPlanks : MonoBehaviour
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
         rigid = GetComponent<Rigidbody>();
         rigid.freezeRotation = true;
+    }
+
+    private void Update()
+    {
+        if (!isUsingGravity) gravity = 0f;
+        if (isUsingInvertedGravity) gravityDirection = -1;
     }
 
     private void FixedUpdate()
@@ -120,7 +128,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
             float t = currentLerpTime / lerpTime;
 
             // Move Player forward using animation curve
-            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime * .1f, Space.Self);
+            transform.Translate((Vector3.forward + hug) * animationCurve.Evaluate(t) * Time.deltaTime * .5f, Space.Self);
 
             // Increase targetRotation by rotationSpeed
             // Round to integer to prevent non-integer angles from deltaTime 
