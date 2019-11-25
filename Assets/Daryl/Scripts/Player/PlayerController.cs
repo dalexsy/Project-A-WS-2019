@@ -7,8 +7,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string lastInputAxis = "Vertical";
     [SerializeField] private float lastInput = 1f;
 
-    private float verticalInput;
-    private float horizontalInput;
     private float movement;
 
     PlankRotationManager plankRotationManager;
@@ -26,48 +24,44 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
-
         if (plankRotationManager.isRotating || playerManager.isRotating) return;
-
         InputMove();
     }
 
     private void InputMove()
     {
-        if (verticalInput != 0)
+        if (playerManager.verticalInput != 0)
         {
             // Same axis, different sign
-            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(verticalInput)) transform.RotateAround(transform.position, transform.up, 180f);
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(playerManager.verticalInput)) transform.RotateAround(transform.position, transform.up, 180f);
 
             // Different axis, same sign
-            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) == Math.Sign(verticalInput)) transform.RotateAround(transform.position, transform.up, -90f);
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) == Math.Sign(playerManager.verticalInput)) transform.RotateAround(transform.position, transform.up, -90f);
 
             // Different axis, different sign
-            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(verticalInput)) transform.RotateAround(transform.position, transform.up, 90f);
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(playerManager.verticalInput)) transform.RotateAround(transform.position, transform.up, 90f);
 
             lastInputAxis = "Vertical";
-            lastInput = verticalInput;
+            lastInput = playerManager.verticalInput;
         }
 
-        if (horizontalInput != 0)
+        if (playerManager.horizontalInput != 0)
         {
             // Same axis, different sign
-            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) transform.RotateAround(transform.position, transform.up, 180f);
+            if (lastInputAxis.Equals("Horizontal") && Math.Sign(lastInput) != Math.Sign(playerManager.horizontalInput)) transform.RotateAround(transform.position, transform.up, 180f);
 
             // Different axis, same sign
-            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) == Math.Sign(horizontalInput)) transform.RotateAround(transform.position, transform.up, 90f);
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) == Math.Sign(playerManager.horizontalInput)) transform.RotateAround(transform.position, transform.up, 90f);
 
             // Different axis, different sign
-            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(horizontalInput)) transform.RotateAround(transform.position, transform.up, -90f);
+            if (lastInputAxis.Equals("Vertical") && Math.Sign(lastInput) != Math.Sign(playerManager.horizontalInput)) transform.RotateAround(transform.position, transform.up, -90f);
 
             lastInputAxis = "Horizontal";
-            lastInput = horizontalInput;
+            lastInput = playerManager.horizontalInput;
         }
 
-        if (verticalInput != 0 || horizontalInput != 0) movement = 1;
-        else if (verticalInput == 0 && horizontalInput == 0) movement = 0;
+        if (playerManager.verticalInput != 0 || playerManager.horizontalInput != 0) movement = 1;
+        else if (playerManager.verticalInput == 0 && playerManager.horizontalInput == 0) movement = 0;
 
         movement *= Time.deltaTime * playerManager.moveSpeed;
 

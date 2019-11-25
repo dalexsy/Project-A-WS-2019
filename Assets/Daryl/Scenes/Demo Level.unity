@@ -120,7 +120,34 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &726379234
+--- !u!1 &771166161 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5321016160452361727, guid: 0373c4ab7938da24c9456ecce815d905,
+    type: 3}
+  m_PrefabInstance: {fileID: 5291362909375514149}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &771166163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771166161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a096d1c629ba41e4a8ae98e7eac3323e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMoving: 0
+  isRotating: 0
+  moveSpeed: 1
+  gravity: 10
+  gravityDirection: 1
+  verticalInput: 0
+  horizontalInput: 0
+  isUsingGravity: 1
+  isUsingInvertedGravity: 0
+--- !u!114 &1467549841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,31 +223,6 @@ MonoBehaviour:
   enableSunDisk:
     m_OverrideState: 0
     m_Value: 1
---- !u!1 &771166161 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5321016160452361727, guid: 0373c4ab7938da24c9456ecce815d905,
-    type: 3}
-  m_PrefabInstance: {fileID: 5291362909375514149}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &771166163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771166161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a096d1c629ba41e4a8ae98e7eac3323e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMoving: 0
-  isRotating: 0
-  moveSpeed: 1
-  gravity: 10
-  gravityDirection: 1
-  isUsingGravity: 1
-  isUsingInvertedGravity: 0
 --- !u!1 &1488552556
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: d4d55bc4cee6468428b1db023dce07ff, type: 2}
   m_StaticLightingSkyUniqueID: 2
-  m_SkySettings: {fileID: 726379234}
+  m_SkySettings: {fileID: 1467549841}
   m_SkySettingsFromProfile: {fileID: 7206488871959496600, guid: d4d55bc4cee6468428b1db023dce07ff,
     type: 2}
 --- !u!114 &2025832992
@@ -1516,17 +1518,22 @@ PrefabInstance:
     - target: {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: lastInputAxis
-      value: Horizontal
+      value: Vertical
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba,
+        type: 3}
+      propertyPath: lastInput
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8296172668252088016, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8296172668252088016, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}

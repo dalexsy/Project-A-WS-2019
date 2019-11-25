@@ -33,8 +33,8 @@ public class PlayerRotationLimitation : MonoBehaviour
     private void Update()
     {
         if (playerManager.isMoving) return;
-        if (Input.GetKeyDown(KeyCode.W)) StartCoroutine(TransitionWaypoints(1));
-        if (Input.GetKeyDown(KeyCode.S)) StartCoroutine(TransitionWaypoints(-1));
+        if (playerManager.verticalInput > 0) StartCoroutine(TransitionWaypoints(1));
+        if (playerManager.verticalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
 
     IEnumerator TransitionWaypoints(int direction)
@@ -49,18 +49,20 @@ public class PlayerRotationLimitation : MonoBehaviour
         // Set next waypoint as previous or next element in array based on given direction
         nextWaypoint = waypoints[currentIndex + direction];
 
+        /* Can determine which side next waypoint is on from current waypoint
+                var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
+                var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypoint.transform.position);
+                Debug.Log(currentWaypointScreenPosition.x - nextWaypointScreenPosition.x);
+        */
+
         // If first and last waypoint are used to transition between, exit coroutine
         if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
             (currentWaypoint == lastWaypoint && nextWaypoint == firstWaypoint)) yield break;
 
         playerManager.isMoving = true;
 
-
         // Set target position as next waypoint's position with player's Y position
-        // Will probably stop working
         Vector3 targetPosition = nextWaypoint.transform.position + this.transform.up * .05f;
-
-        //Vector3 targetPosition = nextWaypoint.transform.position;
 
         // Rotate Player towards target position
         if (this.transform.up == nextWaypoint.transform.up) this.transform.LookAt(targetPosition);
