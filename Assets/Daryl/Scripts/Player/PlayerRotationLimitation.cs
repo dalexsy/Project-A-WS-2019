@@ -97,6 +97,12 @@ public class PlayerRotationLimitation : MonoBehaviour
         //this.transform.up = nextWaypoint.transform.forward;
         playerManager.isMoving = false;
 
+        if (nextWaypoint.GetComponent<WaypointMarker>().isTransitional == true)
+        {
+            currentWaypoint = nextWaypoint;
+            StartCoroutine(TransitionWaypoints(direction));
+        }
+
         yield return null;
     }
 
