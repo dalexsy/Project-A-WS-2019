@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -12,11 +11,13 @@ public class PlayerRotationLimitation : MonoBehaviour
     private GameObject firstWaypoint;
     private GameObject lastWaypoint;
     private PlayerManager playerManager;
+    private PlayerPlankDetection playerPlankDetection;
     private PlayerTransitionPlanks playerTransitionPlanks;
 
     private void Start()
     {
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
+        playerPlankDetection = GetComponent<PlayerPlankDetection>();
         playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
 
         // Find all waypoints in scene
@@ -49,12 +50,6 @@ public class PlayerRotationLimitation : MonoBehaviour
         // Set next waypoint as previous or next element in array based on given direction
         nextWaypoint = waypoints[currentIndex + direction];
 
-        /* Can determine which side next waypoint is on from current waypoint
-                var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
-                var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypoint.transform.position);
-                Debug.Log(currentWaypointScreenPosition.x - nextWaypointScreenPosition.x);
-        */
-
         // If first and last waypoint are used to transition between, exit coroutine
         if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
             (currentWaypoint == lastWaypoint && nextWaypoint == firstWaypoint)) yield break;
@@ -65,9 +60,19 @@ public class PlayerRotationLimitation : MonoBehaviour
         Vector3 targetPosition = nextWaypoint.transform.position + this.transform.up * .05f;
 
         // Rotate Player towards target position
-        if (this.transform.up == nextWaypoint.transform.up) this.transform.LookAt(targetPosition);
-        //else if ((direction == -1) && (this.transform.up != nextWaypoint.transform.forward)) transform.RotateAround(transform.position, transform.up, 180f);
-        //this.transform.LookAt(targetPosition);
+        if (V3Equal(this.transform.up, nextWaypoint.transform.up))
+        {
+            this.transform.LookAt(targetPosition, nextWaypoint.transform.up);
+        }
+
+        else
+        {
+            yield return new WaitForSeconds(.5f);
+            this.transform.position = nextWaypoint.transform.position;
+            this.transform.up = nextWaypoint.transform.up;
+            playerManager.isMoving = false;
+            yield break;
+        }
 
         // Set current position as Player's position
         var currentPosition = transform.position;
@@ -78,6 +83,7 @@ public class PlayerRotationLimitation : MonoBehaviour
         while (Vector3.Distance(this.transform.position, nextWaypoint.transform.position) < distance &&
            Vector3.Distance(this.transform.position, nextWaypoint.transform.position) >= .001f)
         {
+            // Take distance from Player's position to next waypoint's position
             distance = Vector3.Distance(this.transform.position, nextWaypoint.transform.position);
 
             // Pause movement while Player is rotating
@@ -93,13 +99,15 @@ public class PlayerRotationLimitation : MonoBehaviour
             yield return null;
         }
 
-        this.transform.position = nextWaypoint.transform.position + (this.transform.up * .05f);
-        //this.transform.up = nextWaypoint.transform.forward;
         playerManager.isMoving = false;
 
+        // If next waypoint is flagged as transitional
         if (nextWaypoint.GetComponent<WaypointMarker>().isTransitional == true)
         {
+            // Set next waypoint as current waypoint
             currentWaypoint = nextWaypoint;
+
+            // Restart coroutine with new current waypoint
             StartCoroutine(TransitionWaypoints(direction));
         }
 
@@ -111,5 +119,10 @@ public class PlayerRotationLimitation : MonoBehaviour
         // Set current waypoint as last waypoint Player has collided with
         if (collider.gameObject.tag == "Waypoint")
             currentWaypoint = collider.gameObject;
+    }
+
+    private bool V3Equal(Vector3 a, Vector3 b)
+    {
+        return Vector3.SqrMagnitude(a - b) < 0.9;
     }
 }

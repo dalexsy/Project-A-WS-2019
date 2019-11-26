@@ -86,6 +86,10 @@ public class PlayerTransitionPlanks : MonoBehaviour
     // Needs a direction
     IEnumerator RotatePlayer(int direction)
     {
+        var collider = GetComponent<BoxCollider>();
+
+        collider.enabled = false;
+
         // Variable used to move through animation curve
         float lerpTime = 1f;
 
@@ -99,7 +103,7 @@ public class PlayerTransitionPlanks : MonoBehaviour
         playerManager.isRotating = true;
 
         // Vector3 to keep Player on Plank throughout rotation
-        Vector3 hug = new Vector3(0, -.1f * direction, 0);
+        Vector3 hug = new Vector3(0, -.0f * direction, 0);
 
         // While the Player has not reached max rotation
         while (currentRotation < maxRotation)
@@ -144,12 +148,13 @@ public class PlayerTransitionPlanks : MonoBehaviour
         while (cooldown < .1f)
         {
             cooldown += Time.deltaTime;
-            //transform.Translate((Vector3.forward + hug) * Time.deltaTime * playerController.moveSpeed, Space.Self);
+            collider.enabled = true;
+
+            transform.Translate((Vector3.forward + hug) * Time.deltaTime * playerManager.moveSpeed, Space.Self);
             yield return null;
         }
 
         playerManager.isRotating = false;
-
         yield return null;
     }
 }

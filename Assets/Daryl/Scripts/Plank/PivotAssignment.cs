@@ -71,7 +71,7 @@ public class PivotAssignment : MonoBehaviour
         if (foundPlank)
         {
             plankRotation.activePivot = this.transform;
-            if (collisionDetection.isCollidingWithTarget != true) activePivotFX.SpawnPulse(transform.position);
+            if ((collisionDetection.isCollidingWithTarget != true)) activePivotFX.SpawnPulse(transform.position);
             return;
         }
 
@@ -79,7 +79,7 @@ public class PivotAssignment : MonoBehaviour
         else
         {
             // Look for colliders in range of this pivot's position
-            Collider[] secondColliders = Physics.OverlapSphere(activePivot.position, 1);
+            Collider[] secondColliders = Physics.OverlapSphere(activePivot.position, .1f);
 
             // Find pivot other than this pivot in secondColliders array
             var foundPivot = Array.Find(secondColliders, collider =>
