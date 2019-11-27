@@ -9,6 +9,7 @@ TagManager:
   - Collider L
   - Collider R
   - Plank Transition Point
+  - Waypoint
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - 
   - Player
-  - 
+  - Planks
   - 
   - 
   - 
