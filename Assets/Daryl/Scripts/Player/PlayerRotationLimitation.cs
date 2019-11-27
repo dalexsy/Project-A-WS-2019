@@ -12,13 +12,11 @@ public class PlayerRotationLimitation : MonoBehaviour
     private GameObject lastWaypoint;
     private PlayerManager playerManager;
     private PlayerPlankDetection playerPlankDetection;
-    private PlayerTransitionPlanks playerTransitionPlanks;
 
     private void Start()
     {
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
-        playerTransitionPlanks = GetComponent<PlayerTransitionPlanks>();
 
         // Find all waypoints in scene
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint");

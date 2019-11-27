@@ -120,7 +120,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &685876709
+--- !u!114 &130775053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   isRotating: 0
-  moveSpeed: 1.91
+  moveSpeed: 1.43
   gravity: 10
   gravityDirection: 1
   verticalInput: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: d4d55bc4cee6468428b1db023dce07ff, type: 2}
   m_StaticLightingSkyUniqueID: 2
-  m_SkySettings: {fileID: 685876709}
+  m_SkySettings: {fileID: 130775053}
   m_SkySettingsFromProfile: {fileID: 7206488871959496600, guid: d4d55bc4cee6468428b1db023dce07ff,
     type: 2}
 --- !u!114 &2025832992
@@ -1530,15 +1530,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 3065092970769290422, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
@@ -1548,27 +1543,27 @@ PrefabInstance:
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000006407499
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
@@ -1583,39 +1578,17 @@ PrefabInstance:
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 360
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: lastInputAxis
-      value: Vertical
-      objectReference: {fileID: 0}
-    - target: {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: lastInput
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8296172668252088016, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8296172668252088016, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 2.56
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7565386166129663635, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
+    - {fileID: 1864662244288833255, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
+    - {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
 --- !u!1 &6826403070688414108 stripped
 GameObject:
