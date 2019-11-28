@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class CameraRigRotation : MonoBehaviour
 {
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
-    [SerializeField] private AnimationCurve animationCurve;
+    [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
     private bool isRotating = false;
 
