@@ -16,7 +16,7 @@ public class AnimationTest : MonoBehaviour
     Vector3 startPos;
     Vector3 endPos;
 
-    [SerializeField] Transform rotationPivot;
+    [SerializeField] Transform rotationPivot = null;
 
     PlankManager plankManager;
 

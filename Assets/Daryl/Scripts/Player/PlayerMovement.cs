@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerRotationLimitation : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     [SerializeField] private float distance;
@@ -10,6 +10,8 @@ public class PlayerRotationLimitation : MonoBehaviour
     public GameObject nextWaypoint;
     private GameObject firstWaypoint;
     private GameObject lastWaypoint;
+    private GameObject leftWaypoint;
+    private GameObject rightWaypoint;
     private PlayerManager playerManager;
     private PlayerPlankDetection playerPlankDetection;
 
@@ -32,21 +34,52 @@ public class PlayerRotationLimitation : MonoBehaviour
     private void Update()
     {
         if (playerManager.isMoving) return;
-        if (playerManager.verticalInput > 0) StartCoroutine(TransitionWaypoints(1));
-        if (playerManager.verticalInput < 0) StartCoroutine(TransitionWaypoints(-1));
+        if (playerManager.horizontalInput > 0) StartCoroutine(TransitionWaypoints(1));
+        if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
 
     IEnumerator TransitionWaypoints(int direction)
     {
-        // If Player tries to move past first or last waypoint, exit coroutine
-        if ((currentWaypoint == firstWaypoint && direction == -1) ||
-            (currentWaypoint == lastWaypoint && direction == 1)) yield break;
-
         // Find index of current waypoint
         var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+        var nextIndex = currentIndex;
+        var nextWaypointInArray = waypoints[currentIndex];
 
-        // Set next waypoint as previous or next element in array based on given direction
-        nextWaypoint = waypoints[currentIndex + direction];
+        // Need to disable this for transitional waypoints
+        if (currentIndex < waypoints.Length - 2)
+        {
+            nextWaypointInArray = waypoints[currentIndex + 1];
+        }
+
+        var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
+        var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypointInArray.transform.position);
+        var screenPosition = currentWaypointScreenPosition.x - nextWaypointScreenPosition.x;
+
+        if (screenPosition > 0)
+        {
+            leftWaypoint = nextWaypointInArray;
+            if (currentIndex > 0) rightWaypoint = waypoints[currentIndex - 1];
+            else rightWaypoint = null;
+        }
+
+        else
+        {
+            rightWaypoint = nextWaypointInArray;
+            if (currentIndex > 0) leftWaypoint = waypoints[currentIndex - 1];
+            else leftWaypoint = null;
+        }
+
+        if (direction < 0)
+        {
+            if (leftWaypoint == null) yield break;
+            nextWaypoint = leftWaypoint;
+        }
+
+        else
+        {
+            if (rightWaypoint == null) yield break;
+            nextWaypoint = rightWaypoint;
+        }
 
         // If first and last waypoint are used to transition between, exit coroutine
         if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
