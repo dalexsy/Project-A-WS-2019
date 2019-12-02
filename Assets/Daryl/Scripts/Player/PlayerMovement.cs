@@ -42,10 +42,19 @@ public class PlayerMovement : MonoBehaviour
         if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
 
-    IEnumerator TransitionWaypoints(int direction)
+    IEnumerator TransitionWaypoints(int direction, int? arrayDirection = null)
     {
-        ScreenToWaypoint(direction);
+        int aD = 0;
+        if (arrayDirection == null)
+        {
+            aD = ScreenToWaypoint(direction);
+        }
 
+        else
+        {
+            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+            nextWaypoint = this.waypoints[currentIndex + (int)arrayDirection];
+        }
         if (nextWaypoint == null) yield break;
 
         playerManager.isMoving = true;
@@ -102,13 +111,13 @@ public class PlayerMovement : MonoBehaviour
             currentWaypoint = nextWaypoint;
 
             // Restart coroutine with new current waypoint
-            StartCoroutine(TransitionWaypoints(direction));
+            StartCoroutine(TransitionWaypoints(direction, aD));
         }
 
         yield return null;
     }
 
-    private void ScreenToWaypoint(int direction)
+    private int ScreenToWaypoint(int direction)
     {
         // Find index of current waypoint
         var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
@@ -144,6 +153,9 @@ public class PlayerMovement : MonoBehaviour
 
         // If horizontal input is to the right, next waypoint is right waypoint (if given)
         else nextWaypoint = rightWaypoint;
+
+        if (nextWaypointInArray == nextWaypoint) return 1;
+        else return -1;
     }
 
     private void OnTriggerStay(Collider collider)

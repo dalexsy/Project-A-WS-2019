@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlankRotation : MonoBehaviour
@@ -16,7 +15,6 @@ public class PlankRotation : MonoBehaviour
 
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
-    private IEnumerator connectionCoroutine;
     private PivotAssignment pivotAssignment;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
