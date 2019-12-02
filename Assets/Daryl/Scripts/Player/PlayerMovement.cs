@@ -12,11 +12,13 @@ public class PlayerMovement : MonoBehaviour
     private GameObject lastWaypoint;
     private GameObject leftWaypoint;
     private GameObject rightWaypoint;
+    private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
     private PlayerPlankDetection playerPlankDetection;
 
     private void Start()
     {
+        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
         playerPlankDetection = GetComponent<PlayerPlankDetection>();
 
@@ -33,7 +35,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (playerManager.isMoving) return;
+        // If Player is moving or Plank is rotating, accept no input
+        if (playerManager.isMoving || plankRotationManager.isRotating) return;
+
         if (playerManager.horizontalInput > 0) StartCoroutine(TransitionWaypoints(1));
         if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
@@ -42,19 +46,18 @@ public class PlayerMovement : MonoBehaviour
     {
         // Find index of current waypoint
         var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
-        var nextIndex = currentIndex;
         var nextWaypointInArray = waypoints[currentIndex];
 
-        // Need to disable this for transitional waypoints
-        if (currentIndex < waypoints.Length - 2)
-        {
-            nextWaypointInArray = waypoints[currentIndex + 1];
-        }
+        // If current waypoint is not last waypoint, set nextWaypointInArray as next waypoint in array
+        if (currentWaypoint != lastWaypoint) nextWaypointInArray = waypoints[currentIndex + 1];
 
         var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
         var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypointInArray.transform.position);
+
+        // Set screenPosition as current waypoint's position minus next waypoint's position along the x-axis
         var screenPosition = currentWaypointScreenPosition.x - nextWaypointScreenPosition.x;
 
+        // If screen position is positive, next waypoint is to the left
         if (screenPosition > 0)
         {
             leftWaypoint = nextWaypointInArray;
@@ -62,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
             else rightWaypoint = null;
         }
 
+        // If screen position is negative, next waypoint is to the right
         else
         {
             rightWaypoint = nextWaypointInArray;
@@ -69,22 +73,22 @@ public class PlayerMovement : MonoBehaviour
             else leftWaypoint = null;
         }
 
+        // If horizontal input is to the left, next waypoint is left waypoint (if given)
         if (direction < 0)
         {
             if (leftWaypoint == null) yield break;
             nextWaypoint = leftWaypoint;
         }
 
+        // If horizontal input is to the right, next waypoint is right waypoint (if given)
         else
         {
             if (rightWaypoint == null) yield break;
             nextWaypoint = rightWaypoint;
         }
-
         // If first and last waypoint are used to transition between, exit coroutine
         if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
             (currentWaypoint == lastWaypoint && nextWaypoint == firstWaypoint)) yield break;
-
         playerManager.isMoving = true;
 
         // Set target position as next waypoint's position with player's Y position
