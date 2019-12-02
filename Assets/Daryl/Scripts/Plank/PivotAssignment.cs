@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PivotAssignment : MonoBehaviour
@@ -9,7 +7,6 @@ public class PivotAssignment : MonoBehaviour
 
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
-    private PlankCollisionDetection plankCollisionDetection;
     private PlankManager plankManager;
     private PlankRotation plankRotation;
 

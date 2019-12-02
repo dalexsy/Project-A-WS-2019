@@ -15,18 +15,14 @@ public class PlankRotation : MonoBehaviour
 
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
-    private PivotAssignment pivotAssignment;
     private PlankConnection plankConnection;
-    private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
 
     private void Start()
     {
         activePivotFX = GetComponent<ActivePivotFX>();
         collisionDetection = GetComponent<CollisionDetection>();
-        pivotAssignment = GetComponentInChildren<PivotAssignment>();
         plankConnection = GetComponent<PlankConnection>();
-        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
     }
 
@@ -87,7 +83,6 @@ public class PlankRotation : MonoBehaviour
         // Save local variable rotationPivot from active pivot
         // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned 
         Transform rotationPivot = pivot;
-        Transform surrogateRotationPivot = null;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Stop();
@@ -101,9 +96,6 @@ public class PlankRotation : MonoBehaviour
         // Reset current rotation
         float currentRotation = 0f;
 
-        // Set start rotation as Plank's x-axis rotation
-        float startRotation = Mathf.RoundToInt(transform.rotation.eulerAngles.x);
-
         // Set isRotating to true to prevent multiple rotations
         plankRotationManager.isRotating = true;
 
@@ -115,11 +107,8 @@ public class PlankRotation : MonoBehaviour
         // If using a surrogate pivot
         if (surrogatePivot)
         {
-            // Save local variable surrogateRotationPivot as surrogatePivot
-            surrogateRotationPivot = surrogatePivot;
-
             // Assign surrogate pivot as rotationpivot
-            rotationPivot = surrogateRotationPivot;
+            rotationPivot = surrogatePivot;
 
             // Redefines rotationAxis using surrogate pivot
             rotationAxis = rotationPivot.transform.right;
@@ -163,7 +152,7 @@ public class PlankRotation : MonoBehaviour
         }
 
         // Disconnect all connected planks
-        plankConnection.DisconnectPlanks(this.transform);
+        plankConnection.DisconnectPlanks(transform);
 
         // If active pulse FX is paused, restart
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();

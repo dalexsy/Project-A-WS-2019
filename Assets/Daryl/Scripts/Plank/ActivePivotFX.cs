@@ -5,7 +5,6 @@ using UnityEngine;
 public class ActivePivotFX : MonoBehaviour
 {
     public GameObject pulse;
-
     PlankRotationManager plankRotationManager;
 
     private void Start()
