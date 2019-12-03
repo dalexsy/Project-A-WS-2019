@@ -18,6 +18,9 @@ public class PlankRotation : MonoBehaviour
     private PlankConnection plankConnection;
     private PlankRotationManager plankRotationManager;
 
+    private Vector2 startPos = Vector2.zero;
+    private Vector2 direction = Vector2.zero;
+
     private void Start()
     {
         activePivotFX = GetComponent<ActivePivotFX>();
@@ -32,6 +35,49 @@ public class PlankRotation : MonoBehaviour
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
     }
 
+    private void TouchRotation()
+    {
+        if (Input.touchCount == 2)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    startPos = touch.position;
+                    break;
+
+                case TouchPhase.Moved:
+                    direction = touch.position - startPos;
+                    if (direction.y >= 25 && direction.y <= Screen.height)
+                    {
+                        // Rotate Plank clockwise
+                        // Will rotate from surrogate pivot's position
+                        if (isConnectedFront) StartCoroutine(RotatePlank(1, activePivot));
+
+                        // Rotate Plank counterclockwise 
+                        // Will rotate from active pivot's position
+                        else StartCoroutine(RotatePlank(-1, activePivot));
+                    }
+
+                    if (direction.y <= -25 && direction.y >= -Screen.height)
+                    {
+                        // Rotate Plank counterclockwise
+                        // Will rotate from surrogate pivot's position
+                        if (isConnectedFront) StartCoroutine(RotatePlank(-1, activePivot));
+
+                        // Rotate Plank clockwise
+                        // Will rotate from active pivot's position
+                        else StartCoroutine(RotatePlank(1, activePivot));
+                    }
+                    break;
+
+                case TouchPhase.Ended:
+                    break;
+            }
+        }
+    }
+
     private void RotationInput()
     {
         // If no pivots are given, accept no input
@@ -44,34 +90,14 @@ public class PlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                if (Input.GetKeyDown("e") ||
-                    Input.GetKey(KeyCode.Joystick1Button6))
-                {
-                    // Rotate Plank clockwise
-                    // Will rotate from surrogate pivot's position
-                    if (isConnectedFront) StartCoroutine(RotatePlank(1, activePivot));
-
-                    // Rotate Plank counterclockwise 
-                    // Will rotate from active pivot's position
-                    else StartCoroutine(RotatePlank(-1, activePivot));
-                }
+                TouchRotation();
             }
 
             //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                if (Input.GetKeyDown("q") ||
-                    Input.GetKey(KeyCode.Joystick1Button7))
-                {
-                    // Rotate Plank counterclockwise
-                    // Will rotate from surrogate pivot's position
-                    if (isConnectedFront) StartCoroutine(RotatePlank(-1, activePivot));
-
-                    // Rotate Plank clockwise
-                    // Will rotate from active pivot's position
-                    else StartCoroutine(RotatePlank(1, activePivot));
-                }
+                TouchRotation();
             }
         }
     }
