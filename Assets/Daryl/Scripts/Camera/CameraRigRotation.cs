@@ -37,6 +37,39 @@ public class CameraRigRotation : MonoBehaviour
         // If rotating, accept no input
         if (isRotating) return;
 
+        MouseRotation();
+        TouchRotation();
+    }
+
+    private void TouchRotation()
+    {
+        Vector2 startPos = Vector2.zero;
+        Vector2 direction = Vector2.zero;
+
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    startPos = touch.position;
+                    break;
+
+                case TouchPhase.Moved:
+                    direction = touch.position - startPos;
+                    break;
+
+                case TouchPhase.Ended:
+                    if (direction.x > 0) StartCoroutine(RotateRig(1));
+                    if (direction.x < 0) StartCoroutine(RotateRig(-1));
+                    break;
+            }
+        }
+    }
+
+    private void MouseRotation()
+    {
         if (Input.GetMouseButton(0))
         {
             float moveY = Input.GetAxis("Mouse X");
