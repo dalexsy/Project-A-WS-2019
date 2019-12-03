@@ -57,8 +57,9 @@ public class CameraRigRotation : MonoBehaviour
 
                 case TouchPhase.Moved:
                     direction = touch.position - startPos;
-                    if (direction.x > 0) StartCoroutine(RotateRig(1));
-                    if (direction.x < 0) StartCoroutine(RotateRig(-1));
+                    Debug.Log(direction);
+                    if (direction.x >= 25 && direction.x <= Screen.width) StartCoroutine(RotateRig(1));
+                    if (direction.x <= -25 && direction.x >= -Screen.width) StartCoroutine(RotateRig(-1));
                     break;
 
                 case TouchPhase.Ended:
