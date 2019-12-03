@@ -37,11 +37,12 @@ public class CameraRigRotation : MonoBehaviour
         // If rotating, accept no input
         if (isRotating) return;
 
-        // Rotate rig counterclockwise on Z
-        if (Input.GetKeyDown(KeyCode.Z)) StartCoroutine(RotateRig(1));
-
-        // Rotate right clockwise on X
-        if (Input.GetKeyDown(KeyCode.X)) StartCoroutine(RotateRig(-1));
+        if (Input.GetMouseButton(0))
+        {
+            float moveY = Input.GetAxis("Mouse X");
+            if (moveY > 0) StartCoroutine(RotateRig(1));
+            if (moveY < 0) StartCoroutine(RotateRig(-1));
+        }
     }
 
     // Coroutine to rotate camera rig
