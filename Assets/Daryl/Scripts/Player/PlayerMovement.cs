@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TransitionWaypoints(int direction, int? arrayDirection = null)
     {
+        // If using transitional waypoint, use last direction in array to find next waypoint
         int aD = 0;
         if (arrayDirection == null)
         {
@@ -53,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
             nextWaypoint = waypoints[currentIndex + (int)arrayDirection];
         }
+
+        // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
         playerManager.isMoving = true;
@@ -60,15 +63,16 @@ public class PlayerMovement : MonoBehaviour
         // Set target position as next waypoint's position with player's Y position
         Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
-        // Rotate Player towards target position
+        // If next waypoint is aligned with current waypoint, rotate Player towards target position
         if (V3Equal(transform.up, nextWaypoint.transform.up))
         {
             this.transform.LookAt(targetPosition, nextWaypoint.transform.up);
         }
 
+        // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.5f); // Needed to stop coroutine from restarting
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up;
             playerManager.isMoving = false;
@@ -130,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
         // Set screenPosition as current waypoint's position minus next waypoint's position along the x-axis
         var screenPosition = currentWaypointScreenPosition.x - nextWaypointScreenPosition.x;
 
-        // If screen position is positive, next waypoint is to the left
+        // If screen position is positive, next waypoint is to the left (if given)
         if (screenPosition > 0)
         {
             leftWaypoint = nextWaypointInArray;
@@ -138,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
             else rightWaypoint = null;
         }
 
-        // If screen position is negative, next waypoint is to the right
+        // If screen position is negative, next waypoint is to the right (if given)
         else
         {
             rightWaypoint = nextWaypointInArray;
@@ -146,11 +150,13 @@ public class PlayerMovement : MonoBehaviour
             else leftWaypoint = null;
         }
 
-        // If horizontal input is to the left, next waypoint is left waypoint (if given)
+        // If horizontal input is to the left, next waypoint is left waypoint
         if (direction < 0) nextWaypoint = leftWaypoint;
 
-        // If horizontal input is to the right, next waypoint is right waypoint (if given)
+        // If horizontal input is to the right, next waypoint is right waypoint
         else nextWaypoint = rightWaypoint;
+
+        if (nextWaypoint == currentWaypoint) nextWaypoint = null;
 
         if (nextWaypointInArray == nextWaypoint) return 1;
         else return -1;
