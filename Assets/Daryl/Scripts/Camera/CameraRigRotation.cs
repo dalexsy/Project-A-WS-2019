@@ -9,6 +9,8 @@ public class CameraRigRotation : MonoBehaviour
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
     private bool isRotating = false;
+    Vector2 startPos = Vector2.zero;
+    Vector2 direction = Vector2.zero;
 
     private void Start()
     {
@@ -43,9 +45,6 @@ public class CameraRigRotation : MonoBehaviour
 
     private void TouchRotation()
     {
-        Vector2 startPos = Vector2.zero;
-        Vector2 direction = Vector2.zero;
-
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
@@ -58,11 +57,11 @@ public class CameraRigRotation : MonoBehaviour
 
                 case TouchPhase.Moved:
                     direction = touch.position - startPos;
+                    if (direction.x > 0) StartCoroutine(RotateRig(1));
+                    if (direction.x < 0) StartCoroutine(RotateRig(-1));
                     break;
 
                 case TouchPhase.Ended:
-                    if (direction.x > 0) StartCoroutine(RotateRig(1));
-                    if (direction.x < 0) StartCoroutine(RotateRig(-1));
                     break;
             }
         }
