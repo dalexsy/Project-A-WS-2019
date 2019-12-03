@@ -12,13 +12,13 @@ public class PlayerMovement : MonoBehaviour
     private GameObject lastWaypoint;
     private GameObject leftWaypoint;
     private GameObject rightWaypoint;
+    private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
-    private PlayerPlankDetection playerPlankDetection;
 
     private void Start()
     {
+        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
-        playerPlankDetection = GetComponent<PlayerPlankDetection>();
 
         // Find all waypoints in scene
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
@@ -33,65 +33,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (playerManager.isMoving) return;
+        // If Player is moving or Plank is rotating, accept no input
+        if (playerManager.isMoving || plankRotationManager.isRotating) return;
+
         if (playerManager.horizontalInput > 0) StartCoroutine(TransitionWaypoints(1));
         if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
 
-    IEnumerator TransitionWaypoints(int direction)
+    IEnumerator TransitionWaypoints(int direction, int? arrayDirection = null)
     {
-        // Find index of current waypoint
-        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
-        var nextIndex = currentIndex;
-        var nextWaypointInArray = waypoints[currentIndex];
-
-        // Need to disable this for transitional waypoints
-        if (currentIndex < waypoints.Length - 2)
+        int aD = 0;
+        if (arrayDirection == null)
         {
-            nextWaypointInArray = waypoints[currentIndex + 1];
-        }
-
-        var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
-        var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypointInArray.transform.position);
-        var screenPosition = currentWaypointScreenPosition.x - nextWaypointScreenPosition.x;
-
-        if (screenPosition > 0)
-        {
-            leftWaypoint = nextWaypointInArray;
-            if (currentIndex > 0) rightWaypoint = waypoints[currentIndex - 1];
-            else rightWaypoint = null;
+            aD = ScreenToWaypoint(direction);
         }
 
         else
         {
-            rightWaypoint = nextWaypointInArray;
-            if (currentIndex > 0) leftWaypoint = waypoints[currentIndex - 1];
-            else leftWaypoint = null;
+            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+            nextWaypoint = waypoints[currentIndex + (int)arrayDirection];
         }
-
-        if (direction < 0)
-        {
-            if (leftWaypoint == null) yield break;
-            nextWaypoint = leftWaypoint;
-        }
-
-        else
-        {
-            if (rightWaypoint == null) yield break;
-            nextWaypoint = rightWaypoint;
-        }
-
-        // If first and last waypoint are used to transition between, exit coroutine
-        if ((currentWaypoint == firstWaypoint && nextWaypoint == lastWaypoint) ||
-            (currentWaypoint == lastWaypoint && nextWaypoint == firstWaypoint)) yield break;
+        if (nextWaypoint == null) yield break;
 
         playerManager.isMoving = true;
 
         // Set target position as next waypoint's position with player's Y position
-        Vector3 targetPosition = nextWaypoint.transform.position + this.transform.up * .05f;
+        Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
         // Rotate Player towards target position
-        if (V3Equal(this.transform.up, nextWaypoint.transform.up))
+        if (V3Equal(transform.up, nextWaypoint.transform.up))
         {
             this.transform.LookAt(targetPosition, nextWaypoint.transform.up);
         }
@@ -99,8 +69,8 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(.5f);
-            this.transform.position = nextWaypoint.transform.position;
-            this.transform.up = nextWaypoint.transform.up;
+            transform.position = nextWaypoint.transform.position;
+            transform.up = nextWaypoint.transform.up;
             playerManager.isMoving = false;
             yield break;
         }
@@ -111,11 +81,11 @@ public class PlayerMovement : MonoBehaviour
         distance = 100f;
 
         // While Player has not reached target postion
-        while (Vector3.Distance(this.transform.position, nextWaypoint.transform.position) < distance &&
-           Vector3.Distance(this.transform.position, nextWaypoint.transform.position) >= .001f)
+        while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
+           Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
         {
             // Take distance from Player's position to next waypoint's position
-            distance = Vector3.Distance(this.transform.position, nextWaypoint.transform.position);
+            distance = Vector3.Distance(transform.position, nextWaypoint.transform.position);
 
             // Pause movement while Player is rotating
             while (playerManager.isRotating) yield return null;
@@ -139,10 +109,51 @@ public class PlayerMovement : MonoBehaviour
             currentWaypoint = nextWaypoint;
 
             // Restart coroutine with new current waypoint
-            StartCoroutine(TransitionWaypoints(direction));
+            StartCoroutine(TransitionWaypoints(direction, aD));
         }
 
         yield return null;
+    }
+
+    private int ScreenToWaypoint(int direction)
+    {
+        // Find index of current waypoint
+        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+        var nextWaypointInArray = waypoints[currentIndex];
+
+        // If current waypoint is not last waypoint, set nextWaypointInArray as next waypoint in array
+        if (currentWaypoint != lastWaypoint) nextWaypointInArray = waypoints[currentIndex + 1];
+
+        var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
+        var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypointInArray.transform.position);
+
+        // Set screenPosition as current waypoint's position minus next waypoint's position along the x-axis
+        var screenPosition = currentWaypointScreenPosition.x - nextWaypointScreenPosition.x;
+
+        // If screen position is positive, next waypoint is to the left
+        if (screenPosition > 0)
+        {
+            leftWaypoint = nextWaypointInArray;
+            if (currentIndex > 0) rightWaypoint = waypoints[currentIndex - 1];
+            else rightWaypoint = null;
+        }
+
+        // If screen position is negative, next waypoint is to the right
+        else
+        {
+            rightWaypoint = nextWaypointInArray;
+            if (currentIndex > 0) leftWaypoint = waypoints[currentIndex - 1];
+            else leftWaypoint = null;
+        }
+
+        // If horizontal input is to the left, next waypoint is left waypoint (if given)
+        if (direction < 0) nextWaypoint = leftWaypoint;
+
+        // If horizontal input is to the right, next waypoint is right waypoint (if given)
+        else nextWaypoint = rightWaypoint;
+
+        if (nextWaypointInArray == nextWaypoint) return 1;
+        else return -1;
     }
 
     private void OnTriggerStay(Collider collider)

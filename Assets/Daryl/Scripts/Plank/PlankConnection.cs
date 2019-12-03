@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlankConnection : MonoBehaviour
@@ -29,7 +27,7 @@ public class PlankConnection : MonoBehaviour
         {
             // Unset any parents from Plank and exit method
             // The Player Plank never needs to be connected to other Planks
-            this.transform.parent = null;
+            transform.parent = null;
             return;
         }
 
@@ -38,20 +36,20 @@ public class PlankConnection : MonoBehaviour
         else passivePivot = lPivot;
 
         // Look for colliders in range of this Plank's active pivot
-        Collider[] hitColliders = Physics.OverlapSphere(this.passivePivot.position, .01f);
+        Collider[] hitColliders = Physics.OverlapSphere(passivePivot.position, .01f);
 
         // Find Plank other than this pivot's parent in firstColliders array
         // Lambda expression to find tagged collider
         var foundPivot = Array.Find(hitColliders, collider =>
         collider.tag.Equals("Pivot") &&
-        collider.gameObject.transform.parent != this.transform);
+        collider.gameObject.transform.parent != transform);
 
         // If a pivot has been found
         if (foundPivot)
         {
             // If last Plank finds first Plank or first Plank finds last Plank, no need to connect them
-            if ((this.transform == plankManager.lastPlank && foundPivot.transform.parent == plankManager.firstPlank) ||
-                (this.transform == plankManager.firstPlank && foundPivot.transform.parent == plankManager.lastPlank)) return;
+            if ((transform == plankManager.lastPlank && foundPivot.transform.parent == plankManager.firstPlank) ||
+                (transform == plankManager.firstPlank && foundPivot.transform.parent == plankManager.lastPlank)) return;
 
             // Set parent of found pivot as foundPlank
             Transform foundPlank = foundPivot.gameObject.transform.parent;
