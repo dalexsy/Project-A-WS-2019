@@ -2,7 +2,7 @@
 
 public class CameraPinchZoom : MonoBehaviour
 {
-    public float orthoZoomSpeed = 0.5f;        // The rate of change of the orthographic size in orthographic mode.
+    private float orthoZoomSpeed = 0.01f;        // The rate of change of the orthographic size in orthographic mode.
     private Camera mainCamera;
 
     private void Start()
@@ -30,20 +30,11 @@ public class CameraPinchZoom : MonoBehaviour
             // Find the difference in the distances between each frame.
             float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-            // If the camera is orthographic...
-            if (mainCamera.orthographic)
-            {
-                // ... change the orthographic size based on the change in distance between the touches.
-                mainCamera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+            // ... change the orthographic size based on the change in distance between the touches.
+            mainCamera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
 
-                // Make sure the orthographic size never drops below zero.
-                mainCamera.orthographicSize = Mathf.Max(mainCamera.orthographicSize, 0.1f);
-            }
-            else
-            {
-                // Clamp the field of view to make sure it's between 0 and 180.
-                mainCamera.fieldOfView = Mathf.Clamp(mainCamera.fieldOfView, 0.1f, 179.9f);
-            }
+            // Make sure the orthographic size never drops below zero.
+            mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 2f, 5f);
         }
     }
 }
