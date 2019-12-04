@@ -2,5 +2,5 @@
 
 public class InputManager : MonoBehaviour
 {
-    public bool isUsingTouch = false;
+    public bool isUsingTouch = true;
 }
