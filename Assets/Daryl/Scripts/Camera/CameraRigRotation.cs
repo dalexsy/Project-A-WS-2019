@@ -45,7 +45,7 @@ public class CameraRigRotation : MonoBehaviour
 
     private void TouchRotation()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount == 2)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -70,11 +70,12 @@ public class CameraRigRotation : MonoBehaviour
 
     private void MouseRotation()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(1))
         {
             float moveY = Input.GetAxis("Mouse X");
-            if (moveY > 0) StartCoroutine(RotateRig(1));
-            if (moveY < 0) StartCoroutine(RotateRig(-1));
+            Debug.Log(moveY);
+            if (moveY > 2f && moveY != 0) StartCoroutine(RotateRig(1));
+            if (moveY < -2f && moveY != 0) StartCoroutine(RotateRig(-1));
         }
     }
 

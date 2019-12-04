@@ -19,7 +19,7 @@ public class PlankRotation : MonoBehaviour
     private PlankRotationManager plankRotationManager;
 
     private Vector2 startPos = Vector2.zero;
-    private Vector2 direction = Vector2.zero;
+    private Vector2 inputDirection = Vector2.zero;
 
     private void Start()
     {
@@ -35,9 +35,9 @@ public class PlankRotation : MonoBehaviour
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
     }
 
-    private void TouchRotation()
+    private void TouchRotation(int direction)
     {
-        if (Input.touchCount == 2)
+        if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -48,32 +48,40 @@ public class PlankRotation : MonoBehaviour
                     break;
 
                 case TouchPhase.Moved:
-                    direction = touch.position - startPos;
-                    if (direction.y >= 25 && direction.y <= Screen.height)
+                    inputDirection = touch.position - startPos;
+                    if (inputDirection.y >= 25 * direction && inputDirection.y <= Screen.height)
                     {
                         // Rotate Plank clockwise
                         // Will rotate from surrogate pivot's position
-                        if (isConnectedFront) StartCoroutine(RotatePlank(1, activePivot));
+                        if (isConnectedFront) StartCoroutine(RotatePlank(direction, activePivot));
 
                         // Rotate Plank counterclockwise 
                         // Will rotate from active pivot's position
-                        else StartCoroutine(RotatePlank(-1, activePivot));
-                    }
-
-                    if (direction.y <= -25 && direction.y >= -Screen.height)
-                    {
-                        // Rotate Plank counterclockwise
-                        // Will rotate from surrogate pivot's position
-                        if (isConnectedFront) StartCoroutine(RotatePlank(-1, activePivot));
-
-                        // Rotate Plank clockwise
-                        // Will rotate from active pivot's position
-                        else StartCoroutine(RotatePlank(1, activePivot));
+                        else StartCoroutine(RotatePlank(direction * -1, activePivot));
                     }
                     break;
 
                 case TouchPhase.Ended:
                     break;
+            }
+        }
+    }
+
+    private void MouseRotation(int direction)
+    {
+        if (Input.GetMouseButton(0))
+        {
+            float moveY = Input.GetAxis("Mouse Y");
+
+            if (moveY > 1f * direction && moveY != 0 && !plankRotationManager.isRotating)
+            {
+                // Rotate Plank clockwise
+                // Will rotate from surrogate pivot's position
+                if (isConnectedFront) StartCoroutine(RotatePlank(direction, activePivot));
+
+                // Rotate Plank counterclockwise 
+                // Will rotate from active pivot's position
+                else StartCoroutine(RotatePlank(direction * -1, activePivot));
             }
         }
     }
@@ -90,14 +98,16 @@ public class PlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                TouchRotation();
+                TouchRotation(1);
+                MouseRotation(1);
             }
 
             //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                TouchRotation();
+                TouchRotation(-1);
+                MouseRotation(-1);
             }
         }
     }
@@ -106,6 +116,7 @@ public class PlankRotation : MonoBehaviour
     // Requires direction and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
+        Debug.Log(direction);
         // Save local variable rotationPivot from active pivot
         // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned 
         Transform rotationPivot = pivot;
