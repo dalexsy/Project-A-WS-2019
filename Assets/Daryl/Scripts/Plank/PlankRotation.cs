@@ -15,6 +15,7 @@ public class PlankRotation : MonoBehaviour
 
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
+    private InputManager inputManager;
     private PlankConnection plankConnection;
     private PlankRotationManager plankRotationManager;
 
@@ -25,6 +26,7 @@ public class PlankRotation : MonoBehaviour
     {
         activePivotFX = GetComponent<ActivePivotFX>();
         collisionDetection = GetComponent<CollisionDetection>();
+        inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         plankConnection = GetComponent<PlankConnection>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
     }
@@ -35,36 +37,6 @@ public class PlankRotation : MonoBehaviour
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
     }
 
-    /*
-        private int TouchInput()
-        {
-            if (Input.touchCount == 1)
-            {
-                Touch touch = Input.GetTouch(0);
-
-                switch (touch.phase)
-                {
-                    case TouchPhase.Began:
-                        startPos = touch.position;
-                        break;
-
-                    case TouchPhase.Moved:
-                        inputDirection = touch.position - startPos;
-
-                        // Set input buffer to prevent input oversensitivity
-                        float inputBuffer = Screen.height * .01f * Mathf.Sign(inputDirection.y);
-
-                        if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
-                        if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
-                        break;
-
-                    case TouchPhase.Ended:
-                        break;
-                }
-            }
-        }
-        */
-
     private int TouchInput()
     {
         if (Input.touchCount == 1)
@@ -74,8 +46,8 @@ public class PlankRotation : MonoBehaviour
             // Set input buffer to prevent input oversensitivity
             float inputBuffer = Screen.height * .01f * Mathf.Sign(touchY);
 
-            if (touchY > Screen.height / 2 + inputBuffer) return 1;
-            if (touchY < Screen.height / 2 + inputBuffer) return -1;
+            if (touchY < Screen.height / 2 + inputBuffer) return 1;
+            if (touchY > Screen.height / 2 + inputBuffer) return -1;
         }
 
         // If no valid input is given, return zero
@@ -92,8 +64,8 @@ public class PlankRotation : MonoBehaviour
             float inputBuffer = Screen.height * .01f * Mathf.Sign(moveY);
 
             // If input is over input buffer, return direction of input
-            if (moveY > inputBuffer && moveY != 0) return 1;
-            if (moveY < inputBuffer && moveY != 0) return -1;
+            if (moveY < inputBuffer && moveY != 0) return 1;
+            if (moveY > inputBuffer && moveY != 0) return -1;
         }
 
         // If no valid input is given, return zero
@@ -128,16 +100,16 @@ public class PlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                if (MouseInput() == 1 || TouchInput() == 1) StartRotation(1);
-
+                if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
+                if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
             }
 
             //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                //TouchRotation(-1);
-                if (MouseInput() == -1 || TouchInput() == 1) StartRotation(-1);
+                if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
+                if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
             }
         }
     }
