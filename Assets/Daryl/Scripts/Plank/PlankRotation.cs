@@ -40,6 +40,7 @@ public class PlankRotation : MonoBehaviour
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
+            float inputBuffer = Screen.height * .01f;
 
             switch (touch.phase)
             {
@@ -49,7 +50,7 @@ public class PlankRotation : MonoBehaviour
 
                 case TouchPhase.Moved:
                     inputDirection = touch.position - startPos;
-                    if (inputDirection.y >= 25 * direction && inputDirection.y <= Screen.height)
+                    if (inputDirection.y >= inputBuffer * direction && inputDirection.y <= Screen.height)
                     {
                         // Rotate Plank clockwise
                         // Will rotate from surrogate pivot's position
@@ -67,29 +68,44 @@ public class PlankRotation : MonoBehaviour
         }
     }
 
-    private void MouseRotation(int direction)
+    private int MouseInput()
     {
         if (Input.GetMouseButton(0))
         {
             float moveY = Input.GetAxis("Mouse Y");
 
-            if (moveY > 1f * direction && moveY != 0 && !plankRotationManager.isRotating)
-            {
-                // Rotate Plank clockwise
-                // Will rotate from surrogate pivot's position
-                if (isConnectedFront) StartCoroutine(RotatePlank(direction, activePivot));
+            // Set input buffer to prevent input oversensitivity
+            float inputBuffer = Screen.height * .01f * Mathf.Sign(moveY);
 
-                // Rotate Plank counterclockwise 
-                // Will rotate from active pivot's position
-                else StartCoroutine(RotatePlank(direction * -1, activePivot));
-            }
+            // If input is over input buffer, return direction of input
+            if (moveY > inputBuffer && moveY != 0) return 1;
+            if (moveY < inputBuffer && moveY != 0) return -1;
         }
+
+        // If no valid input is given, return zero
+        return 0;
+    }
+
+    private void MouseRotation(int direction)
+    {
+        if (direction == 0) return;
+        if (plankRotationManager.isRotating) return;
+
+        // Rotate Plank clockwise
+        // Will rotate from surrogate pivot's position
+        if (isConnectedFront) StartCoroutine(RotatePlank(direction, activePivot));
+
+        // Rotate Plank counterclockwise 
+        // Will rotate from active pivot's position
+        else StartCoroutine(RotatePlank(direction * -1, activePivot));
     }
 
     private void RotationInput()
     {
         // If no pivots are given, accept no input
         if (!activePivot) return;
+
+        if (!Input.GetMouseButton(0)) return;
 
         // If Plank is not rotating
         if (!plankRotationManager.isRotating)
@@ -98,16 +114,16 @@ public class PlankRotation : MonoBehaviour
             if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                TouchRotation(1);
-                MouseRotation(1);
+                if (MouseInput() == 1) MouseRotation(1);
+                //TouchRotation(1);
             }
 
             //  If Plank can rotate counterclockwise
             if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
                 canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
             {
-                TouchRotation(-1);
-                MouseRotation(-1);
+                //TouchRotation(-1);
+                if (MouseInput() == -1) MouseRotation(-1);
             }
         }
     }
@@ -116,7 +132,6 @@ public class PlankRotation : MonoBehaviour
     // Requires direction and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
-        Debug.Log(direction);
         // Save local variable rotationPivot from active pivot
         // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned 
         Transform rotationPivot = pivot;
@@ -197,5 +212,4 @@ public class PlankRotation : MonoBehaviour
         // Sets isRotating to false after Plank has reached max rotation
         plankRotationManager.isRotating = false;
     }
-
 }
