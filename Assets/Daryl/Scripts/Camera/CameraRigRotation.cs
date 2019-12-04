@@ -9,11 +9,14 @@ public class CameraRigRotation : MonoBehaviour
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
     private bool isRotating = false;
-    Vector2 startPos = Vector2.zero;
-    Vector2 direction = Vector2.zero;
+    private InputManager inputManager;
+    private Vector2 startPos = Vector2.zero;
+    private Vector2 inputDirection = Vector2.zero;
 
     private void Start()
     {
+        inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+
         // Find all Planks in scene
         planks = GameObject.FindGameObjectsWithTag("Plank");
 
@@ -39,8 +42,8 @@ public class CameraRigRotation : MonoBehaviour
         // If rotating, accept no input
         if (isRotating) return;
 
-        MouseRotation();
-        TouchRotation();
+        if (!inputManager.isUsingTouch) MouseRotation();
+        else TouchRotation();
     }
 
     private void TouchRotation()
@@ -56,10 +59,11 @@ public class CameraRigRotation : MonoBehaviour
                     break;
 
                 case TouchPhase.Moved:
-                    direction = touch.position - startPos;
-                    Debug.Log(direction);
-                    if (direction.x >= 25 && direction.x <= Screen.width) StartCoroutine(RotateRig(1));
-                    if (direction.x <= -25 && direction.x >= -Screen.width) StartCoroutine(RotateRig(-1));
+                    inputDirection = touch.position - startPos;
+                    float inputBuffer = Screen.height * .01f * Mathf.Sign(inputDirection.y);
+
+                    if (inputDirection.y > inputBuffer && inputDirection.y != 0) StartCoroutine(RotateRig(1));
+                    if (inputDirection.y < inputBuffer && inputDirection.y != 0) StartCoroutine(RotateRig(-1));
                     break;
 
                 case TouchPhase.Ended:
@@ -73,9 +77,12 @@ public class CameraRigRotation : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             float moveY = Input.GetAxis("Mouse X");
-            Debug.Log(moveY);
-            if (moveY > 2f && moveY != 0) StartCoroutine(RotateRig(1));
-            if (moveY < -2f && moveY != 0) StartCoroutine(RotateRig(-1));
+
+            // Set input buffer to prevent input oversensitivity
+            float inputBuffer = Screen.height * .01f * Mathf.Sign(moveY);
+
+            if (moveY < inputBuffer && moveY != 0) StartCoroutine(RotateRig(1));
+            if (moveY > inputBuffer && moveY != 0) StartCoroutine(RotateRig(-1));
         }
     }
 

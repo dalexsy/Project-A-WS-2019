@@ -62,27 +62,27 @@ public class PlankRotation : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            // Handle finger movements based on touch phase.
             switch (touch.phase)
             {
-                // Record initial touch position.
                 case TouchPhase.Began:
                     startPos = touch.position;
                     break;
 
-                // Determine direction by comparing the current touch position with the initial one.
                 case TouchPhase.Moved:
 
                     inputDirection = touch.position - startPos;
-                    if (inputDirection.y < 0) return 1;
-                    if (inputDirection.y > 0) return -1;
+                    float inputBuffer = Screen.height * .01f * Mathf.Sign(inputDirection.y);
+
+                    if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
+                    if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
                     break;
 
-                // Report that a direction has been chosen when the finger is lifted.
                 case TouchPhase.Ended:
                     break;
             }
         }
+
+        // If no valid input is given, return zero
         return 0;
     }
 
