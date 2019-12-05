@@ -14,11 +14,13 @@ public class PlayerMovement : MonoBehaviour
     private GameObject leftWaypoint;
     private GameObject rightWaypoint;
     private int arrayDirection;
+    private InputManager inputManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
 
     private void Start()
     {
+        inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
 
@@ -36,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // If Player is moving or Plank is rotating, accept no input
-        if (playerManager.isMoving || plankRotationManager.isRotating) return;
+        if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping) return;
 
         MouseInput();
 
