@@ -40,6 +40,16 @@ public class PlayerMovement : MonoBehaviour
         if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
 
+    private void TouchInput()
+    {
+
+    }
+
+    private void MouseInput()
+    {
+        
+    }
+
     IEnumerator TransitionWaypoints(int direction, int? arrayDirection = null)
     {
         // If using transitional waypoint, use last direction in array to find next waypoint

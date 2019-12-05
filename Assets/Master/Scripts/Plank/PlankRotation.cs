@@ -37,32 +37,34 @@ public class PlankRotation : MonoBehaviour
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
     }
 
-    /*
-        private int TouchInput()
+    private void RotationInput()
+    {
+        // If no pivots are given, accept no input
+        if (!activePivot) return;
+
+        // If Plank can rotate clockwise
+        if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
+            canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
         {
-            if (Input.touchCount == 1)
-            {
-                float touchY = Input.GetTouch(0).position.y;
-
-                // Set input buffer to prevent input oversensitivity
-                float inputBuffer = Screen.height * .01f * Mathf.Sign(touchY);
-
-                if (touchY < Screen.height / 2 + inputBuffer) return 1;
-                if (touchY > Screen.height / 2 + inputBuffer) return -1;
-            }
-
-            // If no valid input is given, return zero
-            return 0;
+            if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
+            if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
         }
-        */
 
+        //  If Plank can rotate counterclockwise
+        if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
+            canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
+        {
+            if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
+            if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
+        }
+    }
+
+    // Returns direction of input
     private int TouchInput()
     {
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
-
-            Debug.Log(touch.phase);
 
             switch (touch.phase)
             {
@@ -70,12 +72,14 @@ public class PlankRotation : MonoBehaviour
                     startPos = touch.position;
                     break;
 
-                case TouchPhase.Moved:                    
+                case TouchPhase.Moved:
                     break;
 
                 case TouchPhase.Ended:
-                
-                inputDirection = touch.position - startPos;
+
+                    inputDirection = touch.position - startPos;
+
+                    // Set input buffer to prevent input oversensitivity
                     float inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
 
                     if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
@@ -88,6 +92,7 @@ public class PlankRotation : MonoBehaviour
         return 0;
     }
 
+    // Returns direction of input
     private int MouseInput()
     {
         if (Input.GetMouseButton(0))
@@ -106,47 +111,31 @@ public class PlankRotation : MonoBehaviour
         return 0;
     }
 
+    // Starts Plank rotation
+    // Uses direction from MouseInput/TouchInput
     private void StartRotation(int direction)
     {
         if (direction == 0) return;
         if (plankRotationManager.isRotating) return;
 
-
-
-        // Rotate Plank clockwise
-        // Will rotate from surrogate pivot's position
-        if (isConnectedFront) StartCoroutine(RotatePlank(direction, activePivot));
-
-        // Rotate Plank counterclockwise 
-        // Will rotate from active pivot's position
-        else StartCoroutine(RotatePlank(direction * -1, activePivot));
-    }
-
-    private void RotationInput()
-    {
-        // If no pivots are given, accept no input
-        if (!activePivot) return;
-
-        //if (!Input.GetMouseButton(0)) return;
-
-        // If Plank is not rotating
-        if (!plankRotationManager.isRotating)
+        if (isConnectedFront)
         {
-            // If Plank can rotate clockwise
-            if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
-                canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
-            {
-                if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
-                if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
-            }
+            // Set isRotating to true to prevent multiple rotations
+            plankRotationManager.isRotating = true;
 
-            //  If Plank can rotate counterclockwise
-            if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
-                canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
-            {
-                if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
-                if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
-            }
+            // Rotate Plank clockwise
+            // Will rotate from surrogate pivot's position
+            StartCoroutine(RotatePlank(direction, activePivot));
+        }
+
+        else
+        {
+            // Set isRotating to true to prevent multiple rotations
+            plankRotationManager.isRotating = true;
+
+            // Rotate Plank counterclockwise 
+            // Will rotate from active pivot's position
+            StartCoroutine(RotatePlank(direction * -1, activePivot));
         }
     }
 
@@ -155,7 +144,7 @@ public class PlankRotation : MonoBehaviour
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
         // Save local variable rotationPivot from active pivot
-        // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned 
+        // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned (should no longer happen)
         Transform rotationPivot = pivot;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
@@ -169,9 +158,6 @@ public class PlankRotation : MonoBehaviour
 
         // Reset current rotation
         float currentRotation = 0f;
-
-        // Set isRotating to true to prevent multiple rotations
-        plankRotationManager.isRotating = true;
 
         //if (activePivotFX.pulse) activePivotFX.DespawnPulse();
 
