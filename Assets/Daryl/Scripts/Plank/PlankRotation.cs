@@ -58,9 +58,11 @@ public class PlankRotation : MonoBehaviour
 
     private int TouchInput()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
+
+            Debug.Log(touch.phase);
 
             switch (touch.phase)
             {
@@ -68,16 +70,16 @@ public class PlankRotation : MonoBehaviour
                     startPos = touch.position;
                     break;
 
-                case TouchPhase.Moved:
-
-                    inputDirection = touch.position - startPos;
-                    float inputBuffer = Screen.height * .01f * Mathf.Sign(inputDirection.y);
-
-                    if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
-                    if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
+                case TouchPhase.Moved:                    
                     break;
 
                 case TouchPhase.Ended:
+                
+                inputDirection = touch.position - startPos;
+                    float inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
+
+                    if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
+                    if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
                     break;
             }
         }
@@ -109,6 +111,8 @@ public class PlankRotation : MonoBehaviour
         if (direction == 0) return;
         if (plankRotationManager.isRotating) return;
 
+
+
         // Rotate Plank clockwise
         // Will rotate from surrogate pivot's position
         if (isConnectedFront) StartCoroutine(RotatePlank(direction, activePivot));
@@ -123,7 +127,7 @@ public class PlankRotation : MonoBehaviour
         // If no pivots are given, accept no input
         if (!activePivot) return;
 
-        if (!Input.GetMouseButton(0)) return;
+        //if (!Input.GetMouseButton(0)) return;
 
         // If Plank is not rotating
         if (!plankRotationManager.isRotating)
