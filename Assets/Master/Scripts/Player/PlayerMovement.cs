@@ -71,11 +71,13 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
-        // If no next waypoint is given, exit coroutine
+        // If no next waypoint is given, exit coroutine (don't know if needed)
         if (nextWaypoint == null) yield break;
 
         playerManager.isMoving = true;
 
+        // If current waypoint is flagged as transitional, 
+        // set next waypoint as next waypoint in array using previous array direction
         if (currentWaypoint.GetComponent<WaypointMarker>().isTransitional == true)
         {
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
@@ -94,10 +96,9 @@ public class PlayerMovement : MonoBehaviour
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
+            yield return new WaitForSeconds(.3f);
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up;
-            playerManager.isMoving = false;
-            yield break;
         }
 
         // Set current position as Player's position

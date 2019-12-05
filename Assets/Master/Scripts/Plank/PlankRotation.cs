@@ -18,6 +18,7 @@ public class PlankRotation : MonoBehaviour
     private InputManager inputManager;
     private PlankConnection plankConnection;
     private PlankRotationManager plankRotationManager;
+    private PlayerManager playerManager;
 
     private Vector2 startPos = Vector2.zero;
     private Vector2 inputDirection = Vector2.zero;
@@ -29,6 +30,7 @@ public class PlankRotation : MonoBehaviour
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         plankConnection = GetComponent<PlankConnection>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
+        playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
     }
 
     private void Update()
@@ -116,7 +118,7 @@ public class PlankRotation : MonoBehaviour
     private void StartRotation(int direction)
     {
         if (direction == 0) return;
-        if (plankRotationManager.isRotating) return;
+        if (plankRotationManager.isRotating || playerManager.isMoving) return;
 
         if (isConnectedFront)
         {
