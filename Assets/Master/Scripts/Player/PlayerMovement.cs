@@ -40,7 +40,8 @@ public class PlayerMovement : MonoBehaviour
         // If Player is moving or Plank is rotating, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping) return;
 
-        MouseInput();
+        if (!inputManager.isUsingTouch) MouseInput();
+        if (inputManager.isUsingTouch) TouchInput();
 
         if (playerManager.horizontalInput > 0) StartCoroutine(TransitionWaypoints(1));
         if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
