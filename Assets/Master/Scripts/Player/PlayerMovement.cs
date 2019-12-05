@@ -6,12 +6,14 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     [SerializeField] private float distance;
-    public GameObject currentWaypoint;
-    public GameObject nextWaypoint;
+    private GameObject currentWaypoint;
+    private GameObject targetWaypoint;
+    private GameObject nextWaypoint;
     private GameObject firstWaypoint;
     private GameObject lastWaypoint;
     private GameObject leftWaypoint;
     private GameObject rightWaypoint;
+    private int arrayDirection;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
 
@@ -36,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
         // If Player is moving or Plank is rotating, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating) return;
 
+        MouseInput();
+
         if (playerManager.horizontalInput > 0) StartCoroutine(TransitionWaypoints(1));
         if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
@@ -47,28 +51,36 @@ public class PlayerMovement : MonoBehaviour
 
     private void MouseInput()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            int layerMask = LayerMask.GetMask("Waypoint Triggers");
+
+            if (Physics.Raycast(ray, out hit, 1000f, layerMask))
+            {
+                targetWaypoint = hit.transform.gameObject;
+                var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+                var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+                arrayDirection = Math.Sign(targetIndex - currentIndex);
+                nextWaypoint = waypoints[currentIndex + arrayDirection];
+                StartCoroutine(TransitionWaypoints(arrayDirection));
+            }
+        }
     }
 
-    IEnumerator TransitionWaypoints(int direction, int? arrayDirection = null)
+    IEnumerator TransitionWaypoints(int arrayDirection)
     {
-        // If using transitional waypoint, use last direction in array to find next waypoint
-        int aD = 0;
-        if (arrayDirection == null)
-        {
-            aD = ScreenToWaypoint(direction);
-        }
-
-        else
-        {
-            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
-            nextWaypoint = waypoints[currentIndex + (int)arrayDirection];
-        }
-
         // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
         playerManager.isMoving = true;
+
+        if (currentWaypoint.GetComponent<WaypointMarker>().isTransitional == true)
+        {
+            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+            nextWaypoint = waypoints[currentIndex + arrayDirection];
+        }
 
         // Set target position as next waypoint's position with player's Y position
         Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
@@ -82,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
-            yield return new WaitForSeconds(.5f); // Needed to stop coroutine from restarting
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up;
             playerManager.isMoving = false;
@@ -116,6 +127,9 @@ public class PlayerMovement : MonoBehaviour
 
         playerManager.isMoving = false;
 
+        if (nextWaypoint != targetWaypoint) nextWaypoint.GetComponent<WaypointMarker>().isTransitional = true;
+        else foreach (var waypoint in waypoints) waypoint.GetComponent<WaypointMarker>().isTransitional = false;
+
         // If next waypoint is flagged as transitional
         if (nextWaypoint.GetComponent<WaypointMarker>().isTransitional == true)
         {
@@ -123,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
             currentWaypoint = nextWaypoint;
 
             // Restart coroutine with new current waypoint
-            StartCoroutine(TransitionWaypoints(direction, aD));
+            StartCoroutine(TransitionWaypoints(arrayDirection));
         }
 
         yield return null;

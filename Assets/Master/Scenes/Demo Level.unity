@@ -878,6 +878,11 @@ PrefabInstance:
       propertyPath: isTransitional
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3060483723498933847, guid: fa3ec89fea965a64b8b81c2d93739495,
+        type: 3}
+      propertyPath: isAlwaysTransitional
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7636265387139153611, guid: fa3ec89fea965a64b8b81c2d93739495,
         type: 3}
       propertyPath: m_Mesh
@@ -1272,6 +1277,11 @@ PrefabInstance:
     - target: {fileID: 3387832921255528748, guid: e9312be17114b2246b5f713f425cfdab,
         type: 3}
       propertyPath: isTransitional
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3387832921255528748, guid: e9312be17114b2246b5f713f425cfdab,
+        type: 3}
+      propertyPath: isAlwaysTransitional
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -100,7 +100,7 @@ public class PlankRotation : MonoBehaviour
             float moveY = Input.GetAxis("Mouse Y");
 
             // Set input buffer to prevent input oversensitivity
-            float inputBuffer = Screen.height * .01f * Mathf.Sign(moveY);
+            float inputBuffer = Screen.height * .1f * Mathf.Sign(moveY);
 
             // If input is over input buffer, return direction of input
             if (moveY < inputBuffer && moveY != 0) return 1;
