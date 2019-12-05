@@ -96,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
-            yield return new WaitForSeconds(.3f);
+            yield return new WaitForSeconds(.1f);
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up;
         }
