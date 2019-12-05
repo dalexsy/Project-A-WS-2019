@@ -64,6 +64,8 @@ public class PlankRotation : MonoBehaviour
     // Returns direction of input
     private int TouchInput()
     {
+        if (inputManager.isDoubleSwiping == true) return 0;
+
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
