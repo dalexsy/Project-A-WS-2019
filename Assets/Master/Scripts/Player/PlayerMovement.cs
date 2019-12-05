@@ -48,7 +48,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void TouchInput()
     {
+        if (inputManager.isDoubleSwiping == true || inputManager.isSwiping == true) return;
 
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    break;
+
+                case TouchPhase.Stationary:
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    int layerMask = LayerMask.GetMask("Waypoint Triggers");
+
+                    if (Physics.Raycast(ray, out hit, 1000f, layerMask))
+                    {
+                        targetWaypoint = hit.transform.gameObject;
+                        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+                        var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+                        arrayDirection = Math.Sign(targetIndex - currentIndex);
+                        nextWaypoint = waypoints[currentIndex + arrayDirection];
+                        StartCoroutine(TransitionWaypoints(arrayDirection));
+                    }
+                    break;
+
+                case TouchPhase.Ended:
+                    break;
+            }
+        }
     }
 
     private void MouseInput()
