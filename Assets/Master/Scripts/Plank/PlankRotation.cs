@@ -77,7 +77,11 @@ public class PlankRotation : MonoBehaviour
                     break;
 
                 case TouchPhase.Moved:
-                    inputManager.isSwiping = true;
+
+                    // Set input buffer to prevent input oversensitivity
+                    float inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
+
+                    if (Mathf.Abs(touch.position.y - startPos.y) > inputBuffer) inputManager.isSwiping = true;
                     break;
 
                 case TouchPhase.Ended:
@@ -85,7 +89,7 @@ public class PlankRotation : MonoBehaviour
                     inputDirection = touch.position - startPos;
 
                     // Set input buffer to prevent input oversensitivity
-                    float inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
+                    inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
 
                     if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
                     if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
