@@ -42,9 +42,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (!inputManager.isUsingTouch) MouseInput();
         if (inputManager.isUsingTouch) TouchInput();
-
-        if (playerManager.horizontalInput > 0) StartCoroutine(TransitionWaypoints(1));
-        if (playerManager.horizontalInput < 0) StartCoroutine(TransitionWaypoints(-1));
     }
 
     private void TouchInput()
@@ -65,13 +62,25 @@ public class PlayerMovement : MonoBehaviour
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     int layerMask = LayerMask.GetMask("Waypoint Triggers");
 
+                    // If any waypoints are tapped
                     if (Physics.Raycast(ray, out hit, 1000f, layerMask))
                     {
+                        // Set target waypoint as tapped waypoint
                         targetWaypoint = hit.transform.gameObject;
+
+                        // Find array position of current waypoint
                         var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+                        // Find array position of target waypoint
                         var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+
+                        // Find direction between target and current waypoint
                         arrayDirection = Math.Sign(targetIndex - currentIndex);
+
+                        // Set next waypoint as next waypoint in array using direction
                         nextWaypoint = waypoints[currentIndex + arrayDirection];
+
+                        // Start transitioning
                         StartCoroutine(TransitionWaypoints(arrayDirection));
                     }
                     break;
@@ -90,13 +99,25 @@ public class PlayerMovement : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             int layerMask = LayerMask.GetMask("Waypoint Triggers");
 
+            // If any waypoints are tapped
             if (Physics.Raycast(ray, out hit, 1000f, layerMask))
             {
+                // Set target waypoint as tapped waypoint
                 targetWaypoint = hit.transform.gameObject;
+
+                // Find array position of current waypoint
                 var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+                // Find array position of target waypoint
                 var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+
+                // Find direction between target and current waypoint
                 arrayDirection = Math.Sign(targetIndex - currentIndex);
+
+                // Set next waypoint as next waypoint in array using direction
                 nextWaypoint = waypoints[currentIndex + arrayDirection];
+
+                // Start transitioning
                 StartCoroutine(TransitionWaypoints(arrayDirection));
             }
         }
@@ -104,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
-        // If no next waypoint is given, exit coroutine (don't know if needed)
+        // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
         playerManager.isMoving = true;
