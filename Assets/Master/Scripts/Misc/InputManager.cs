@@ -2,7 +2,7 @@
 
 public class InputManager : MonoBehaviour
 {
-    [HideInInspector] public bool isUsingTouch = true;
+    public bool isUsingTouch = true;
     public bool isSwiping = false;
     public bool isDoubleSwiping = false;
 
@@ -11,8 +11,7 @@ public class InputManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.Android ||
             Application.platform == RuntimePlatform.IPhonePlayer) isUsingTouch = true;
 
-        if (Application.platform == RuntimePlatform.WindowsEditor ||
-            Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
+        if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
 
     }
 
