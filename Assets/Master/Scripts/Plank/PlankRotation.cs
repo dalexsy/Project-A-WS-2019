@@ -79,7 +79,7 @@ public class PlankRotation : MonoBehaviour
                 case TouchPhase.Moved:
 
                     // Set input buffer to prevent input oversensitivity
-                    float inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
+                    float inputBuffer = Screen.height * .5f * Mathf.Sign(inputDirection.y);
 
                     if (Mathf.Abs(touch.position.y - startPos.y) > inputBuffer) inputManager.isSwiping = true;
                     break;
@@ -87,11 +87,11 @@ public class PlankRotation : MonoBehaviour
                 case TouchPhase.Ended:
 
                     inputDirection = touch.position - startPos;
-                    
+
                     inputManager.isSwiping = false;
 
                     // Set input buffer to prevent input oversensitivity
-                    inputBuffer = Screen.height * .1f * Mathf.Sign(inputDirection.y);
+                    inputBuffer = Screen.height * .5f * Mathf.Sign(inputDirection.y);
 
                     if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
                     if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
@@ -112,7 +112,7 @@ public class PlankRotation : MonoBehaviour
             float moveY = Input.GetAxis("Mouse Y");
 
             // Set input buffer to prevent input oversensitivity
-            float inputBuffer = Screen.height * .1f * Mathf.Sign(moveY);
+            float inputBuffer = Screen.height * .5f * Mathf.Sign(moveY);
 
             // If input is over input buffer, return direction of input
             if (moveY < inputBuffer && moveY != 0) return 1;
