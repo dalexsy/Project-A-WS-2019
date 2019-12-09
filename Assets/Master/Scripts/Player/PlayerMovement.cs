@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private InputManager inputManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
+    private Renderer rend;
 
     private void Start()
     {
@@ -33,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
         // Set first and last waypoint
         firstWaypoint = waypoints[0];
         lastWaypoint = waypoints[waypoints.Length - 1];
+
+        rend = gameObject.GetComponent<Renderer>();
     }
 
     private void Update()
@@ -40,8 +43,19 @@ public class PlayerMovement : MonoBehaviour
         // If Player is moving or Plank is rotating, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping) return;
 
-        if (!inputManager.isUsingTouch) MouseInput();
-        if (inputManager.isUsingTouch) TouchInput();
+        if (!inputManager.isUsingTouch)
+        {
+            MouseInput();
+            rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
+            rend.material.SetColor("_BaseColor", Color.red);
+
+        }
+        if (inputManager.isUsingTouch)
+        {
+            TouchInput();
+            rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
+            rend.material.SetColor("_BaseColor", Color.white);
+        }
     }
 
     private void TouchInput()
@@ -51,6 +65,18 @@ public class PlayerMovement : MonoBehaviour
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Stationary)
+            {
+                rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
+                rend.material.SetColor("_BaseColor", Color.green);
+            }
+
+            if (touch.phase == TouchPhase.Moved)
+            {
+                rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
+                rend.material.SetColor("_BaseColor", Color.blue);
+            }
 
             switch (touch.phase)
             {
@@ -86,6 +112,8 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case TouchPhase.Ended:
+                    rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
+                    rend.material.SetColor("_BaseColor", Color.white);
                     break;
             }
         }
