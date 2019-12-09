@@ -79,26 +79,45 @@ public class PlankRotation : MonoBehaviour
                 case TouchPhase.Moved:
 
                     // Set input buffer to prevent input oversensitivity
-                    float inputBuffer = Screen.height
-                                      * inputManager.inputBuffer
-                                      * Mathf.Sign(inputDirection.y);
+                    float inputBuffer = Screen.height * inputManager.inputBuffer;
 
-                    if (Mathf.Abs(touch.position.y - startPos.y) > inputBuffer) inputManager.isSwiping = true;
+                    var pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
+
+                    float inputDirectionAxis = inputDirection.y;
+                    float touchPositionAxis = touch.position.y;
+                    float startPositionAxis = startPos.y;
+
+                    inputDirection = touch.position - startPos;
+
+                    if (pivotOrientationDetection.isVertical())
+                    {
+                        touchPositionAxis = touch.position.x;
+                        startPositionAxis = startPos.x;
+                        inputDirectionAxis = inputDirection.x;
+                    }
+
+                    if (Mathf.Abs(touchPositionAxis - startPositionAxis) > inputBuffer * Mathf.Sign(inputDirectionAxis)) inputManager.isSwiping = true;
                     break;
 
                 case TouchPhase.Ended:
 
+                    inputManager.isSwiping = false;
+
+                    pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
+
                     inputDirection = touch.position - startPos;
 
-                    inputManager.isSwiping = false;
+                    inputDirectionAxis = inputDirection.y;
+
+                    if (pivotOrientationDetection.isVertical()) inputDirectionAxis = inputDirection.x;
 
                     // Set input buffer to prevent input oversensitivity
                     inputBuffer = Screen.height
                                 * inputManager.inputBuffer
-                                * Mathf.Sign(inputDirection.y);
+                                * Mathf.Sign(inputDirectionAxis);
 
-                    if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
-                    if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
+                    if (inputDirectionAxis > inputBuffer && inputDirectionAxis != 0) return 1;
+                    if (inputDirectionAxis < inputBuffer && inputDirectionAxis != 0) return -1;
 
                     break;
             }

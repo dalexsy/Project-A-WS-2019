@@ -18,9 +18,8 @@ public class PlankCollisionDetection : MonoBehaviour
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-        {
+            
             LimitRotationOnEnter(collider);
-        }
     }
 
     private void OnTriggerExit(Collider collider)
@@ -28,9 +27,8 @@ public class PlankCollisionDetection : MonoBehaviour
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-        {
+
             LimitRotationOnExit(collider);
-        }
     }
 
     // Method to limit Plank's rotation (clockwise or counterclockwise)

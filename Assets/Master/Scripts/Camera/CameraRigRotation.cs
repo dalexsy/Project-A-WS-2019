@@ -70,7 +70,7 @@ public class CameraRigRotation : MonoBehaviour
             // Make sure the orthographic size never drops below zero.
             mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 2f, 5f);
 
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation + pinchAmount, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation + pinchAmount * .01f, transform.eulerAngles.z);
         }
     }
     private void MouseRotation()
