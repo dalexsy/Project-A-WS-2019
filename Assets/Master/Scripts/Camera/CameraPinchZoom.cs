@@ -10,7 +10,7 @@ public class CameraPinchZoom : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    void Update()
+    private void LateUpdate()
     {
         // If there are two touches on the device...
         if (Input.touchCount == 2)
