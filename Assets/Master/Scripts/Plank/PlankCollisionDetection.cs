@@ -5,6 +5,7 @@ public class PlankCollisionDetection : MonoBehaviour
     private PlankManager plankManager;
     private PlankRotation plankRotation;
     private Transform rotatingPivot;
+    [SerializeField] Transform collisionObject;
 
     private void Start()
     {
@@ -12,12 +13,14 @@ public class PlankCollisionDetection : MonoBehaviour
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
-    private void OnTriggerStay(Collider collider)
+    private void OnTriggerEnter(Collider collider)
     {
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-            LimitRotationOnStay(collider);
+        {
+            LimitRotationOnEnter(collider);
+        }
     }
 
     private void OnTriggerExit(Collider collider)
@@ -25,12 +28,14 @@ public class PlankCollisionDetection : MonoBehaviour
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
+        {
             LimitRotationOnExit(collider);
+        }
     }
 
     // Method to limit Plank's rotation (clockwise or counterclockwise)
-    // Uses collider found on OnTriggerStay
-    private void LimitRotationOnStay(Collider collider)
+    // Uses collider found on OnTriggerEnter
+    private void LimitRotationOnEnter(Collider collider)
     {
         // If an active pivot is assigned
         if (plankRotation.activePivot)
@@ -70,6 +75,7 @@ public class PlankCollisionDetection : MonoBehaviour
         if ((this.gameObject.name.Equals(plankManager.topColliderName)) &&
         (collider.gameObject.name.Equals(plankManager.topColliderName)))
         {
+            collisionObject = collider.gameObject.transform;
             // If active pivot is right pivot
             if (rotatingPivot.name.Equals(plankManager.rightPivotName))
             {
@@ -91,6 +97,7 @@ public class PlankCollisionDetection : MonoBehaviour
         if ((this.gameObject.name.Equals(plankManager.bottomColliderName)) &&
         (collider.gameObject.name.Equals(plankManager.bottomColliderName)))
         {
+            collisionObject = collider.gameObject.transform;
             // If active pivot is right pivot
             if (rotatingPivot.name.Equals(plankManager.rightPivotName))
             {
