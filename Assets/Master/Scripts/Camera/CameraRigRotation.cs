@@ -40,7 +40,7 @@ public class CameraRigRotation : MonoBehaviour
         // Set rig's position to average Plank position
         this.transform.position = averagePosition;
 
-        if (!inputManager.isUsingTouch) MouseRotation();
+        if (!inputManager.isUsingTouch && isRotating == false) MouseRotation();
     }
 
     void LateUpdate()
@@ -48,7 +48,6 @@ public class CameraRigRotation : MonoBehaviour
         if (inputManager.isUsingTouch)
         {
             float pinchAmount = 0;
-            //Quaternion desiredRotation = transform.rotation;
 
             float yRotation = transform.eulerAngles.y;
 
@@ -63,7 +62,6 @@ public class CameraRigRotation : MonoBehaviour
             {
                 Vector3 rotationDeg = Vector3.zero;
                 rotationDeg.z = -DetectTouchMovement.turnAngleDelta;
-                //desiredRotation *= Quaternion.Euler(rotationDeg);
             }
 
             // ... change the orthographic size based on the change in distance between the touches.
