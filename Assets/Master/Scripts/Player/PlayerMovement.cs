@@ -66,18 +66,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Stationary)
-            {
-                rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
-                rend.material.SetColor("_BaseColor", Color.green);
-            }
-
-            if (touch.phase == TouchPhase.Moved)
-            {
-                rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
-                rend.material.SetColor("_BaseColor", Color.blue);
-            }
-
             switch (touch.phase)
             {
                 case TouchPhase.Began:
@@ -87,6 +75,34 @@ public class PlayerMovement : MonoBehaviour
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     int layerMask = LayerMask.GetMask("Waypoint Triggers");
+
+                    // If any waypoints are tapped
+                    if (Physics.Raycast(ray, out hit, 1000f, layerMask))
+                    {
+                        // Set target waypoint as tapped waypoint
+                        targetWaypoint = hit.transform.gameObject;
+
+                        // Find array position of current waypoint
+                        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+                        // Find array position of target waypoint
+                        var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+
+                        // Find direction between target and current waypoint
+                        arrayDirection = Math.Sign(targetIndex - currentIndex);
+
+                        // Set next waypoint as next waypoint in array using direction
+                        nextWaypoint = waypoints[currentIndex + arrayDirection];
+
+                        // Start transitioning
+                        StartCoroutine(TransitionWaypoints(arrayDirection));
+                    }
+                    break;
+
+                case TouchPhase.Moved:
+                    if (inputManager.isDoubleSwiping == true || inputManager.isSwiping == true) return;
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    layerMask = LayerMask.GetMask("Waypoint Triggers");
 
                     // If any waypoints are tapped
                     if (Physics.Raycast(ray, out hit, 1000f, layerMask))

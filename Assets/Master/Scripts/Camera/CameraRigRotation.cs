@@ -60,7 +60,7 @@ public class CameraRigRotation : MonoBehaviour
 
                 case TouchPhase.Moved:
                     inputDirection = touch.position - startPos;
-                    float inputBuffer = Screen.height * .01f * Mathf.Sign(inputDirection.y);
+                    float inputBuffer = Screen.height * inputManager.inputBuffer * Mathf.Sign(inputDirection.y);
 
                     if (inputDirection.y > inputBuffer && inputDirection.y != 0) StartCoroutine(RotateRig(1));
                     if (inputDirection.y < inputBuffer && inputDirection.y != 0) StartCoroutine(RotateRig(-1));
@@ -79,7 +79,7 @@ public class CameraRigRotation : MonoBehaviour
             float moveY = Input.GetAxis("Mouse X");
 
             // Set input buffer to prevent input oversensitivity
-            float inputBuffer = Screen.height * .01f * Mathf.Sign(moveY);
+            float inputBuffer = Screen.height * inputManager.inputBuffer * Mathf.Sign(moveY);
 
             if (moveY < inputBuffer && moveY != 0) StartCoroutine(RotateRig(1));
             if (moveY > inputBuffer && moveY != 0) StartCoroutine(RotateRig(-1));

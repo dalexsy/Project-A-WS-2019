@@ -5,6 +5,7 @@ public class InputManager : MonoBehaviour
     public bool isUsingTouch = true;
     public bool isSwiping = false;
     public bool isDoubleSwiping = false;
+    public float inputBuffer = .5f;
 
     private void OnEnable()
     {
@@ -12,7 +13,6 @@ public class InputManager : MonoBehaviour
             Application.platform == RuntimePlatform.IPhonePlayer) isUsingTouch = true;
 
         if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
-
     }
 
     private void Update()
