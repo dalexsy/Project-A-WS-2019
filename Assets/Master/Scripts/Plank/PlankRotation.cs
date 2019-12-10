@@ -17,6 +17,7 @@ public class PlankRotation : MonoBehaviour
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
     private PlankConnection plankConnection;
+    private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
 
@@ -32,6 +33,7 @@ public class PlankRotation : MonoBehaviour
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         plankConnection = GetComponent<PlankConnection>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
     }
@@ -40,12 +42,19 @@ public class PlankRotation : MonoBehaviour
     {
         // If Plank is not colliding with Player, accept rotation input
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
+        else playerManager.currentPlank = transform;
     }
 
     private void RotationInput()
     {
         // If no pivots are given, accept no input
         if (!activePivot) return;
+
+        // If Player is on last Plank and this Plank is first or vice versa, accept no input
+        if ((playerManager.currentPlank == plankManager.lastPlank && transform == plankManager.firstPlank)
+         || (playerManager.currentPlank == plankManager.firstPlank && transform == plankManager.lastPlank)) return;
+
+        if (plankManager.hasReachedGoal) return;
 
         // If Plank can rotate clockwise
         if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
@@ -100,7 +109,7 @@ public class PlankRotation : MonoBehaviour
                         inputDirectionAxis = inputDirection.x;
                     }
 
-                    */
+                    
                     inputManager.debugLog.debugMessage = ("Input buffer: "
                     + inputBuffer.ToString()
                     + " Offset: "
@@ -108,6 +117,7 @@ public class PlankRotation : MonoBehaviour
                     + " Screen height: "
                     + Screen.height.ToString()
                     );
+                    */
 
 
                     if (Mathf.Abs(touchPositionAxis - startPositionAxis)

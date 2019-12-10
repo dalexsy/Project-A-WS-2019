@@ -5,7 +5,7 @@ public class InputManager : MonoBehaviour
     public bool isUsingTouch = true;
     public bool isSwiping = false;
     public bool isDoubleSwiping = false;
-    public readonly float inputBuffer = .1f;
+    public readonly float inputBuffer = .3f;
 
     public UIDebugLog debugLog;
 
@@ -16,7 +16,7 @@ public class InputManager : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
 
-        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>();
+        //debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>();
     }
 
     private void Update()

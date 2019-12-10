@@ -44,10 +44,10 @@ MonoBehaviour:
     value: 10000
   diffusion:
     overrideState: 0
-    value: 7
+    value: 7.65
   anamorphicRatio:
     overrideState: 0
-    value: 0
+    value: 0.41
   color:
     overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
@@ -56,7 +56,7 @@ MonoBehaviour:
     value: 0
   dirtTexture:
     overrideState: 0
-    value: {fileID: 0}
+    value: {fileID: 2800000, guid: 91df320cb3488704285d5bdb46e14195, type: 3}
     defaultState: 1
   dirtIntensity:
     overrideState: 0

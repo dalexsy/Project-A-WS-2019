@@ -89,11 +89,14 @@ public class CameraRigRotation : MonoBehaviour
             if (turnAmount != 0)
                 turnDirection = Math.Sign(turnAmount);
 
-            // Zoom camera based on pinch amount
-            mainCamera.orthographicSize += pinchAmount * orthoZoomSpeed;
+            if (Application.platform != RuntimePlatform.WebGLPlayer)
 
-            // Gate zoom amount
-            mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 2f, 5f);
+            {   // Zoom camera based on pinch amount
+                mainCamera.orthographicSize += pinchAmount * orthoZoomSpeed;
+
+                // Gate zoom amount
+                mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 2f, 5f);
+            }
 
             // Rotate camera along Y-axis using turn angle
             transform.eulerAngles = new Vector3(transform.eulerAngles.x,
