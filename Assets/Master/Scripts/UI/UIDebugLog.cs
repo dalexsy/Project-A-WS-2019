@@ -3,14 +3,12 @@ using UnityEngine;
 
 public class UIDebugLog : MonoBehaviour
 {
+    public string debugMessage;
+
     private void Update()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            var text = GetComponent<Text>();
-            text.text = touch.phase.ToString();
-        }
+        var text = GetComponent<Text>();
+        text.text = debugMessage;
     }
 }
 

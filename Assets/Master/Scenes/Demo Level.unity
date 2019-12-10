@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -388,7 +388,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8663786007559205947}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1024169766
+--- !u!114 &1024169769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -402,7 +402,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topCollider: {fileID: 0}
   bottomCollider: {fileID: 0}
-  isVertical: 0
 --- !u!224 &1182923629 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2314392967869384203, guid: 52f982c1d5cd0f249a0946779da1ea07,
@@ -415,7 +414,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 82702176181947302}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1303207486
+--- !u!114 &1303207489
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -429,14 +428,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topCollider: {fileID: 0}
   bottomCollider: {fileID: 0}
-  isVertical: 0
 --- !u!1 &1330925055 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 367275861469862722, guid: 66d72e9064bf52b458a2347b38aab315,
     type: 3}
   m_PrefabInstance: {fileID: 8663786007559205947}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1330925056
+--- !u!114 &1330925059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -450,7 +448,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topCollider: {fileID: 0}
   bottomCollider: {fileID: 0}
-  isVertical: 0
 --- !u!1 &1444902050
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,10 +657,10 @@ RectTransform:
   m_Father: {fileID: 1182923629}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -176.3}
-  m_SizeDelta: {x: 402.44, y: 79.19}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 37.800003}
+  m_SizeDelta: {x: 402.44, y: 48.70999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1640986817
 MonoBehaviour:
@@ -767,6 +764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a67b1d331667e6489be09ff0042e0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugMessage: 
 --- !u!114 &1686493632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,9 +791,9 @@ MonoBehaviour:
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 0
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
@@ -813,7 +811,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 82702176181947302}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1821014915
+--- !u!114 &1821014918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -827,7 +825,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topCollider: {fileID: 0}
   bottomCollider: {fileID: 0}
-  isVertical: 0
 --- !u!1 &1879461103
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,6 +2059,11 @@ PrefabInstance:
     - target: {fileID: 2076788391044114085, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9123713176235104441, guid: e45958cfd9b85254381e4f22ee7e73ba,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

@@ -9,14 +9,16 @@ public class CameraRigRotation : MonoBehaviour
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
     private InputManager inputManager;
+    private PlankManager plankManager;
     private Camera mainCamera;
-    private float orthoZoomSpeed = 0.01f;
+    private float orthoZoomSpeed = -0.003f;
     private int turnDirection = 0;
     private bool isRotating = false;
 
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         mainCamera = Camera.main;
 
         // Find all Planks in scene
@@ -40,18 +42,28 @@ public class CameraRigRotation : MonoBehaviour
 
         // Set rig's position to average Plank position
         this.transform.position = averagePosition;
-
-        if (!inputManager.isUsingTouch && isRotating == false) MouseRotation();
     }
 
     private void LateUpdate()
     {
+        if (plankManager.hasReachedGoal)
+        {
+            RotateAroundLevel();
+            return;
+        }
+
         if (inputManager.isUsingTouch) TouchRotation();
+        if (!inputManager.isUsingTouch && isRotating == false) MouseRotation();
     }
 
     private void FixedUpdate()
     {
         AngleCorrection();
+    }
+
+    private void RotateAroundLevel()
+    {
+        transform.RotateAround(transform.position, transform.up, Time.deltaTime * 10f);
     }
 
     private void TouchRotation()
@@ -99,8 +111,6 @@ public class CameraRigRotation : MonoBehaviour
         if (inputManager.isDoubleSwiping == false && yRotation % 90 != 0)
         {
             float angleDifference = yRotation % 90;
-            float angleCorrection = 0f;
-
 
             Vector3 targetRotation = new Vector3(0, angleDifference * turnDirection, 0);
 
