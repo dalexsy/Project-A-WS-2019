@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6574382820597573481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6973361176031198232}
+  - component: {fileID: 4027534644960811409}
+  - component: {fileID: 4176036804221083644}
+  m_Layer: 0
+  m_Name: Plank Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6973361176031198232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574382820597573481}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.08867645, y: 1.0240226, z: 2.0639946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4027534644960811409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574382820597573481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d19e96fbd0422f49b9358f189eaf002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usageNotes1: The first and last Plank are the start and end Plank in the level.
+    Assign their transforms here.
+  firstPlank: {fileID: 0}
+  lastPlank: {fileID: 0}
+  usageNotes2: Pivots must be named exactly as listed here.
+  leftPivotName: Pivot L
+  rightPivotName: Pivot R
+  usageNotes3: Plank colliders must be named exactly as listed here.
+  topColliderName: Plank Collider Top
+  bottomColliderName: Plank Collider Bottom
+  frontColliderName: Plank Collider Front
+  backColliderName: Plank Collider Back
+  usageNotes4: Plank transition points must be named exactly as listed here.
+  leftTransitionPointName: Plank Transition Point L
+  rightTransitionPointName: Plank Transition Point R
+  usageNotes5: Top, bottom, front, and back colliders must be tagged with their respective
+    sides.
+  leftColliderTag: Collider L
+  rightColliderTag: Collider R
+--- !u!114 &4176036804221083644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574382820597573481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab3f37fa203ec140bbf1306794cccd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.0038757324
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3991336
+      value: 0.052524768
+      inSlope: 0.21923722
+      outSlope: 0.21923722
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0054798
+      value: 2.7915442
+      inSlope: 13.181745
+      outSlope: 13.181745
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06360489
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxRotation: 90
+  rotationSpeed: 0.25
+  isRotating: 0
+  rotateParticlePrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
+    type: 3}
+  activePivotParticlePrefab: {fileID: 5851382750196069416, guid: 6fc0da88c031a65498f41e5bd4efe7d3,
+    type: 3}
