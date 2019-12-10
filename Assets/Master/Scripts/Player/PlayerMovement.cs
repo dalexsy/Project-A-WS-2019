@@ -46,15 +46,11 @@ public class PlayerMovement : MonoBehaviour
         if (!inputManager.isUsingTouch)
         {
             MouseInput();
-            rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
-            rend.material.SetColor("_BaseColor", Color.red);
 
         }
         if (inputManager.isUsingTouch)
         {
             TouchInput();
-            rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
-            rend.material.SetColor("_BaseColor", Color.white);
         }
     }
 
