@@ -60,21 +60,35 @@ public class PlankRotation : MonoBehaviour
         if (plankManager.hasReachedGoal) return;
 
         // If Plank can rotate clockwise
-        if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
-            canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
+        if (canRotateClockwiseR && activePivot.name.Equals("Pivot R"))
         {
             if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
             if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
             if (Input.GetKeyDown(KeyCode.Q)) StartRotation(1);
         }
 
+        // If Plank can rotate clockwise
+        if (canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
+        {
+            if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(1);
+            if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(1);
+            if (Input.GetKeyDown(KeyCode.Q)) StartRotation(-1);
+        }
+
         //  If Plank can rotate counterclockwise
-        if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R") ||
-            canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
+        if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R"))
         {
             if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
             if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
             if (Input.GetKeyDown(KeyCode.E)) StartRotation(-1);
+        }
+
+        //  If Plank can rotate counterclockwise
+        if (canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
+        {
+            if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(-1);
+            if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(-1);
+            if (Input.GetKeyDown(KeyCode.E)) StartRotation(1);
         }
     }
 
@@ -166,7 +180,7 @@ public class PlankRotation : MonoBehaviour
 
             pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
 
-            if (!pivotOrientationDetection.isTopFront()) plankOrientation = -1;
+            if (!pivotOrientationDetection.isTopFront()) plankOrientation = 1;
             var direction = Mathf.Sign(inputOffset);
 
             // If input is over input buffer, return direction of input
