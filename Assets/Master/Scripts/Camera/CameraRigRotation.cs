@@ -58,7 +58,6 @@ public class CameraRigRotation : MonoBehaviour
         if (inputManager.isUsingTouch) TouchRotation();
         if (!inputManager.isUsingTouch && MouseInput() == 1) MouseRotation(1);
         if (!inputManager.isUsingTouch && MouseInput() == -1) MouseRotation(-1);
-        Debug.Log(MouseInput());
     }
 
     private void FixedUpdate()
@@ -187,7 +186,7 @@ public class CameraRigRotation : MonoBehaviour
             inputOffset = currentPosition - startPosMouse.x;
 
             // Set input buffer to prevent input oversensitivity
-            inputBuffer = Screen.width * .5f * Mathf.Sign(inputOffset);
+            inputBuffer = Screen.width * .2f * Mathf.Sign(inputOffset);
             var direction = Mathf.Sign(inputOffset);
 
             // If input is over input buffer, return direction of input

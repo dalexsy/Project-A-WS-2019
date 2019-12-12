@@ -71,4 +71,12 @@ public class PivotOrientationDetection : MonoBehaviour
         if (colliderDifference < 0) return true;
         return false;
     }
+
+    // Checks if top collider is in front of bottom
+    public bool isTopFront()
+    {
+        var colliderDifference = topColliderPosition.z - bottomColliderPosition.z;
+        if (colliderDifference < 0) return true;
+        return false;
+    }
 }

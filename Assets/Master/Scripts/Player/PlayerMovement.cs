@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
-    [SerializeField] private float distance;
+    private float distance;
     private GameObject currentWaypoint;
     private GameObject targetWaypoint;
     private GameObject nextWaypoint;
@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     private InputManager inputManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
-    private Renderer rend;
 
     private void Start()
     {
@@ -34,8 +33,6 @@ public class PlayerMovement : MonoBehaviour
         // Set first and last waypoint
         firstWaypoint = waypoints[0];
         lastWaypoint = waypoints[waypoints.Length - 1];
-
-        rend = gameObject.GetComponent<Renderer>();
     }
 
     private void Update()
@@ -43,15 +40,9 @@ public class PlayerMovement : MonoBehaviour
         // If Player is moving or Plank is rotating, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping) return;
 
-        if (!inputManager.isUsingTouch || Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            MouseInput();
-        }
+        if (!inputManager.isUsingTouch || Application.platform == RuntimePlatform.WebGLPlayer) MouseInput();
 
-        if (inputManager.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer)
-        {
-            TouchInput();
-        }
+        if (inputManager.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer) TouchInput();
     }
 
     private void TouchInput()
@@ -207,49 +198,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         yield return null;
-    }
-
-    private int ScreenToWaypoint(int direction)
-    {
-        // Find index of current waypoint
-        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
-        var nextWaypointInArray = waypoints[currentIndex];
-
-        // If current waypoint is not last waypoint, set nextWaypointInArray as next waypoint in array
-        if (currentWaypoint != lastWaypoint) nextWaypointInArray = waypoints[currentIndex + 1];
-
-        var currentWaypointScreenPosition = Camera.main.WorldToScreenPoint(currentWaypoint.transform.position);
-        var nextWaypointScreenPosition = Camera.main.WorldToScreenPoint(nextWaypointInArray.transform.position);
-
-        // Set screenPosition as current waypoint's position minus next waypoint's position along the x-axis
-        var screenPosition = currentWaypointScreenPosition.x - nextWaypointScreenPosition.x;
-
-        // If screen position is positive, next waypoint is to the left (if given)
-        if (screenPosition > 0)
-        {
-            leftWaypoint = nextWaypointInArray;
-            if (currentIndex > 0) rightWaypoint = waypoints[currentIndex - 1];
-            else rightWaypoint = null;
-        }
-
-        // If screen position is negative, next waypoint is to the right (if given)
-        else
-        {
-            rightWaypoint = nextWaypointInArray;
-            if (currentIndex > 0) leftWaypoint = waypoints[currentIndex - 1];
-            else leftWaypoint = null;
-        }
-
-        // If horizontal input is to the left, next waypoint is left waypoint
-        if (direction < 0) nextWaypoint = leftWaypoint;
-
-        // If horizontal input is to the right, next waypoint is right waypoint
-        else nextWaypoint = rightWaypoint;
-
-        if (nextWaypoint == currentWaypoint) nextWaypoint = null;
-
-        if (nextWaypointInArray == nextWaypoint) return 1;
-        else return -1;
     }
 
     private void OnTriggerStay(Collider collider)
