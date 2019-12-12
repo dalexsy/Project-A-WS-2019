@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         {
             MouseInput();
         }
-        
+
         if (inputManager.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer)
         {
             TouchInput();
@@ -68,6 +68,10 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case TouchPhase.Stationary:
+
+                    break;
+
+                case TouchPhase.Ended:
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     int layerMask = LayerMask.GetMask("Waypoint Triggers");
@@ -93,11 +97,6 @@ public class PlayerMovement : MonoBehaviour
                         // Start transitioning
                         StartCoroutine(TransitionWaypoints(arrayDirection));
                     }
-                    break;
-
-                case TouchPhase.Ended:
-                    rend.material.shader = Shader.Find("Lightweight Render Pipeline/Unlit");
-                    rend.material.SetColor("_BaseColor", Color.white);
                     break;
             }
         }
