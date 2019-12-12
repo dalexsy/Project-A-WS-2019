@@ -47,5 +47,6 @@ public class PlankManager : MonoBehaviour
     public string leftColliderTag = "Collider L";
     public string rightColliderTag = "Collider R";
 
-
+    [Header("Goal Detection")]
+    public bool hasReachedGoal = false;
 }

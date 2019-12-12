@@ -17,8 +17,12 @@ public class PlankRotation : MonoBehaviour
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
     private PlankConnection plankConnection;
+    private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
+
+    private float inputDirectionAxis = 0;
+    private float inputBuffer = 0;
 
     private Vector2 startPos = Vector2.zero;
     private Vector2 inputDirection = Vector2.zero;
@@ -29,6 +33,7 @@ public class PlankRotation : MonoBehaviour
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         plankConnection = GetComponent<PlankConnection>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
     }
@@ -37,12 +42,19 @@ public class PlankRotation : MonoBehaviour
     {
         // If Plank is not colliding with Player, accept rotation input
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
+        else playerManager.currentPlank = transform;
     }
 
     private void RotationInput()
     {
         // If no pivots are given, accept no input
         if (!activePivot) return;
+
+        // If Player is on last Plank and this Plank is first or vice versa, accept no input
+        if ((playerManager.currentPlank == plankManager.lastPlank && transform == plankManager.firstPlank)
+         || (playerManager.currentPlank == plankManager.firstPlank && transform == plankManager.lastPlank)) return;
+
+        if (plankManager.hasReachedGoal) return;
 
         // If Plank can rotate clockwise
         if (canRotateClockwiseR && activePivot.name.Equals("Pivot R") ||
@@ -79,23 +91,51 @@ public class PlankRotation : MonoBehaviour
                 case TouchPhase.Moved:
 
                     // Set input buffer to prevent input oversensitivity
-                    float inputBuffer = Screen.height * inputManager.inputBuffer * Mathf.Sign(inputDirection.y);
+                    inputBuffer = Screen.height * inputManager.inputBuffer;
 
-                    if (Mathf.Abs(touch.position.y - startPos.y) > inputBuffer) inputManager.isSwiping = true;
+                    var pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
+
+                    float touchPositionAxis = touch.position.y;
+                    float startPositionAxis = startPos.y;
+
+                    inputDirection = touch.position - startPos;
+                    inputDirectionAxis = Mathf.Sign(inputDirection.y);
+
+                    /*
+                    if (pivotOrientationDetection.isVertical())
+                    {
+                        touchPositionAxis = touch.position.x;
+                        startPositionAxis = startPos.x;
+                        inputDirectionAxis = inputDirection.x;
+                    }
+
+                    
+                    inputManager.debugLog.debugMessage = ("Input buffer: "
+                    + inputBuffer.ToString()
+                    + " Offset: "
+                    + (touchPositionAxis - startPositionAxis).ToString()
+                    + " Screen height: "
+                    + Screen.height.ToString()
+                    );
+                    */
+
+
+                    if (Mathf.Abs(touchPositionAxis - startPositionAxis)
+                        > inputBuffer / 2 * Mathf.Sign(inputDirectionAxis)) inputManager.isSwiping = true;
+
                     break;
 
                 case TouchPhase.Ended:
 
-                    inputDirection = touch.position - startPos;
+                    pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
+
+                    //if (pivotOrientationDetection.isVertical()) inputDirectionAxis = inputDirection.x;
+
+                    if (inputManager.isSwiping == false) return 0;
+                    if (Mathf.Abs(inputDirection.y) > inputBuffer && inputDirectionAxis == 1) return 1;
+                    if (Mathf.Abs(inputDirection.y) > inputBuffer && inputDirectionAxis == -1) return -1;
 
                     inputManager.isSwiping = false;
-
-                    // Set input buffer to prevent input oversensitivity
-                    inputBuffer = Screen.height * inputManager.inputBuffer * Mathf.Sign(inputDirection.y);
-
-                    if (inputDirection.y > inputBuffer && inputDirection.y != 0) return 1;
-                    if (inputDirection.y < inputBuffer && inputDirection.y != 0) return -1;
-
                     break;
             }
         }
