@@ -16,6 +16,7 @@ public class PlankRotation : MonoBehaviour
     private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
+    private PivotOrientationDetection pivotOrientationDetection;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
@@ -64,6 +65,7 @@ public class PlankRotation : MonoBehaviour
         {
             if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
             if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
+            if (Input.GetKeyDown(KeyCode.Q)) StartRotation(1);
         }
 
         //  If Plank can rotate counterclockwise
@@ -72,6 +74,7 @@ public class PlankRotation : MonoBehaviour
         {
             if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
             if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
+            if (Input.GetKeyDown(KeyCode.E)) StartRotation(-1);
         }
     }
 
@@ -121,10 +124,6 @@ public class PlankRotation : MonoBehaviour
                     );
                     */
 
-
-                    if (Mathf.Abs(touchPositionAxis - startPositionAxis)
-                        > inputBuffer / 2 * Mathf.Sign(inputDirectionAxis)) inputManager.isSwiping = true;
-
                     break;
 
                 case TouchPhase.Ended:
@@ -162,11 +161,17 @@ public class PlankRotation : MonoBehaviour
 
             // Set input buffer to prevent input oversensitivity
             float inputBuffer = Screen.height * .5f * Mathf.Sign(inputOffset);
+
+            var plankOrientation = 1;
+
+            pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
+
+            if (!pivotOrientationDetection.isTopFront()) plankOrientation = -1;
             var direction = Mathf.Sign(inputOffset);
 
             // If input is over input buffer, return direction of input
-            if (inputOffset > inputBuffer * direction && direction == 1) return 1;
-            if (inputOffset < inputBuffer * direction && direction == -1) return -1;
+            if (inputOffset > inputBuffer * direction && direction == 1) return 1 * plankOrientation;
+            if (inputOffset < inputBuffer * direction && direction == -1) return -1 * plankOrientation;
         }
 
         // If no valid input is given, return zero
