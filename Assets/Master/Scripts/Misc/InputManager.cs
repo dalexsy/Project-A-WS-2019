@@ -22,7 +22,20 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (Input.touchCount == 2) isDoubleSwiping = true;
-        if (Input.touchCount == 0) isDoubleSwiping = false;
+        if (Input.touchCount == 0)
+        {
+            isDoubleSwiping = false;
+            isSwiping = false;
+        }
+
+        if (Input.GetMouseButtonUp(0)) isSwiping = false;
+        if (Input.GetMouseButtonUp(1)) isDoubleSwiping = false;
+    }
+
+    private void OnMouseDrag()
+    {
+        if (Input.GetMouseButton(0)) isSwiping = true;
+        if (Input.GetMouseButton(1)) isDoubleSwiping = true;
     }
 
 }
