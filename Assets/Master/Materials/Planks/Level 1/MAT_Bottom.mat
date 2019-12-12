@@ -37,5 +37,6 @@ Material:
     - Vector1_43ACB1EB: 2.53
     - Vector1_CF1EFFC8: 2.4
     - Vector1_F352FA4D: 0.2
+    - _BottomOffset: 1
     m_Colors:
     - Color_6366A5CA: {r: 1, g: 0.57158226, b: 0.21226418, a: 1}

@@ -11,9 +11,12 @@ public class CameraRigRotation : MonoBehaviour
     private InputManager inputManager;
     private PlankManager plankManager;
     private Camera mainCamera;
+    private bool isRotating = false;
+    private float inputBuffer = 0;
+    private float inputOffset = 0;
     private float orthoZoomSpeed = -0.003f;
     private int turnDirection = 0;
-    private bool isRotating = false;
+    private Vector2 startPosMouse = Vector2.zero;
 
     private void Start()
     {
@@ -53,12 +56,14 @@ public class CameraRigRotation : MonoBehaviour
         }
 
         if (inputManager.isUsingTouch) TouchRotation();
-        if (!inputManager.isUsingTouch && isRotating == false) MouseRotation();
+        if (!inputManager.isUsingTouch && MouseInput() == 1) MouseRotation(1);
+        if (!inputManager.isUsingTouch && MouseInput() == -1) MouseRotation(-1);
+        Debug.Log(MouseInput());
     }
 
     private void FixedUpdate()
     {
-        AngleCorrection();
+        //AngleCorrectionAlways();
     }
 
     private void RotateAroundLevel()
@@ -107,6 +112,21 @@ public class CameraRigRotation : MonoBehaviour
         else inputManager.isDoubleSwiping = false;
     }
 
+    private void AngleCorrectionAlways()
+    {
+        float yRotation = transform.eulerAngles.y;
+
+        if (inputManager.isDoubleSwiping == false && yRotation % 90 != 0)
+        {
+            float angleDifference = yRotation % 90;
+
+            Vector3 targetRotation = new Vector3(0, angleDifference * turnDirection, 0);
+
+            if (angleDifference < 2f) transform.eulerAngles = transform.rotation * targetRotation;
+        }
+
+    }
+
     private IEnumerator AngleCorrection()
     {
         float yRotation = transform.eulerAngles.y;
@@ -143,18 +163,40 @@ public class CameraRigRotation : MonoBehaviour
         }
     }
 
-    private void MouseRotation()
+    private void MouseRotation(int direction)
     {
-        if (Input.GetMouseButton(1))
+        if (direction == 0 || isRotating) return;
+
+        StartCoroutine(RotateRig(MouseInput()));
+        StartCoroutine(RotateRig(MouseInput()));
+    }
+
+    // Returns direction of input
+    // Should be universal
+    private int MouseInput()
+    {
+        if (Input.GetMouseButtonDown(1))
         {
-            float moveY = Input.GetAxis("Mouse X");
+            startPosMouse = Input.mousePosition;
+            inputOffset = 0;
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            var currentPosition = Input.mousePosition.x;
+            inputOffset = currentPosition - startPosMouse.x;
 
             // Set input buffer to prevent input oversensitivity
-            float inputBuffer = Screen.height * .01f * Mathf.Sign(moveY);
+            inputBuffer = Screen.width * .5f * Mathf.Sign(inputOffset);
+            var direction = Mathf.Sign(inputOffset);
 
-            if (moveY < inputBuffer && moveY != 0) StartCoroutine(RotateRig(1));
-            if (moveY > inputBuffer && moveY != 0) StartCoroutine(RotateRig(-1));
+            // If input is over input buffer, return direction of input
+            if (inputOffset > inputBuffer * direction && direction == 1) return 1;
+            if (inputOffset < inputBuffer * direction && direction == -1) return -1;
         }
+
+        // If no valid input is given, return zero
+        return 0;
     }
 
     // Coroutine to rotate camera rig

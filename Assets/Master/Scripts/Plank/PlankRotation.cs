@@ -23,8 +23,10 @@ public class PlankRotation : MonoBehaviour
 
     private float inputDirectionAxis = 0;
     private float inputBuffer = 0;
+    private float inputOffset = 0;
 
-    private Vector2 startPos = Vector2.zero;
+    private Vector2 startPosMouse = Vector2.zero;
+    private Vector2 startPosTouch = Vector2.zero;
     private Vector2 inputDirection = Vector2.zero;
 
     private void Start()
@@ -85,7 +87,7 @@ public class PlankRotation : MonoBehaviour
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    startPos = touch.position;
+                    startPosTouch = touch.position;
                     break;
 
                 case TouchPhase.Moved:
@@ -96,9 +98,9 @@ public class PlankRotation : MonoBehaviour
                     var pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
 
                     float touchPositionAxis = touch.position.y;
-                    float startPositionAxis = startPos.y;
+                    float startPositionAxis = startPosTouch.y;
 
-                    inputDirection = touch.position - startPos;
+                    inputDirection = touch.position - startPosTouch;
                     inputDirectionAxis = Mathf.Sign(inputDirection.y);
 
                     /*
@@ -147,16 +149,24 @@ public class PlankRotation : MonoBehaviour
     // Returns direction of input
     private int MouseInput()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            float moveY = Input.GetAxis("Mouse Y");
+            startPosMouse = Input.mousePosition;
+            inputOffset = 0;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            var currentPosition = Input.mousePosition.y;
+            inputOffset = currentPosition - startPosMouse.y;
 
             // Set input buffer to prevent input oversensitivity
-            float inputBuffer = Screen.height * .5f * Mathf.Sign(moveY);
+            float inputBuffer = Screen.height * .5f * Mathf.Sign(inputOffset);
+            var direction = Mathf.Sign(inputOffset);
 
             // If input is over input buffer, return direction of input
-            if (moveY < inputBuffer && moveY != 0) return 1;
-            if (moveY > inputBuffer && moveY != 0) return -1;
+            if (inputOffset > inputBuffer * direction && direction == 1) return 1;
+            if (inputOffset < inputBuffer * direction && direction == -1) return -1;
         }
 
         // If no valid input is given, return zero

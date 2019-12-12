@@ -30,12 +30,8 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0)) isSwiping = false;
         if (Input.GetMouseButtonUp(1)) isDoubleSwiping = false;
-    }
 
-    private void OnMouseDrag()
-    {
         if (Input.GetMouseButton(0)) isSwiping = true;
         if (Input.GetMouseButton(1)) isDoubleSwiping = true;
     }
-
 }
