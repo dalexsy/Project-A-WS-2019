@@ -7,6 +7,7 @@ public class CameraRigRotation : MonoBehaviour
 {
     public bool isRotating = false;
     public bool isStandardOrientation = true;
+    public Vector3 averagePlankPosition;
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
@@ -42,10 +43,10 @@ public class CameraRigRotation : MonoBehaviour
             plankPositions.Add(plank.transform.position);
 
         // Return average position of all Planks
-        var averagePosition = GetMeanVector(plankPositions);
+        averagePlankPosition = GetMeanVector(plankPositions);
 
         // Set rig's position to average Plank position
-        this.transform.position = averagePosition;
+        this.transform.position = averagePlankPosition;
     }
 
     private void LateUpdate()

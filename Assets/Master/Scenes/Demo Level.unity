@@ -120,6 +120,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &413504459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3550098398361433602, guid: 37853fe121a5afe409bcd532f4ed8af5,
+    type: 3}
+  m_PrefabInstance: {fileID: 3550098398060415209}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &413504463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413504459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555af613b48213f4e97008420e233ab8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &416407045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -544,7 +562,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1488552559 stripped
 Camera:
@@ -1067,12 +1085,12 @@ PrefabInstance:
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
@@ -1082,7 +1100,7 @@ PrefabInstance:
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
@@ -1098,6 +1116,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3602984
+      objectReference: {fileID: 0}
+    - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3602984
       objectReference: {fileID: 0}
     - target: {fileID: 3550098398361433604, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
