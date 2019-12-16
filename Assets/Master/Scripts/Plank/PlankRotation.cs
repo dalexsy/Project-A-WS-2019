@@ -14,6 +14,7 @@ public class PlankRotation : MonoBehaviour
     public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
     private ActivePivotFX activePivotFX;
+    private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
     private PivotOrientationDetection pivotOrientationDetection;
@@ -33,6 +34,7 @@ public class PlankRotation : MonoBehaviour
     private void Start()
     {
         activePivotFX = GetComponent<ActivePivotFX>();
+        cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         plankConnection = GetComponent<PlankConnection>();
@@ -51,7 +53,7 @@ public class PlankRotation : MonoBehaviour
     private void RotationInput()
     {
         // If no pivots are given, accept no input
-        if (!activePivot) return;
+        if (!activePivot || cameraRigRotation.isRotating) return;
 
         // If Player is on last Plank and this Plank is first or vice versa, accept no input
         if ((playerManager.currentPlank == plankManager.lastPlank && transform == plankManager.firstPlank)
@@ -59,36 +61,32 @@ public class PlankRotation : MonoBehaviour
 
         if (plankManager.hasReachedGoal) return;
 
-        // If Plank can rotate clockwise
+        // If Plank can rotate clockwise and using right pivot
         if (canRotateClockwiseR && activePivot.name.Equals("Pivot R"))
         {
             if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
             if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
-            if (Input.GetKeyDown(KeyCode.Q)) StartRotation(1);
         }
 
-        // If Plank can rotate clockwise
+        // If Plank can rotate clockwise and using left pivot
         if (canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
         {
             if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(1);
             if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(1);
-            if (Input.GetKeyDown(KeyCode.Q)) StartRotation(-1);
         }
 
-        //  If Plank can rotate counterclockwise
+        //  If Plank can rotate counterclockwise and using right pivot
         if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R"))
         {
             if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
             if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
-            if (Input.GetKeyDown(KeyCode.E)) StartRotation(-1);
         }
 
-        //  If Plank can rotate counterclockwise
+        //  If Plank can rotate counterclockwise and using left pivot
         if (canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
         {
             if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(-1);
             if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(-1);
-            if (Input.GetKeyDown(KeyCode.E)) StartRotation(1);
         }
     }
 
@@ -162,30 +160,57 @@ public class PlankRotation : MonoBehaviour
     // Returns direction of input
     private int MouseInput()
     {
+        // On left mouse button down, set start position and reset input offset
         if (Input.GetMouseButtonDown(0))
         {
             startPosMouse = Input.mousePosition;
             inputOffset = 0;
         }
 
+        // On left mouse button up, determine input direction if over input buffer
         if (Input.GetMouseButtonUp(0))
         {
-            var currentPosition = Input.mousePosition.y;
-            inputOffset = currentPosition - startPosMouse.y;
-
-            // Set input buffer to prevent input oversensitivity
-            float inputBuffer = Screen.height * .5f * Mathf.Sign(inputOffset);
-
-            var plankOrientation = 1;
-
             pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
 
-            if (!pivotOrientationDetection.isTopFront()) plankOrientation = 1;
-            var direction = Mathf.Sign(inputOffset);
+            // If Plank is vertical, look for vertical input
+            if (pivotOrientationDetection.isVertical())
+            {
+                var currentPosition = Input.mousePosition.x;
+                inputOffset = currentPosition - startPosMouse.x;
+                //Debug.Log("Vertical offset: " + inputOffset);
 
-            // If input is over input buffer, return direction of input
-            if (inputOffset > inputBuffer * direction && direction == 1) return 1 * plankOrientation;
-            if (inputOffset < inputBuffer * direction && direction == -1) return -1 * plankOrientation;
+                // Set input buffer to prevent input oversensitivity
+                float inputBuffer = Screen.width * .3f * Mathf.Sign(inputOffset);
+
+                var plankOrientation = 1;
+                if (pivotOrientationDetection.isTopRight()) plankOrientation = -1;
+
+                var direction = Mathf.Sign(inputOffset);
+
+                // If input is over input buffer, return direction of input
+                if (inputOffset > inputBuffer * direction && direction == 1) return 1 * plankOrientation;
+                if (inputOffset < inputBuffer * direction && direction == -1) return -1 * plankOrientation;
+            }
+
+            // Else if Plank is horizontal, look for horizontal input
+            else
+            {
+                var currentPosition = Input.mousePosition.y;
+                inputOffset = currentPosition - startPosMouse.y;
+                //Debug.Log("Horizontal offset: " + inputOffset);
+
+                // Set input buffer to prevent input oversensitivity
+                float inputBuffer = Screen.height * .5f * Mathf.Sign(inputOffset);
+
+                var plankOrientation = 1;
+                if (!pivotOrientationDetection.isTopTop()) plankOrientation = -1;
+
+                var direction = Mathf.Sign(inputOffset);
+
+                // If input is over input buffer, return direction of input
+                if (inputOffset > inputBuffer * direction && direction == 1) return 1 * plankOrientation;
+                if (inputOffset < inputBuffer * direction && direction == -1) return -1 * plankOrientation;
+            }
         }
 
         // If no valid input is given, return zero
@@ -221,7 +246,7 @@ public class PlankRotation : MonoBehaviour
     }
 
     // Rotates Plank
-    // Requires direction and pivot (lPivot, rPivot)
+    // Requires direction (1, -1) and pivot (lPivot, rPivot)
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
         // Save local variable rotationPivot from active pivot
@@ -239,8 +264,6 @@ public class PlankRotation : MonoBehaviour
 
         // Reset current rotation
         float currentRotation = 0f;
-
-        //if (activePivotFX.pulse) activePivotFX.DespawnPulse();
 
         // Start coroutine to connect planks using rotation pivot
         plankConnection.ConnectPlanks(rotationPivot);
@@ -278,10 +301,10 @@ public class PlankRotation : MonoBehaviour
             // Increase current rotation by value from animation curve
             currentRotation += plankRotationManager.animationCurve.Evaluate(t);
 
-            float maxAngleCorrection = 0f;
-
             // If current rotation exceeds max rotation, set max angle correction to difference
             // Will only be used for last frame of animation
+            float maxAngleCorrection = 0f;
+
             if (currentRotation > plankRotationManager.maxRotation)
                 maxAngleCorrection = currentRotation - plankRotationManager.maxRotation;
 
@@ -289,7 +312,7 @@ public class PlankRotation : MonoBehaviour
             transform.RotateAround(rotationPivot.position, rotationAxis * direction, plankRotationManager.animationCurve.Evaluate(t) - maxAngleCorrection);
 
             // Returns to top of while loop
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         // Disconnect all connected planks

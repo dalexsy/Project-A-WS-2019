@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 public class CameraRigRotation : MonoBehaviour
 {
+    public bool isRotating = false;
+    public bool isStandardOrientation = true;
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
     private InputManager inputManager;
     private PlankManager plankManager;
     private Camera mainCamera;
-    private bool isRotating = false;
     private float inputBuffer = 0;
     private float inputOffset = 0;
     private float orthoZoomSpeed = -0.003f;
@@ -202,7 +203,10 @@ public class CameraRigRotation : MonoBehaviour
     IEnumerator RotateRig(int direction)
     {
         // Set isRotating to true to prevent multiple rotations
-        this.isRotating = true;
+        isRotating = true;
+
+        // Flip standard orientation bool used for plank rotation input
+        isStandardOrientation = !isStandardOrientation;
 
         // Set target rotation to 90 degrees around rig's y-axis in given direction
         Vector3 targetRotation = new Vector3(0, 90f * direction, 0);
