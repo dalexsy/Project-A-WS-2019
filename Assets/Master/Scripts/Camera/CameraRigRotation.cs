@@ -244,14 +244,14 @@ public class CameraRigRotation : MonoBehaviour
         // If list is empty, return (0,0,0)
         if (positions.Count == 0) return Vector3.zero;
 
-        // Reset meanVector
+        // Reset mean vector
         Vector3 meanVector = Vector3.zero;
 
-        // Add each position to meanVector
+        // Add each position to mean vector
         foreach (Vector3 pos in positions)
             meanVector += pos;
 
-        // Return meanVector divided by number of positions
+        // Return mean vector divided by number of positions
         return (meanVector / positions.Count);
     }
 }

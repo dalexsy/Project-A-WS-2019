@@ -16,7 +16,7 @@ public class InputManager : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
 
-        //debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>();
+        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>();
     }
 
     private void Update()
