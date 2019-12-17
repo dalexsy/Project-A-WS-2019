@@ -18,7 +18,7 @@ public class PlankCollisionDetection : MonoBehaviour
         // Only top and bottom colliders prevent collisions with other Planks
         if (this.gameObject.name.Equals(plankManager.topColliderName) ||
             this.gameObject.name.Equals(plankManager.bottomColliderName))
-            
+
             LimitRotationOnEnter(collider);
     }
 
