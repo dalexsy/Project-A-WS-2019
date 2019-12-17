@@ -64,7 +64,7 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   saturation:
-    overrideState: 1
+    overrideState: 0
     value: -100
   brightness:
     overrideState: 0
@@ -104,10 +104,10 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 1
-    value: {x: 0.7682682, y: 0.90459394, z: 1, w: 0}
+    value: {x: 0.93565613, y: 0.9327578, z: 1, w: 0}
   gamma:
-    overrideState: 0
-    value: {x: 1, y: 1, z: 1, w: 0}
+    overrideState: 1
+    value: {x: 0.61874187, y: 1, z: 0.64464957, w: 0}
   gain:
     overrideState: 0
     value: {x: 1, y: 1, z: 1, w: 0}
