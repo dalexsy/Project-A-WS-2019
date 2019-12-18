@@ -20,6 +20,10 @@ public class PlankCollisionDetection : MonoBehaviour
             this.gameObject.name.Equals(plankManager.bottomColliderName))
 
             LimitRotationOnEnter(collider);
+
+        // If first and last Plank are colliding, level is connected
+        if (this.gameObject.transform.parent == plankManager.firstPlank && collider.transform.parent == plankManager.lastPlank)
+            plankManager.isLevelConnected = true;
     }
 
     private void OnTriggerExit(Collider collider)
@@ -29,6 +33,10 @@ public class PlankCollisionDetection : MonoBehaviour
             this.gameObject.name.Equals(plankManager.bottomColliderName))
 
             LimitRotationOnExit(collider);
+
+        // If first and last Plank are not colliding, level is not connected
+        if (this.gameObject.transform.parent == plankManager.firstPlank && collider.transform.parent == plankManager.lastPlank)
+            plankManager.isLevelConnected = false;
     }
 
     // Method to limit Plank's rotation (clockwise or counterclockwise)
@@ -74,6 +82,7 @@ public class PlankCollisionDetection : MonoBehaviour
         (collider.gameObject.name.Equals(plankManager.topColliderName)))
         {
             collisionObject = collider.gameObject.transform;
+
             // If active pivot is right pivot
             if (rotatingPivot.name.Equals(plankManager.rightPivotName))
             {
@@ -96,6 +105,7 @@ public class PlankCollisionDetection : MonoBehaviour
         (collider.gameObject.name.Equals(plankManager.bottomColliderName)))
         {
             collisionObject = collider.gameObject.transform;
+
             // If active pivot is right pivot
             if (rotatingPivot.name.Equals(plankManager.rightPivotName))
             {
