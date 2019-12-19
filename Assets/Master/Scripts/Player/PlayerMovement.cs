@@ -35,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
         // Set first and last waypoint
         firstWaypoint = waypoints[0];
         lastWaypoint = waypoints[waypoints.Length - 1];
-        Debug.Log(lastWaypoint.name);
     }
 
     private void Update()
@@ -147,10 +146,18 @@ public class PlayerMovement : MonoBehaviour
         if (plankManager.isLevelConnected)
         {
             // If current waypoint is last waypoint and direction is forward in array, next waypoint is first waypoint
-            if (currentWaypoint == lastWaypoint && arrayDirection == 1) nextWaypoint = firstWaypoint;
+            if (currentWaypoint == lastWaypoint && arrayDirection == 1)
+            {
+                nextWaypoint = firstWaypoint;
+                if (plankManager.hasReachedGoal) playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+            }
 
             // If current waypoint is first waypoint and direction is forward in array, next waypoint is last waypoint
-            if (currentWaypoint == firstWaypoint && arrayDirection == -1) nextWaypoint = lastWaypoint;
+            if (currentWaypoint == firstWaypoint && arrayDirection == -1)
+            {
+                nextWaypoint = lastWaypoint;
+                if (plankManager.hasReachedGoal) playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+            }
         }
 
         // If current waypoint is flagged as transitional and next waypoint hasn't been set
@@ -161,9 +168,8 @@ public class PlayerMovement : MonoBehaviour
             nextWaypoint = waypoints[currentIndex + arrayDirection];
         }
 
-
         // Set target position as next waypoint's position with player's Y position
-        Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
+        Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f * playerManager.gravityDirection;
 
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
         if (V3Equal(transform.up, nextWaypoint.transform.up))
@@ -176,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(.1f);
             transform.position = nextWaypoint.transform.position;
-            transform.up = nextWaypoint.transform.up;
+            transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
         }
 
         // Set current position as Player's position

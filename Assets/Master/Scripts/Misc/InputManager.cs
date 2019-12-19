@@ -21,17 +21,37 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.touchCount == 2) isDoubleSwiping = true;
+        if (Input.touchCount == 2)
+            Invoke("SetDoubleSwipeBool", .2f);
+
+        /*
+                if (Input.touchCount == 1)
+                    Invoke("SetSingleSwipeBool", .2f);
+                    */
+
         if (Input.touchCount == 0)
-        {
-            isDoubleSwiping = false;
-            isSwiping = false;
-        }
+            Invoke("ResetBools", .5f);
 
         if (Input.GetMouseButtonUp(0)) isSwiping = false;
         if (Input.GetMouseButtonUp(1)) isDoubleSwiping = false;
 
         if (Input.GetMouseButton(0)) isSwiping = true;
         if (Input.GetMouseButton(1)) isDoubleSwiping = true;
+    }
+
+    private void SetDoubleSwipeBool()
+    {
+        isDoubleSwiping = true;
+    }
+
+    private void SetSingleSwipeBool()
+    {
+        isSwiping = true;
+    }
+
+    private void ResetBools()
+    {
+        isDoubleSwiping = false;
+        isSwiping = false;
     }
 }
