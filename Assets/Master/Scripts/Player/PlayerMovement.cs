@@ -190,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
 
         distance = 100f;
 
-        // While Player has not reached target postion
+        // While Player has not reached next waypoint's postion
         while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
            Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
         {

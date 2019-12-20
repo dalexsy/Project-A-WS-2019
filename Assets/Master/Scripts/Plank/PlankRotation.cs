@@ -108,9 +108,6 @@ public class PlankRotation : MonoBehaviour
                     inputOffset = 0;
                     break;
 
-                case TouchPhase.Moved:
-                    break;
-
                 case TouchPhase.Ended:
 
                     pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();

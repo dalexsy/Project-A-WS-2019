@@ -64,9 +64,10 @@ public class CameraRigRotation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!plankManager.hasReachedGoal) AngleCorrection();
+        if (!plankManager.hasReachedGoal && inputManager.isUsingTouch) AngleCorrection();
     }
 
+    // Rotates camera around level (used after level is completed)
     private void RotateAroundLevel()
     {
         transform.RotateAround(transform.position, transform.up, Time.deltaTime * 10f);
@@ -77,7 +78,6 @@ public class CameraRigRotation : MonoBehaviour
         if (Input.touchCount == 2)
         {
             inputManager.isDoubleSwiping = true;
-
             float pinchAmount = 0;
             float turnAmount = 0;
             float yRotation = transform.eulerAngles.y;
@@ -109,25 +109,28 @@ public class CameraRigRotation : MonoBehaviour
                                                 yRotation + turnAmount,
                                                 transform.eulerAngles.z);
         }
-
         else inputManager.isDoubleSwiping = false;
     }
 
+    // Resets rig to a right angle when using touch rotation
     private void AngleCorrection()
     {
         float yRotation = transform.eulerAngles.y;
 
+        // Take remainder of current Y rotation divided by 90
         float angleDifference = yRotation % 90;
+
+        // If angle difference is over 45, reduce angle difference to normalize correction rate
         if (angleDifference > 45)
             angleDifference = angleDifference - 90;
 
-        if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= 2f)
+        // If player is not trying to rotate camera and angle difference is over 1 degree
+        if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= .5f)
         {
+            // Correct rig's Y axis rotation proportionally by angle difference
             transform.eulerAngles = new Vector3(transform.eulerAngles.x,
-                                                yRotation - angleDifference / 20,
+                                                yRotation - angleDifference / 50,
                                                 transform.eulerAngles.z);
-
-            inputManager.debugLog.debugMessage = angleDifference.ToString();
         }
     }
 

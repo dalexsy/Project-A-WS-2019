@@ -24,10 +24,8 @@ public class InputManager : MonoBehaviour
         if (Input.touchCount == 2)
             Invoke("SetDoubleSwipeBool", .2f);
 
-        /*
-                if (Input.touchCount == 1)
-                    Invoke("SetSingleSwipeBool", .2f);
-                    */
+        if (Input.touchCount == 1)
+            Invoke("SetSingleSwipeBool", .5f);
 
         if (Input.touchCount == 0)
             Invoke("ResetBools", .5f);
