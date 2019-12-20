@@ -64,7 +64,7 @@ public class CameraRigRotation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //AngleCorrectionAlways();
+        if (!plankManager.hasReachedGoal) AngleCorrection();
     }
 
     private void RotateAroundLevel()
@@ -113,54 +113,21 @@ public class CameraRigRotation : MonoBehaviour
         else inputManager.isDoubleSwiping = false;
     }
 
-    private void AngleCorrectionAlways()
+    private void AngleCorrection()
     {
         float yRotation = transform.eulerAngles.y;
 
-        if (inputManager.isDoubleSwiping == false && yRotation % 90 != 0)
+        float angleDifference = yRotation % 90;
+        if (angleDifference > 45)
+            angleDifference = angleDifference - 90;
+
+        if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= 2f)
         {
-            float angleDifference = yRotation % 90;
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x,
+                                                yRotation - angleDifference / 20,
+                                                transform.eulerAngles.z);
 
-            Vector3 targetRotation = new Vector3(0, angleDifference * turnDirection, 0);
-
-            if (angleDifference < 2f) transform.eulerAngles = transform.rotation * targetRotation;
-        }
-
-    }
-
-    private IEnumerator AngleCorrection()
-    {
-        float yRotation = transform.eulerAngles.y;
-
-        if (inputManager.isDoubleSwiping == false && yRotation % 90 != 0)
-        {
-            float angleDifference = yRotation % 90;
-
-            Vector3 targetRotation = new Vector3(0, angleDifference * turnDirection, 0);
-
-            // Set start rotation as rig's current rotation
-            Quaternion startRotation = transform.rotation;
-
-            // Set end rotation as start rotation plus target rotation
-            Quaternion endRotation = startRotation * Quaternion.Euler(targetRotation);
-
-            // Reset time
-            float t = 0f;
-
-            // While running
-            while (t < 1f)
-            {
-                // Increase time by rotation speed
-                t += Time.deltaTime * rotationSpeed;
-
-                // Rotate towards end rotation using animation curve
-                transform.rotation = Quaternion.Slerp(startRotation, endRotation, animationCurve.Evaluate(t));
-
-                // Return to top of while loop
-                yield return null;
-            }
-
-            this.isRotating = false;
+            inputManager.debugLog.debugMessage = angleDifference.ToString();
         }
     }
 
@@ -168,7 +135,6 @@ public class CameraRigRotation : MonoBehaviour
     {
         if (direction == 0 || isRotating) return;
 
-        StartCoroutine(RotateRig(MouseInput()));
         StartCoroutine(RotateRig(MouseInput()));
     }
 

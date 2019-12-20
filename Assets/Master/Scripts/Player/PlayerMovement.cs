@@ -169,12 +169,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Set target position as next waypoint's position with player's Y position
-        Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f * playerManager.gravityDirection;
+        Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
-        if (V3Equal(transform.up, nextWaypoint.transform.up))
+        if (V3Equal(transform.up, nextWaypoint.transform.up * playerManager.gravityDirection))
         {
-            this.transform.LookAt(targetPosition, nextWaypoint.transform.up);
+            this.transform.LookAt(targetPosition, nextWaypoint.transform.up * playerManager.gravityDirection);
         }
 
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
