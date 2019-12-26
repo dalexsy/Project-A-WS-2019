@@ -21,35 +21,45 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.touchCount == 2)
-            Invoke("SetDoubleSwipeBool", .2f);
+        DetectSwipe();
+    }
 
+    private void DetectSwipe()
+    {
+        // Single swipe
         if (Input.touchCount == 1)
-            Invoke("SetSingleSwipeBool", .5f);
+        {
+            Touch touch = Input.GetTouch(0);
+            var startTime = Time.time;
 
-        if (Input.touchCount == 0)
-            Invoke("ResetBools", .5f);
+            if (touch.phase == TouchPhase.Began) startTime = Time.time;
 
-        if (Input.GetMouseButtonUp(0)) isSwiping = false;
-        if (Input.GetMouseButtonUp(1)) isDoubleSwiping = false;
+            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            {
+                var timeElapsed = Time.time - startTime;
+                if (timeElapsed > .5) isSwiping = true;
+                else isSwiping = false;
+            }
 
-        if (Input.GetMouseButton(0)) isSwiping = true;
-        if (Input.GetMouseButton(1)) isDoubleSwiping = true;
-    }
+            if (touch.phase == TouchPhase.Ended) isSwiping = false;
+        }
 
-    private void SetDoubleSwipeBool()
-    {
-        isDoubleSwiping = true;
-    }
+        // Double swipe
+        if (Input.touchCount == 2)
+        {
+            Touch touch = Input.GetTouch(1);
+            var startTime = Time.time;
 
-    private void SetSingleSwipeBool()
-    {
-        isSwiping = true;
-    }
+            if (touch.phase == TouchPhase.Began) startTime = Time.time;
 
-    private void ResetBools()
-    {
-        isDoubleSwiping = false;
-        isSwiping = false;
+            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            {
+                var timeElapsed = Time.time - startTime;
+                if (timeElapsed > .5) isDoubleSwiping = true;
+                else isDoubleSwiping = false;
+            }
+
+            if (touch.phase == TouchPhase.Ended) isDoubleSwiping = false;
+        }
     }
 }
