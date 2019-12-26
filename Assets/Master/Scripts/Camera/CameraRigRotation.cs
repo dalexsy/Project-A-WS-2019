@@ -77,7 +77,6 @@ public class CameraRigRotation : MonoBehaviour
     {
         if (Input.touchCount == 2)
         {
-            inputManager.isDoubleSwiping = true;
             float pinchAmount = 0;
             float turnAmount = 0;
             float yRotation = transform.eulerAngles.y;
@@ -109,7 +108,7 @@ public class CameraRigRotation : MonoBehaviour
                                                 yRotation + turnAmount,
                                                 transform.eulerAngles.z);
         }
-        else inputManager.isDoubleSwiping = false;
+
     }
 
     // Resets rig to a right angle when using touch rotation
@@ -124,7 +123,7 @@ public class CameraRigRotation : MonoBehaviour
         if (angleDifference > 45)
             angleDifference = angleDifference - 90;
 
-        // If player is not trying to rotate camera and angle difference is over 1 degree
+        // If player is not trying to rotate camera and angle difference is over half a degree
         if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= .5f)
         {
             // Correct rig's Y axis rotation proportionally by angle difference

@@ -30,6 +30,7 @@ public class InputManager : MonoBehaviour
         var startTime = Time.time;
 
         // Left click swipe
+        // If swipe lasts longer than half a second, swipe is valid
         if (Input.GetMouseButtonDown(0)) startTime = Time.time;
 
         if (Input.GetMouseButton(0))
@@ -42,6 +43,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0)) isSwiping = false;
 
         // Right click swipe
+        // If swipe lasts longer than half a second, swipe is valid
         if (Input.GetMouseButtonDown(1)) startTime = Time.time;
 
         if (Input.GetMouseButton(1))
@@ -57,6 +59,7 @@ public class InputManager : MonoBehaviour
     private void DetectSwipe()
     {
         // Single swipe
+        // If swipe lasts longer than half a second, swipe is valid
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
@@ -75,6 +78,7 @@ public class InputManager : MonoBehaviour
         }
 
         // Double swipe
+        // If swipe lasts longer than half a second, swipe is valid
         if (Input.touchCount == 2)
         {
             Touch touch = Input.GetTouch(1);

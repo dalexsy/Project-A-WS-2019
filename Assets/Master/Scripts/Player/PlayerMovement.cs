@@ -104,10 +104,10 @@ public class PlayerMovement : MonoBehaviour
                 // Find shortest distance between current and target waypoints
                 arrayDirection = ShortestDirection(currentIndex, targetIndex);
 
-                // If current waypoint is last waypoint and direction is forward in array, next waypoint is first waypoint
+                // If current waypoint is last waypoint and direction is forwards in array, next waypoint is first waypoint
                 if (currentWaypoint == lastWaypoint && arrayDirection == 1) nextWaypoint = firstWaypoint;
 
-                // If current waypoint is first waypoint and direction is forward in array, next waypoint is last waypoint
+                // If current waypoint is first waypoint and direction is backwards in array, next waypoint is last waypoint
                 if (currentWaypoint == firstWaypoint && arrayDirection == -1) nextWaypoint = lastWaypoint;
             }
 
@@ -170,13 +170,13 @@ public class PlayerMovement : MonoBehaviour
             nextWaypoint = waypoints[currentIndex + arrayDirection];
         }
 
-        // Set target position as next waypoint's position with player's Y position
+        // Set target position as next waypoint's position with Player's Y position
         Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
         if (V3Equal(transform.up, nextWaypoint.transform.up * playerManager.gravityDirection))
         {
-            this.transform.LookAt(targetPosition, nextWaypoint.transform.up * playerManager.gravityDirection);
+            transform.LookAt(targetPosition, nextWaypoint.transform.up * playerManager.gravityDirection);
         }
 
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
@@ -184,6 +184,7 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(.1f);
             transform.position = nextWaypoint.transform.position;
+            Debug.Log(playerManager.currentPlank.name);
             transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
         }
 
