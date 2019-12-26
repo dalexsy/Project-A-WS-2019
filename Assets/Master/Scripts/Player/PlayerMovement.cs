@@ -87,6 +87,8 @@ public class PlayerMovement : MonoBehaviour
             // Set target waypoint as tapped waypoint
             targetWaypoint = hit.transform.gameObject;
 
+            if (targetWaypoint == currentWaypoint) return;
+
             // Find array position of current waypoint
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
 
