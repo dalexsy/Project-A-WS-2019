@@ -64,9 +64,10 @@ public class CameraRigRotation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //AngleCorrectionAlways();
+        if (!plankManager.hasReachedGoal && inputManager.isUsingTouch) AngleCorrection();
     }
 
+    // Rotates camera around level (used after level is completed)
     private void RotateAroundLevel()
     {
         transform.RotateAround(transform.position, transform.up, Time.deltaTime * 10f);
@@ -76,8 +77,6 @@ public class CameraRigRotation : MonoBehaviour
     {
         if (Input.touchCount == 2)
         {
-            inputManager.isDoubleSwiping = true;
-
             float pinchAmount = 0;
             float turnAmount = 0;
             float yRotation = transform.eulerAngles.y;
@@ -110,57 +109,27 @@ public class CameraRigRotation : MonoBehaviour
                                                 transform.eulerAngles.z);
         }
 
-        else inputManager.isDoubleSwiping = false;
     }
 
-    private void AngleCorrectionAlways()
+    // Resets rig to a right angle when using touch rotation
+    private void AngleCorrection()
     {
         float yRotation = transform.eulerAngles.y;
 
-        if (inputManager.isDoubleSwiping == false && yRotation % 90 != 0)
+        // Take remainder of current Y rotation divided by 90
+        float angleDifference = yRotation % 90;
+
+        // If angle difference is over 45, reduce angle difference to normalize correction rate
+        if (angleDifference > 45)
+            angleDifference = angleDifference - 90;
+
+        // If player is not trying to rotate camera and angle difference is over half a degree
+        if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= .5f)
         {
-            float angleDifference = yRotation % 90;
-
-            Vector3 targetRotation = new Vector3(0, angleDifference * turnDirection, 0);
-
-            if (angleDifference < 2f) transform.eulerAngles = transform.rotation * targetRotation;
-        }
-
-    }
-
-    private IEnumerator AngleCorrection()
-    {
-        float yRotation = transform.eulerAngles.y;
-
-        if (inputManager.isDoubleSwiping == false && yRotation % 90 != 0)
-        {
-            float angleDifference = yRotation % 90;
-
-            Vector3 targetRotation = new Vector3(0, angleDifference * turnDirection, 0);
-
-            // Set start rotation as rig's current rotation
-            Quaternion startRotation = transform.rotation;
-
-            // Set end rotation as start rotation plus target rotation
-            Quaternion endRotation = startRotation * Quaternion.Euler(targetRotation);
-
-            // Reset time
-            float t = 0f;
-
-            // While running
-            while (t < 1f)
-            {
-                // Increase time by rotation speed
-                t += Time.deltaTime * rotationSpeed;
-
-                // Rotate towards end rotation using animation curve
-                transform.rotation = Quaternion.Slerp(startRotation, endRotation, animationCurve.Evaluate(t));
-
-                // Return to top of while loop
-                yield return null;
-            }
-
-            this.isRotating = false;
+            // Correct rig's Y axis rotation proportionally by angle difference
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x,
+                                                yRotation - angleDifference / 50,
+                                                transform.eulerAngles.z);
         }
     }
 
@@ -168,7 +137,6 @@ public class CameraRigRotation : MonoBehaviour
     {
         if (direction == 0 || isRotating) return;
 
-        StartCoroutine(RotateRig(MouseInput()));
         StartCoroutine(RotateRig(MouseInput()));
     }
 

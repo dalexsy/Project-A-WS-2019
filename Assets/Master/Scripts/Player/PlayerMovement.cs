@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     private float distance;
-    private GameObject currentWaypoint;
+    [SerializeField] private GameObject currentWaypoint;
     private GameObject targetWaypoint;
     private GameObject nextWaypoint;
     private GameObject firstWaypoint;
@@ -15,12 +15,14 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rightWaypoint;
     private int arrayDirection;
     private InputManager inputManager;
+    private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
 
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
 
@@ -59,35 +61,10 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case TouchPhase.Stationary:
-
                     break;
 
                 case TouchPhase.Ended:
-                    RaycastHit hit;
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    int layerMask = LayerMask.GetMask("Waypoint Triggers");
-
-                    // If any waypoints are tapped
-                    if (Physics.Raycast(ray, out hit, 1000f, layerMask))
-                    {
-                        // Set target waypoint as tapped waypoint
-                        targetWaypoint = hit.transform.gameObject;
-
-                        // Find array position of current waypoint
-                        var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
-
-                        // Find array position of target waypoint
-                        var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
-
-                        // Find direction between target and current waypoint
-                        arrayDirection = Math.Sign(targetIndex - currentIndex);
-
-                        // Set next waypoint as next waypoint in array using direction
-                        nextWaypoint = waypoints[currentIndex + arrayDirection];
-
-                        // Start transitioning
-                        StartCoroutine(TransitionWaypoints(arrayDirection));
-                    }
+                    SelectWaypoint();
                     break;
             }
         }
@@ -95,34 +72,69 @@ public class PlayerMovement : MonoBehaviour
 
     private void MouseInput()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0)) SelectWaypoint();
+    }
+
+    private void SelectWaypoint()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int layerMask = LayerMask.GetMask("Waypoint Triggers");
+
+        // If any waypoints are tapped
+        if (Physics.Raycast(ray, out hit, 1000f, layerMask))
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            int layerMask = LayerMask.GetMask("Waypoint Triggers");
+            // Set target waypoint as tapped waypoint
+            targetWaypoint = hit.transform.gameObject;
 
-            // If any waypoints are tapped
-            if (Physics.Raycast(ray, out hit, 1000f, layerMask))
+            if (targetWaypoint == currentWaypoint) return;
+
+            // Find array position of current waypoint
+            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+            // Find array position of target waypoint
+            var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+
+            // Find direction between target and current waypoint
+            arrayDirection = Math.Sign(targetIndex - currentIndex);
+
+            // If level is connected
+            if (plankManager.isLevelConnected)
             {
-                // Set target waypoint as tapped waypoint
-                targetWaypoint = hit.transform.gameObject;
+                // Find shortest distance between current and target waypoints
+                arrayDirection = ShortestDirection(currentIndex, targetIndex);
 
-                // Find array position of current waypoint
-                var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+                // If current waypoint is last waypoint and direction is forwards in array, next waypoint is first waypoint
+                if (currentWaypoint == lastWaypoint && arrayDirection == 1) nextWaypoint = firstWaypoint;
 
-                // Find array position of target waypoint
-                var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
+                // If current waypoint is first waypoint and direction is backwards in array, next waypoint is last waypoint
+                if (currentWaypoint == firstWaypoint && arrayDirection == -1) nextWaypoint = lastWaypoint;
+            }
 
-                // Find direction between target and current waypoint
-                arrayDirection = Math.Sign(targetIndex - currentIndex);
-
+            // If level is not connected
+            else
+            {
                 // Set next waypoint as next waypoint in array using direction
                 nextWaypoint = waypoints[currentIndex + arrayDirection];
-
-                // Start transitioning
-                StartCoroutine(TransitionWaypoints(arrayDirection));
             }
+
+            // Start transitioning
+            StartCoroutine(TransitionWaypoints(arrayDirection));
         }
+    }
+
+    // Finds shortest direction between two waypoints
+    // Only used if level is fully connected
+    private int ShortestDirection(int currentIndex, int targetIndex)
+    {
+        // Set mean distance as half of array length
+        var meanDistance = waypoints.Length / 2;
+
+        // If distance between current index and target is over mean distance, flip direction
+        if (Math.Abs(currentIndex - targetIndex) > meanDistance) return Math.Sign(targetIndex - currentIndex) * -1;
+
+        // Otherwise, business as usual
+        return Math.Sign(targetIndex - currentIndex);
     }
 
     IEnumerator TransitionWaypoints(int arrayDirection)
@@ -132,21 +144,39 @@ public class PlayerMovement : MonoBehaviour
 
         playerManager.isMoving = true;
 
-        // If current waypoint is flagged as transitional, 
-        // set next waypoint as next waypoint in array using previous array direction
-        if (currentWaypoint.GetComponent<WaypointMarker>().isTransitional == true)
+        // If level is connected
+        if (plankManager.isLevelConnected)
         {
+            // If current waypoint is last waypoint and direction is forward in array, next waypoint is first waypoint
+            if (currentWaypoint == lastWaypoint && arrayDirection == 1)
+            {
+                nextWaypoint = firstWaypoint;
+                if (plankManager.hasReachedGoal) playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+            }
+
+            // If current waypoint is first waypoint and direction is forward in array, next waypoint is last waypoint
+            if (currentWaypoint == firstWaypoint && arrayDirection == -1)
+            {
+                nextWaypoint = lastWaypoint;
+                if (plankManager.hasReachedGoal) playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+            }
+        }
+
+        // If current waypoint is flagged as transitional and next waypoint hasn't been set
+        if (currentWaypoint.GetComponent<WaypointMarker>().isTransitional == true && currentWaypoint == nextWaypoint)
+        {
+            // Set next waypoint as next waypoint in array using previous array direction
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
             nextWaypoint = waypoints[currentIndex + arrayDirection];
         }
 
-        // Set target position as next waypoint's position with player's Y position
+        // Set target position as next waypoint's position with Player's Y position
         Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
-        if (V3Equal(transform.up, nextWaypoint.transform.up))
+        if (V3Equal(transform.up, nextWaypoint.transform.up * playerManager.gravityDirection))
         {
-            this.transform.LookAt(targetPosition, nextWaypoint.transform.up);
+            transform.LookAt(targetPosition, nextWaypoint.transform.up * playerManager.gravityDirection);
         }
 
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
@@ -154,7 +184,8 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(.1f);
             transform.position = nextWaypoint.transform.position;
-            transform.up = nextWaypoint.transform.up;
+            Debug.Log(playerManager.currentPlank.name);
+            transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
         }
 
         // Set current position as Player's position
@@ -162,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
 
         distance = 100f;
 
-        // While Player has not reached target postion
+        // While Player has not reached next waypoint's postion
         while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
            Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
         {
@@ -207,6 +238,7 @@ public class PlayerMovement : MonoBehaviour
             currentWaypoint = collider.gameObject;
     }
 
+    // Compares rounded Vector3s because MonoBehaviour doesn't do it well
     private bool V3Equal(Vector3 a, Vector3 b)
     {
         return Vector3.SqrMagnitude(a - b) < 0.9;

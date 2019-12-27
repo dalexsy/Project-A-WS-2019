@@ -49,4 +49,7 @@ public class PlankManager : MonoBehaviour
 
     [Header("Goal Detection")]
     public bool hasReachedGoal = false;
+
+    [Header("Level Connected")]
+    public bool isLevelConnected = false;
 }

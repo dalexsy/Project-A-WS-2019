@@ -108,9 +108,6 @@ public class PlankRotation : MonoBehaviour
                     inputOffset = 0;
                     break;
 
-                case TouchPhase.Moved:
-                    break;
-
                 case TouchPhase.Ended:
 
                     pivotOrientationDetection = activePivot.GetComponent<PivotOrientationDetection>();
@@ -122,7 +119,7 @@ public class PlankRotation : MonoBehaviour
                         inputOffset = currentPosition - startPosTouch.x;
 
                         // Set input buffer to prevent input oversensitivity
-                        inputBuffer = Screen.width * .2f;
+                        inputBuffer = Screen.width * .1f;
 
                         // If Plank is flipped vertically, input must be reversed
                         var plankOrientation = 1;
@@ -142,7 +139,7 @@ public class PlankRotation : MonoBehaviour
                         inputOffset = currentPosition - startPosTouch.y;
 
                         // Set input buffer to prevent input oversensitivity
-                        inputBuffer = Screen.height * .2f;
+                        inputBuffer = Screen.height * .1f;
 
                         // If Plank is flipped horizontally, input must be reversed
                         var plankOrientation = 1;
@@ -185,7 +182,7 @@ public class PlankRotation : MonoBehaviour
                 //Debug.Log("Vertical offset: " + inputOffset);
 
                 // Set input buffer to prevent input oversensitivity
-                inputBuffer = Screen.width * .2f;
+                inputBuffer = Screen.width * .1f;
 
                 // If Plank is flipped vertically, input must be reversed
                 var plankOrientation = 1;
@@ -206,7 +203,7 @@ public class PlankRotation : MonoBehaviour
                 //Debug.Log("Horizontal offset: " + inputOffset);
 
                 // Set input buffer to prevent input oversensitivity
-                inputBuffer = Screen.height * .2f;
+                inputBuffer = Screen.height * .1f;
 
                 // If Plank is flipped horizontally, input must be reversed
                 var plankOrientation = 1;

@@ -2,6 +2,9 @@
 
 public class GlowReposition : MonoBehaviour
 {
+    // Disabled unused variable warning
+#pragma warning disable 0414
+
     [Header("Reposition Rate")]
     [TextArea(0, 5)]
     [SerializeField]

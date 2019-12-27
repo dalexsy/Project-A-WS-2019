@@ -70,8 +70,6 @@ public class AnimationTest : MonoBehaviour
         transform.eulerAngles = targetRot;
 
         //transform.RotateAround(rotationPivot.position, rotationPivot.transform.right, animationCurve.Evaluate(t));
-
-        Debug.Log(animationCurve.Evaluate(t));
     }
 
     IEnumerator RotateOnce()
@@ -91,7 +89,6 @@ public class AnimationTest : MonoBehaviour
 
             transform.RotateAround(rotationPivot.position, rotationPivot.transform.right, animationCurve.Evaluate(t));
             currentRotation = Math.Abs(Mathf.RoundToInt(transform.rotation.eulerAngles.x - startRotation));
-            Debug.Log(currentRotation);
             if (currentRotation > 90f)
             {
                 transform.eulerAngles = new Vector3(startRotation + 90, transform.eulerAngles.y, transform.eulerAngles.z);
