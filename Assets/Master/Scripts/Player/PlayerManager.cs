@@ -16,5 +16,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (!isUsingGravity) gravity = 0f;
         if (isUsingInvertedGravity) gravityDirection = -1;
+        else gravityDirection = 1;
     }
 }
