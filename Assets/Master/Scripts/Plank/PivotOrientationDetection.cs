@@ -48,7 +48,7 @@ public class PivotOrientationDetection : MonoBehaviour
     public bool isVertical()
     {
         // If top and bottom colliders have different X positions, Plank is vertical
-        if (topColliderPosition.x != bottomColliderPosition.x) return true;
+        if (Mathf.Round(topColliderPosition.x) != Mathf.Round(bottomColliderPosition.x)) return true;
         else return false;
     }
 
@@ -63,11 +63,19 @@ public class PivotOrientationDetection : MonoBehaviour
     }
 
     // Check if top collider is on right in screenspace
-    // Only used if Plank is vertical
+    // Only used if Plank is horizontal
     public bool isTopRight()
     {
         if (!isVertical()) return false;
         var colliderDifference = topColliderPosition.x - bottomColliderPosition.x;
+        if (colliderDifference < 0) return true;
+        return false;
+    }
+
+    // Checks if top collider is in front of bottom
+    public bool isTopFront()
+    {
+        var colliderDifference = topColliderPosition.z - bottomColliderPosition.z;
         if (colliderDifference < 0) return true;
         return false;
     }

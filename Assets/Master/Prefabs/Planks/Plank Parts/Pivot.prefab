@@ -71,3 +71,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217ca36e5f7be614d8b105d2a6e0c7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topCollider: {fileID: 0}
+  bottomCollider: {fileID: 0}
