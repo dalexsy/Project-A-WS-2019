@@ -151,14 +151,16 @@ public class PlayerMovement : MonoBehaviour
             if (currentWaypoint == lastWaypoint && arrayDirection == 1)
             {
                 nextWaypoint = firstWaypoint;
-                if (plankManager.hasReachedGoal) playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+                if (plankManager.hasReachedGoal)
+                    playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
             }
 
             // If current waypoint is first waypoint and direction is forward in array, next waypoint is last waypoint
             if (currentWaypoint == firstWaypoint && arrayDirection == -1)
             {
                 nextWaypoint = lastWaypoint;
-                if (plankManager.hasReachedGoal) playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+                if (plankManager.hasReachedGoal)
+                    playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
             }
         }
 
@@ -184,7 +186,6 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(.1f);
             transform.position = nextWaypoint.transform.position;
-            Debug.Log(playerManager.currentPlank.name);
             transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
         }
 
