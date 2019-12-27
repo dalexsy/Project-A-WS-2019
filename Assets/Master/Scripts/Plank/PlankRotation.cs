@@ -17,6 +17,7 @@ public class PlankRotation : MonoBehaviour
     private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
+    private MoveCounter moveCounter;
     private PivotOrientationDetection pivotOrientationDetection;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
@@ -36,6 +37,7 @@ public class PlankRotation : MonoBehaviour
         cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        moveCounter = GameObject.Find("Game Manager").GetComponent<MoveCounter>();
         plankConnection = GetComponent<PlankConnection>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
@@ -323,6 +325,9 @@ public class PlankRotation : MonoBehaviour
 
         // If active pulse FX is paused, restart
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
+
+        // Increase move counter
+        moveCounter.moveCount += 1;
 
         // Sets isRotating to false after Plank has reached max rotation
         plankRotationManager.isRotating = false;

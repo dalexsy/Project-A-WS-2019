@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 642359dead29e6c4aa2980917d0fa9ce
+guid: 5a05c54f14762564e8e091c6d281c523
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Nunito
+  fontName: Quicksand
   fontNames:
-  - Nunito
+  - Quicksand
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
