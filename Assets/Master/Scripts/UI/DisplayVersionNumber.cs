@@ -1,6 +1,7 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class DisplayVersionNumber : MonoBehaviour
 {
     private void Start()

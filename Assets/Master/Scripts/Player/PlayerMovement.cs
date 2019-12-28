@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rightWaypoint;
     private int arrayDirection;
     private InputManager inputManager;
+    private PauseManager pauseManager;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
@@ -39,8 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // If Player is moving or Plank is rotating, accept no input
-        if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping) return;
+        // If Player is moving, Plank is rotating, or game is paused, accept no input
+        if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping || pauseManager.isPaused) return;
 
         if (!inputManager.isUsingTouch || Application.platform == RuntimePlatform.WebGLPlayer) MouseInput();
 

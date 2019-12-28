@@ -15,6 +15,7 @@ public class CameraRigRotation : MonoBehaviour
     [SerializeField] private Vector3 offset = new Vector3(0, -.2f, 0);
 
     private InputManager inputManager;
+    private PauseManager pauseManager;
     private PlankManager plankManager;
     private Camera mainCamera;
     private float inputBuffer = 0;
@@ -26,6 +27,7 @@ public class CameraRigRotation : MonoBehaviour
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         mainCamera = Camera.main;
 
@@ -54,6 +56,8 @@ public class CameraRigRotation : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (pauseManager.isPaused) return;
+        
         if (plankManager.hasReachedGoal)
         {
             RotateAroundLevel();

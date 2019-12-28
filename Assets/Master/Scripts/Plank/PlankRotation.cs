@@ -18,6 +18,7 @@ public class PlankRotation : MonoBehaviour
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
     private MoveCounter moveCounter;
+    private PauseManager pauseManager;
     private PivotOrientationDetection pivotOrientationDetection;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
@@ -38,6 +39,7 @@ public class PlankRotation : MonoBehaviour
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         moveCounter = GameObject.Find("Game Manager").GetComponent<MoveCounter>();
+        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankConnection = GetComponent<PlankConnection>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
@@ -46,6 +48,9 @@ public class PlankRotation : MonoBehaviour
 
     private void Update()
     {
+        // If game is paused, accept no input
+        if (pauseManager.isPaused) return;
+
         // If Plank is not colliding with Player, accept rotation input
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
 
