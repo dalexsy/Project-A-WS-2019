@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Glow
-  m_Shader: {fileID: -6465566751694194690, guid: 18c4433c6419b8b489835e5bd636b9c2,
+  m_Shader: {fileID: -6465566751694194690, guid: ff7d323f602efc64eb2aeab66bd4b05b,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,6 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - Vector1_686B41C5: 0.93
+    - Vector1_686B41C5: 0.67
     m_Colors:
     - Color_C3FBF5E4: {r: 1.1678668, g: 0.5507297, b: 0.39112526, a: 0}
+    - _Glow_Color: {r: 1.2313726, g: 1.1294118, b: 0.85490197, a: 0}

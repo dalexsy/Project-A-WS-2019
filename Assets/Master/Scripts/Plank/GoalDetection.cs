@@ -14,6 +14,11 @@ public class GoalDetection : MonoBehaviour
     private void OnTriggerStay(Collider collider)
     {
         if (plankRotationManager.isRotating) return;
-        if (collider.gameObject.name.Equals(this.gameObject.name)) plankManager.hasReachedGoal = true;
+
+        if (collider.gameObject.name.Equals(this.gameObject.name))
+        {
+            plankManager.isLevelConnected = true;
+            plankManager.hasReachedGoal = true;
+        }
     }
 }
