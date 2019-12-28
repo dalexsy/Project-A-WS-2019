@@ -3,14 +3,17 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class CameraRigRotation : MonoBehaviour
 {
-    public bool isRotating = false;
-    public bool isStandardOrientation = true;
-    public Vector3 averagePlankPosition;
+    [HideInInspector] public bool isRotating = false;
+    [HideInInspector] public Vector3 averagePlankPosition;
+
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
+    [SerializeField] private Vector3 offset = new Vector3(0, -.2f, 0);
+
     private InputManager inputManager;
     private PlankManager plankManager;
     private Camera mainCamera;
@@ -46,7 +49,7 @@ public class CameraRigRotation : MonoBehaviour
         averagePlankPosition = GetMeanVector(plankPositions);
 
         // Set rig's position to average Plank position
-        this.transform.position = averagePlankPosition;
+        this.transform.position = averagePlankPosition + offset;
     }
 
     private void LateUpdate()
@@ -173,9 +176,6 @@ public class CameraRigRotation : MonoBehaviour
     {
         // Set isRotating to true to prevent multiple rotations
         isRotating = true;
-
-        // Flip standard orientation bool used for plank rotation input
-        isStandardOrientation = !isStandardOrientation;
 
         // Set target rotation to 90 degrees around rig's y-axis in given direction
         Vector3 targetRotation = new Vector3(0, 90f * direction, 0);
