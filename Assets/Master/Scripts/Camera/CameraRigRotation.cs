@@ -57,7 +57,7 @@ public class CameraRigRotation : MonoBehaviour
     private void LateUpdate()
     {
         if (pauseManager.isPaused) return;
-        
+
         if (plankManager.hasReachedGoal)
         {
             RotateAroundLevel();
@@ -131,7 +131,7 @@ public class CameraRigRotation : MonoBehaviour
             angleDifference = angleDifference - 90;
 
         // If player is not trying to rotate camera and angle difference is over half a degree
-        if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= .5f)
+        if (Input.touchCount != 2 && Math.Abs(angleDifference) >= .5f)
         {
             // Correct rig's Y axis rotation proportionally by angle difference
             transform.eulerAngles = new Vector3(transform.eulerAngles.x,

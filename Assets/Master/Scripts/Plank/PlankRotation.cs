@@ -25,8 +25,8 @@ public class PlankRotation : MonoBehaviour
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
 
-    private float inputBuffer = 0;
-    private float inputOffset = 0;
+    private float inputBuffer = 0f;
+    private float inputOffset = 0f;
 
     private Vector2 startPosMouse = Vector2.zero;
     private Vector2 startPosTouch = Vector2.zero;
@@ -186,7 +186,6 @@ public class PlankRotation : MonoBehaviour
             {
                 var currentPosition = Input.mousePosition.x;
                 inputOffset = currentPosition - startPosMouse.x;
-                //Debug.Log("Vertical offset: " + inputOffset);
 
                 // Set input buffer to prevent input oversensitivity
                 inputBuffer = Screen.width * .1f;
@@ -207,7 +206,6 @@ public class PlankRotation : MonoBehaviour
             {
                 var currentPosition = Input.mousePosition.y;
                 inputOffset = currentPosition - startPosMouse.y;
-                //Debug.Log("Horizontal offset: " + inputOffset);
 
                 // Set input buffer to prevent input oversensitivity
                 inputBuffer = Screen.height * .1f;

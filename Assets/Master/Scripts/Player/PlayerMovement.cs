@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     private float distance;
+    private float timer = 0f;
     [SerializeField] private GameObject currentWaypoint;
     private GameObject targetWaypoint;
     private GameObject nextWaypoint;
@@ -41,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        //inputManager.debugLog.debugMessage = (timer.ToString() + " " + Input.GetTouch(0).phase.ToString());
         // If Player is moving, Plank is rotating, or game is paused, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping || pauseManager.isPaused) return;
 
@@ -55,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.touchCount == 1)
         {
+            timer += Time.deltaTime;
             Touch touch = Input.GetTouch(0);
 
             switch (touch.phase)
@@ -66,7 +69,8 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case TouchPhase.Ended:
-                    SelectWaypoint();
+                    if (timer < .2f) SelectWaypoint();
+                    timer = 0f;
                     break;
             }
         }
@@ -74,7 +78,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void MouseInput()
     {
-        if (Input.GetMouseButtonUp(0)) SelectWaypoint();
+        if (Input.GetMouseButton(0)) timer += Time.deltaTime;
+        if (Input.GetMouseButtonUp(0) && timer < .1f) SelectWaypoint();
+        if (Input.GetMouseButtonUp(0)) timer = 0f;
     }
 
     private void SelectWaypoint()
