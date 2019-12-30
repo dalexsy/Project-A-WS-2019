@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class InputManager : MonoBehaviour
 
     public UIDebugLog debugLog;
 
+    private float timer = 0f;
+
     private void OnEnable()
     {
         if (Application.platform == RuntimePlatform.Android ||
@@ -16,84 +19,44 @@ public class InputManager : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
 
-        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>();
+        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>(); // Set message with debugMessage
     }
 
     private void Update()
     {
         if (isUsingTouch) DetectSwipe();
-        else DetectMouse();
     }
 
-    private void DetectMouse()
+    public IEnumerator ResetBool(int swipeCount)
     {
-        var startTime = Time.time;
-
-        // Left click swipe
-        // If swipe lasts longer than half a second, swipe is valid
-        if (Input.GetMouseButtonDown(0)) startTime = Time.time;
-
-        if (Input.GetMouseButton(0))
-        {
-            var timeElapsed = Time.time - startTime;
-            if (timeElapsed > .5) isSwiping = true;
-            else isSwiping = false;
-        }
-
-        if (Input.GetMouseButtonUp(0)) isSwiping = false;
-
-        // Right click swipe
-        // If swipe lasts longer than half a second, swipe is valid
-        if (Input.GetMouseButtonDown(1)) startTime = Time.time;
-
-        if (Input.GetMouseButton(1))
-        {
-            var timeElapsed = Time.time - startTime;
-            if (timeElapsed > .5) isDoubleSwiping = true;
-            else isDoubleSwiping = false;
-        }
-
-        if (Input.GetMouseButtonUp(1)) isDoubleSwiping = false;
+        yield return new WaitForSeconds(.5f);
+        if (swipeCount == 1) isSwiping = false;
+        if (swipeCount == 2) isDoubleSwiping = false;
+        else yield break;
     }
 
     private void DetectSwipe()
     {
-        // Single swipe
-        // If swipe lasts longer than half a second, swipe is valid
-        if (Input.touchCount == 1)
-        {
-            Touch touch = Input.GetTouch(0);
-            var startTime = Time.time;
-
-            if (touch.phase == TouchPhase.Began) startTime = Time.time;
-
-            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
-            {
-                var timeElapsed = Time.time - startTime;
-                if (timeElapsed > .5) isSwiping = true;
-                else isSwiping = false;
-            }
-
-            if (touch.phase == TouchPhase.Ended) isSwiping = false;
-        }
-
         // Double swipe
-        // If swipe lasts longer than half a second, swipe is valid
+        // If swipe lasts longer than threshold, swipe is valid
         if (Input.touchCount == 2)
         {
             Touch touch = Input.GetTouch(1);
-            var startTime = Time.time;
-
-            if (touch.phase == TouchPhase.Began) startTime = Time.time;
 
             if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
-                var timeElapsed = Time.time - startTime;
-                if (timeElapsed > .5) isDoubleSwiping = true;
+                timer += Time.deltaTime;
+                if (timer > .1f) isDoubleSwiping = true;
                 else isDoubleSwiping = false;
             }
 
-            if (touch.phase == TouchPhase.Ended) isDoubleSwiping = false;
+            // If touch has ended, reset swiping bool after cooldown
+            // Prevents single swipes from being falsely executed
+            if (touch.phase == TouchPhase.Ended)
+            {
+                StartCoroutine(ResetBool(2));
+                timer = 0f;
+            }
         }
     }
 }

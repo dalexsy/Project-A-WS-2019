@@ -3,15 +3,19 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class CameraRigRotation : MonoBehaviour
 {
-    public bool isRotating = false;
-    public bool isStandardOrientation = true;
-    public Vector3 averagePlankPosition;
+    [HideInInspector] public bool isRotating = false;
+    [HideInInspector] public Vector3 averagePlankPosition;
+
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
     [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private GameObject[] planks;
+    [SerializeField] private Vector3 offset = new Vector3(0, -.2f, 0);
+
     private InputManager inputManager;
+    private PauseManager pauseManager;
     private PlankManager plankManager;
     private Camera mainCamera;
     private float inputBuffer = 0;
@@ -23,6 +27,7 @@ public class CameraRigRotation : MonoBehaviour
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         mainCamera = Camera.main;
 
@@ -46,11 +51,13 @@ public class CameraRigRotation : MonoBehaviour
         averagePlankPosition = GetMeanVector(plankPositions);
 
         // Set rig's position to average Plank position
-        this.transform.position = averagePlankPosition;
+        this.transform.position = averagePlankPosition + offset;
     }
 
     private void LateUpdate()
     {
+        if (pauseManager.isPaused) return;
+
         if (plankManager.hasReachedGoal)
         {
             RotateAroundLevel();
@@ -124,7 +131,7 @@ public class CameraRigRotation : MonoBehaviour
             angleDifference = angleDifference - 90;
 
         // If player is not trying to rotate camera and angle difference is over half a degree
-        if (inputManager.isDoubleSwiping == false && Math.Abs(angleDifference) >= .5f)
+        if (Input.touchCount != 2 && Math.Abs(angleDifference) >= .5f)
         {
             // Correct rig's Y axis rotation proportionally by angle difference
             transform.eulerAngles = new Vector3(transform.eulerAngles.x,
@@ -173,9 +180,6 @@ public class CameraRigRotation : MonoBehaviour
     {
         // Set isRotating to true to prevent multiple rotations
         isRotating = true;
-
-        // Flip standard orientation bool used for plank rotation input
-        isStandardOrientation = !isStandardOrientation;
 
         // Set target rotation to 90 degrees around rig's y-axis in given direction
         Vector3 targetRotation = new Vector3(0, 90f * direction, 0);

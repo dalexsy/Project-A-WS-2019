@@ -17,14 +17,16 @@ public class PlankRotation : MonoBehaviour
     private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
+    private MoveCounter moveCounter;
+    private PauseManager pauseManager;
     private PivotOrientationDetection pivotOrientationDetection;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
     private PlayerManager playerManager;
 
-    private float inputBuffer = 0;
-    private float inputOffset = 0;
+    private float inputBuffer = 0f;
+    private float inputOffset = 0f;
 
     private Vector2 startPosMouse = Vector2.zero;
     private Vector2 startPosTouch = Vector2.zero;
@@ -36,6 +38,8 @@ public class PlankRotation : MonoBehaviour
         cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        moveCounter = GameObject.Find("Game Manager").GetComponent<MoveCounter>();
+        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankConnection = GetComponent<PlankConnection>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
@@ -44,6 +48,9 @@ public class PlankRotation : MonoBehaviour
 
     private void Update()
     {
+        // If game is paused, accept no input
+        if (pauseManager.isPaused) return;
+
         // If Plank is not colliding with Player, accept rotation input
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
 
@@ -95,6 +102,7 @@ public class PlankRotation : MonoBehaviour
     // Returns direction of input
     private int TouchInput()
     {
+        // If player is double swiping, input is not valid
         if (inputManager.isDoubleSwiping == true) return 0;
 
         if (Input.touchCount == 1)
@@ -103,6 +111,7 @@ public class PlankRotation : MonoBehaviour
 
             switch (touch.phase)
             {
+                // Set start position to touch position and reset offset
                 case TouchPhase.Began:
                     startPosTouch = touch.position;
                     inputOffset = 0;
@@ -115,6 +124,7 @@ public class PlankRotation : MonoBehaviour
                     // If Plank is vertical, look for vertical input
                     if (pivotOrientationDetection.isVertical())
                     {
+                        // Calculate offset from start position on X axis in screenspace
                         var currentPosition = touch.position.x;
                         inputOffset = currentPosition - startPosTouch.x;
 
@@ -128,6 +138,7 @@ public class PlankRotation : MonoBehaviour
                         // If input is over input buffer, return direction of input
                         var direction = Mathf.Sign(inputOffset);
 
+                        // If input offset is over input buffer, return input direction corrected for Plank orientation
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
                     }
@@ -135,6 +146,7 @@ public class PlankRotation : MonoBehaviour
                     // Else if Plank is horizontal, look for horizontal input
                     else
                     {
+                        // Calculate offset from start position on Y axis in screenspace
                         var currentPosition = touch.position.y;
                         inputOffset = currentPosition - startPosTouch.y;
 
@@ -148,6 +160,7 @@ public class PlankRotation : MonoBehaviour
                         // If input is over input buffer, return direction of input
                         var direction = Mathf.Sign(inputOffset);
 
+                        // If input offset is over input buffer, return input direction corrected for Plank orientation
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
                     }
@@ -179,7 +192,6 @@ public class PlankRotation : MonoBehaviour
             {
                 var currentPosition = Input.mousePosition.x;
                 inputOffset = currentPosition - startPosMouse.x;
-                //Debug.Log("Vertical offset: " + inputOffset);
 
                 // Set input buffer to prevent input oversensitivity
                 inputBuffer = Screen.width * .1f;
@@ -191,6 +203,7 @@ public class PlankRotation : MonoBehaviour
                 // If input is over input buffer, return direction of input
                 var direction = Mathf.Sign(inputOffset);
 
+                // If input offset is over input buffer, return input direction corrected for plank orientation
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
             }
@@ -200,7 +213,6 @@ public class PlankRotation : MonoBehaviour
             {
                 var currentPosition = Input.mousePosition.y;
                 inputOffset = currentPosition - startPosMouse.y;
-                //Debug.Log("Horizontal offset: " + inputOffset);
 
                 // Set input buffer to prevent input oversensitivity
                 inputBuffer = Screen.height * .1f;
@@ -212,6 +224,7 @@ public class PlankRotation : MonoBehaviour
                 // If input is over input buffer, return direction of input
                 var direction = Mathf.Sign(inputOffset);
 
+                // If input offset is over input buffer, return input direction corrected for plank orientation
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
             }
@@ -323,6 +336,9 @@ public class PlankRotation : MonoBehaviour
 
         // If active pulse FX is paused, restart
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
+
+        // Increase move counter
+        moveCounter.moveCount += 1;
 
         // Sets isRotating to false after Plank has reached max rotation
         plankRotationManager.isRotating = false;

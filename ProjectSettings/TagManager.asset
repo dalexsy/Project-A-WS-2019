@@ -10,6 +10,8 @@ TagManager:
   - Collider R
   - Plank Transition Point
   - Waypoint
+  - ShowOnPause
+  - HideOnPause
   layers:
   - Default
   - TransparentFX
