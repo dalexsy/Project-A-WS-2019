@@ -20,6 +20,7 @@ public class PlankRotation : MonoBehaviour
     private MoveCounter moveCounter;
     private PauseManager pauseManager;
     private PivotOrientationDetection pivotOrientationDetection;
+    private PlankAudioManager plankAudioManager;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
@@ -40,6 +41,7 @@ public class PlankRotation : MonoBehaviour
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         moveCounter = GameObject.Find("Game Manager").GetComponent<MoveCounter>();
         pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
+        plankAudioManager = GameObject.Find("SFX Manager").GetComponent<PlankAudioManager>();
         plankConnection = GetComponent<PlankConnection>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
@@ -271,6 +273,8 @@ public class PlankRotation : MonoBehaviour
         Vector3 rotationAxis = rotationPivot.transform.right;
 
         if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Stop();
+
+        plankAudioManager.ActivationSuccessSFX(pivot);
 
         // Variable used to move through animation curve
         float lerpTime = 1f;

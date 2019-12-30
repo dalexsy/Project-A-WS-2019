@@ -63,6 +63,8 @@ MonoBehaviour:
     sides.
   leftColliderTag: Collider L
   rightColliderTag: Collider R
+  hasReachedGoal: 0
+  isLevelConnected: 0
 --- !u!114 &4176036804221083644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,7 +82,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.0038757324
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -88,28 +90,19 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.3991336
-      value: 0.052524768
-      inSlope: 0.21923722
-      outSlope: 0.21923722
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0054798
-      value: 2.7915442
-      inSlope: 13.181745
-      outSlope: 13.181745
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.06360489
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxRotation: 90
-  rotationSpeed: 0.25
+  rotationSpeed: 0.792
   isRotating: 0
   rotateParticlePrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
     type: 3}
