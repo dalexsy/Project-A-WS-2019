@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaySFX : MonoBehaviour
+public class UniversalVFXManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

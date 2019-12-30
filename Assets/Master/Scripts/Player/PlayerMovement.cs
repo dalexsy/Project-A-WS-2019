@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private PauseManager pauseManager;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
+    private PlayerAudioManager playerAudioManager;
     private PlayerManager playerManager;
 
     private void Start()
@@ -27,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
+        playerAudioManager = GameObject.Find("SFX Manager").GetComponent<PlayerAudioManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
 
         // Find all waypoints in scene
@@ -90,7 +92,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Even if click was invalid, reset timer
         if (Input.GetMouseButtonUp(0)) timer = 0f;
-        Debug.Log(timer);
     }
 
     private void SelectWaypoint()
@@ -107,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
 
             // If target is same as current waypoint, exit method
             if (targetWaypoint == currentWaypoint) return;
+
+            // Play selection SFX
+            playerAudioManager.WaypointSelectionSFX(targetWaypoint.transform);
 
             // Find array position of current waypoint
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));

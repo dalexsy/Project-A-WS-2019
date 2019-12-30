@@ -1,18 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerAudioManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public AudioClip[] waypointSelection;
+
+    private float lowPitchRange = .25f;
+    private float highPitchRange = .5f;
+
+    private UniversalAudioManager universalAudioManager;
+
+    private void Start()
     {
-        
+        universalAudioManager = GameObject.Find("SFX Manager").GetComponent<UniversalAudioManager>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void WaypointSelectionSFX(Transform waypointPosition)
     {
-        
+        universalAudioManager.PlaySFX(waypointPosition, waypointSelection, lowPitchRange, highPitchRange);
     }
 }

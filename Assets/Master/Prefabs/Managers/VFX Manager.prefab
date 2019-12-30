@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4852705516954963142}
   - component: {fileID: 3355116296656007668}
   - component: {fileID: 7149675155858691313}
+  - component: {fileID: 8945150603937486212}
   m_Layer: 0
   m_Name: VFX Manager
   m_TagString: Untagged
@@ -54,5 +55,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c80f1c74c8d31444b9d1365490ab185a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8945150603937486212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5161717738504510774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b61bdb5b061c6b4ca41f495272fab55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
