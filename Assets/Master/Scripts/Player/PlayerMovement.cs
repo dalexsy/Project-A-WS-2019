@@ -43,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         //inputManager.debugLog.debugMessage = (timer.ToString() + " " + Input.GetTouch(0).phase.ToString());
+
         // If Player is moving, Plank is rotating, or game is paused, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping || pauseManager.isPaused) return;
 
@@ -68,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
                 case TouchPhase.Stationary:
                     break;
 
+                // If touch is shorter than threshold, select tapped waypoint
+                // Prevents swipes from selecting waypoints on finger up
                 case TouchPhase.Ended:
                     if (timer < .2f) SelectWaypoint();
                     timer = 0f;
@@ -78,9 +81,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void MouseInput()
     {
+        // Run timer up while left mouse botton is pressed
         if (Input.GetMouseButton(0)) timer += Time.deltaTime;
-        if (Input.GetMouseButtonUp(0) && timer < .1f) SelectWaypoint();
+
+        // If click was shorter than threshold, select clicked waypoint
+        // Prevents swipes from selecting waypoints on mouse button up
+        if (Input.GetMouseButtonUp(0) && timer < .2f) SelectWaypoint();
+
+        // Even if click was invalid, reset timer
         if (Input.GetMouseButtonUp(0)) timer = 0f;
+        Debug.Log(timer);
     }
 
     private void SelectWaypoint()
@@ -95,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
             // Set target waypoint as tapped waypoint
             targetWaypoint = hit.transform.gameObject;
 
+            // If target is same as current waypoint, exit method
             if (targetWaypoint == currentWaypoint) return;
 
             // Find array position of current waypoint
@@ -159,6 +170,8 @@ public class PlayerMovement : MonoBehaviour
             if (currentWaypoint == lastWaypoint && arrayDirection == 1)
             {
                 nextWaypoint = firstWaypoint;
+
+                // If level is connected successfully, flip gravity
                 if (plankManager.hasReachedGoal)
                     playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
             }
@@ -167,6 +180,8 @@ public class PlayerMovement : MonoBehaviour
             if (currentWaypoint == firstWaypoint && arrayDirection == -1)
             {
                 nextWaypoint = lastWaypoint;
+
+                // If level is connected successfully, flip gravity
                 if (plankManager.hasReachedGoal)
                     playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
             }
@@ -224,7 +239,10 @@ public class PlayerMovement : MonoBehaviour
 
         playerManager.isMoving = false;
 
+        // If next waypoint is not target waypoint, flag next waypoint as transitional
         if (nextWaypoint != targetWaypoint) nextWaypoint.GetComponent<WaypointMarker>().isTransitional = true;
+
+        // Otherwise if Player has reached target waypoint, unflag all waypoints
         else foreach (var waypoint in waypoints) waypoint.GetComponent<WaypointMarker>().isTransitional = false;
 
         // If next waypoint is flagged as transitional

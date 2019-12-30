@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
 
-        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>();
+        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>(); // Set message with debugMessage
     }
 
     private void Update()
@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour
     private void DetectSwipe()
     {
         // Double swipe
-        // If swipe lasts longer than half a second, swipe is valid
+        // If swipe lasts longer than threshold, swipe is valid
         if (Input.touchCount == 2)
         {
             Touch touch = Input.GetTouch(1);
@@ -50,6 +50,8 @@ public class InputManager : MonoBehaviour
                 else isDoubleSwiping = false;
             }
 
+            // If touch has ended, reset swiping bool after cooldown
+            // Prevents single swipes from being falsely executed
             if (touch.phase == TouchPhase.Ended)
             {
                 StartCoroutine(ResetBool(2));

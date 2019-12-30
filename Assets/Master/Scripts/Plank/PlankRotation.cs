@@ -102,6 +102,7 @@ public class PlankRotation : MonoBehaviour
     // Returns direction of input
     private int TouchInput()
     {
+        // If player is double swiping, input is not valid
         if (inputManager.isDoubleSwiping == true) return 0;
 
         if (Input.touchCount == 1)
@@ -110,6 +111,7 @@ public class PlankRotation : MonoBehaviour
 
             switch (touch.phase)
             {
+                // Set start position to touch position and reset offset
                 case TouchPhase.Began:
                     startPosTouch = touch.position;
                     inputOffset = 0;
@@ -122,6 +124,7 @@ public class PlankRotation : MonoBehaviour
                     // If Plank is vertical, look for vertical input
                     if (pivotOrientationDetection.isVertical())
                     {
+                        // Calculate offset from start position on X axis in screenspace
                         var currentPosition = touch.position.x;
                         inputOffset = currentPosition - startPosTouch.x;
 
@@ -135,6 +138,7 @@ public class PlankRotation : MonoBehaviour
                         // If input is over input buffer, return direction of input
                         var direction = Mathf.Sign(inputOffset);
 
+                        // If input offset is over input buffer, return input direction corrected for Plank orientation
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
                     }
@@ -142,6 +146,7 @@ public class PlankRotation : MonoBehaviour
                     // Else if Plank is horizontal, look for horizontal input
                     else
                     {
+                        // Calculate offset from start position on Y axis in screenspace
                         var currentPosition = touch.position.y;
                         inputOffset = currentPosition - startPosTouch.y;
 
@@ -155,6 +160,7 @@ public class PlankRotation : MonoBehaviour
                         // If input is over input buffer, return direction of input
                         var direction = Mathf.Sign(inputOffset);
 
+                        // If input offset is over input buffer, return input direction corrected for Plank orientation
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                         if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
                     }
@@ -197,6 +203,7 @@ public class PlankRotation : MonoBehaviour
                 // If input is over input buffer, return direction of input
                 var direction = Mathf.Sign(inputOffset);
 
+                // If input offset is over input buffer, return input direction corrected for plank orientation
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
             }
@@ -217,6 +224,7 @@ public class PlankRotation : MonoBehaviour
                 // If input is over input buffer, return direction of input
                 var direction = Mathf.Sign(inputOffset);
 
+                // If input offset is over input buffer, return input direction corrected for plank orientation
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == 1) return 1 * plankOrientation;
                 if (Mathf.Abs(inputOffset) > inputBuffer && direction == -1) return -1 * plankOrientation;
             }
