@@ -1,8 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InputVFXManager : MonoBehaviour
 {
+    public GameObject waypointSelectPrefab;
 
+    private UniversalVFXManager universalVFXManager;
+
+    private void Start()
+    {
+        universalVFXManager = GameObject.Find("VFX Manager").GetComponent<UniversalVFXManager>();
+    }
+
+    public void WaypointSelectionVFX(Transform targetWaypoint)
+    {
+        universalVFXManager.PlayVFX(targetWaypoint, waypointSelectPrefab);
+    }
 }

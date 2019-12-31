@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rightWaypoint;
     private int arrayDirection;
     private InputManager inputManager;
+    private InputVFXManager inputVFXManager;
     private PauseManager pauseManager;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        inputVFXManager = GameObject.Find("VFX Manager").GetComponent<InputVFXManager>();
         pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
@@ -140,6 +142,9 @@ public class PlayerMovement : MonoBehaviour
                 // Set next waypoint as next waypoint in array using direction
                 nextWaypoint = waypoints[currentIndex + arrayDirection];
             }
+
+            // Play waypoint selection VFX
+            inputVFXManager.WaypointSelectionVFX(targetWaypoint.transform);
 
             // Start transitioning
             StartCoroutine(TransitionWaypoints(arrayDirection));

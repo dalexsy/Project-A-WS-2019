@@ -5,7 +5,7 @@ public class PlayerAudioManager : MonoBehaviour
     public AudioClip[] waypointSelection;
 
     private float lowPitchRange = 1f;
-    private float highPitchRange = 1.1f;
+    private float highPitchRange = 1.2f;
 
     private UniversalAudioManager universalAudioManager;
 
