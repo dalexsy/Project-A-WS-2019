@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     private float distance;
-    private float timer = 0f;
     [SerializeField] private GameObject currentWaypoint;
     private GameObject targetWaypoint;
     private GameObject nextWaypoint;
@@ -22,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private PlankRotationManager plankRotationManager;
     private PlayerAudioManager playerAudioManager;
     private PlayerManager playerManager;
+    private Vector3 startInputPos;
 
     private void Start()
     {
@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
         //inputManager.debugLog.debugMessage = (timer.ToString() + " " + Input.GetTouch(0).phase.ToString());
 
         // If Player is moving, Plank is rotating, or game is paused, accept no input
@@ -62,12 +63,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.touchCount == 1)
         {
-            timer += Time.deltaTime;
             Touch touch = Input.GetTouch(0);
 
             switch (touch.phase)
             {
                 case TouchPhase.Began:
+                    startInputPos = touch.position;
                     break;
 
                 case TouchPhase.Stationary:
@@ -76,8 +77,7 @@ public class PlayerMovement : MonoBehaviour
                 // If touch is shorter than threshold, select tapped waypoint
                 // Prevents swipes from selecting waypoints on finger up
                 case TouchPhase.Ended:
-                    if (timer < .2f) SelectWaypoint();
-                    timer = 0f;
+                    if (Vector3.Distance(touch.position, startInputPos) < 2f) SelectWaypoint();
                     break;
             }
         }
@@ -85,15 +85,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void MouseInput()
     {
-        // Run timer up while left mouse botton is pressed
-        if (Input.GetMouseButton(0)) timer += Time.deltaTime;
+        // Set starting mouse position on mouse down
+        if (Input.GetMouseButtonDown(0)) startInputPos = Input.mousePosition;
 
-        // If click was shorter than threshold, select clicked waypoint
-        // Prevents swipes from selecting waypoints on mouse button up
-        if (Input.GetMouseButtonUp(0) && timer < .2f) SelectWaypoint();
-
-        // Even if click was invalid, reset timer
-        if (Input.GetMouseButtonUp(0)) timer = 0f;
+        // If distance moved was smaller than threshold, select clicked waypoint
+        if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f))
+            SelectWaypoint();
     }
 
     private void SelectWaypoint()
