@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-        //inputManager.debugLog.debugMessage = (timer.ToString() + " " + Input.GetTouch(0).phase.ToString());
+        if (plankManager.hasReachedGoal) RunCircles();
 
         // If Player is moving, Plank is rotating, or game is paused, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping || pauseManager.isPaused) return;
@@ -71,11 +71,7 @@ public class PlayerMovement : MonoBehaviour
                     startInputPos = touch.position;
                     break;
 
-                case TouchPhase.Stationary:
-                    break;
-
-                // If touch is shorter than threshold, select tapped waypoint
-                // Prevents swipes from selecting waypoints on finger up
+                // If touch distance is smaller than threshold, select tapped waypoint
                 case TouchPhase.Ended:
                     if (Vector3.Distance(touch.position, startInputPos) < 2f) SelectWaypoint();
                     break;
@@ -213,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.12f);
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
         }
@@ -262,6 +258,25 @@ public class PlayerMovement : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    // Moves Player around level on completion
+    private void RunCircles()
+    {
+        while (!playerManager.isMoving)
+        {
+            // Set next waypoint as next waypoint in array using previous array direction
+            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+            // If current waypoint is last waypoint, next waypoint is first waypoint
+            if (currentWaypoint == lastWaypoint) nextWaypoint = firstWaypoint;
+
+            // Otherwise, next and target waypoint is next waypoint in array
+            else nextWaypoint = waypoints[currentIndex + arrayDirection];
+            targetWaypoint = nextWaypoint;
+
+            StartCoroutine(TransitionWaypoints(1));
+        }
     }
 
     private void OnTriggerStay(Collider collider)
