@@ -638,7 +638,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1488552559 stripped
 Camera:
@@ -1025,7 +1025,7 @@ PrefabInstance:
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3550098398361433607, guid: 37853fe121a5afe409bcd532f4ed8af5,
         type: 3}
@@ -1363,6 +1363,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6974986789016451544, guid: 150c60d0473994a4b85e0bfa877c0322,
+        type: 3}
+      propertyPath: m_Name
+      value: SFX Manager
+      objectReference: {fileID: 0}
     - target: {fileID: -5079459234747729061, guid: 150c60d0473994a4b85e0bfa877c0322,
         type: 3}
       propertyPath: waypointSelection.Array.size
@@ -1398,11 +1403,6 @@ PrefabInstance:
       propertyPath: activationSuccess.Array.data[1]
       value: 
       objectReference: {fileID: 8300000, guid: e7e05102f6d41ee478e852324052da78, type: 3}
-    - target: {fileID: 6974986789016451544, guid: 150c60d0473994a4b85e0bfa877c0322,
-        type: 3}
-      propertyPath: m_Name
-      value: SFX Manager
-      objectReference: {fileID: 0}
     - target: {fileID: 7386003969157892708, guid: 150c60d0473994a4b85e0bfa877c0322,
         type: 3}
       propertyPath: m_LocalPosition.x
