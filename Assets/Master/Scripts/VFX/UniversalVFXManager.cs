@@ -34,7 +34,6 @@ public class UniversalVFXManager : MonoBehaviour
 
         if (!particle) return;
 
-        Debug.Log("stop");
         var pS = particle.GetComponent<ParticleSystem>();
         pS.Stop();
     }

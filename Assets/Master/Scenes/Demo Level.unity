@@ -985,6 +985,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 508783909}
+    - target: {fileID: 452654757, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
 --- !u!1001 &3550098398060415209
@@ -1216,7 +1220,7 @@ PrefabInstance:
         type: 3}
       propertyPath: activePivotPrefab
       value: 
-      objectReference: {fileID: 5851382750196069416, guid: 6fc0da88c031a65498f41e5bd4efe7d3,
+      objectReference: {fileID: 5851382750196069416, guid: 38f65891e81d3744a85cfd0d008c138a,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d25701e31adc2f24abad3e467c6bf1d0, type: 3}

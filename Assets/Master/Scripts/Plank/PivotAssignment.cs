@@ -26,8 +26,6 @@ public class PivotAssignment : MonoBehaviour
             // Assign this pivot as Plank's rotation pivot
             plankRotation.activePivot = this.transform;
             AssignSurrogatePivot(transform);
-
-            if (collisionDetection.isCollidingWithTarget) plankVFXManager.ActivePivotVFX(transform, true);
         }
     }
 
@@ -72,6 +70,7 @@ public class PivotAssignment : MonoBehaviour
         if (foundPlank)
         {
             plankRotation.activePivot = this.transform;
+            plankVFXManager.ActivePivotVFX(transform, true);
             return;
         }
 
@@ -94,6 +93,8 @@ public class PivotAssignment : MonoBehaviour
 
                 // Set plank's surrogatePivot to local surrogatePivot
                 plankRotation.surrogatePivot = surrogatePivot;
+
+                plankVFXManager.ActivePivotVFX(surrogatePivot, true);
 
                 // Look for colliders in range of surrogate pivot's position
                 Collider[] thirdColliders = Physics.OverlapSphere(surrogatePivot.position, .5f);
