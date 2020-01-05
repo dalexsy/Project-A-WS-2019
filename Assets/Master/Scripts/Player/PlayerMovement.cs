@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-
+        // If player has reached goal, move Player around level
         if (plankManager.hasReachedGoal) RunCircles();
 
         // If Player is moving, Plank is rotating, or game is paused, accept no input

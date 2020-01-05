@@ -13,7 +13,6 @@ public class PlankRotation : MonoBehaviour
     public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
     public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
-    private ActivePivotFX activePivotFX;
     private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
@@ -35,7 +34,6 @@ public class PlankRotation : MonoBehaviour
 
     private void Start()
     {
-        activePivotFX = GetComponent<ActivePivotFX>();
         cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
@@ -336,7 +334,7 @@ public class PlankRotation : MonoBehaviour
         Transform rotationPivot = pivot;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
-        if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Stop();
+        
 
         plankAudioManager.ActivationSuccessSFX(pivot);
 
@@ -401,9 +399,6 @@ public class PlankRotation : MonoBehaviour
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(transform);
-
-        // If active pulse FX is paused, restart
-        if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
 
         // Increase move counter
         moveCounter.moveCount += 1;

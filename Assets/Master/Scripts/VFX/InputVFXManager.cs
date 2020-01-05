@@ -13,6 +13,6 @@ public class InputVFXManager : MonoBehaviour
 
     public void WaypointSelectionVFX(Transform targetWaypoint)
     {
-        universalVFXManager.PlayVFX(targetWaypoint, waypointSelectPrefab);
+        universalVFXManager.PlayVFX(targetWaypoint, waypointSelectPrefab, new Vector3(0, .06f, 0));
     }
 }

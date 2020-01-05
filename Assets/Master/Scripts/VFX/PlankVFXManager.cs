@@ -1,18 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlankVFXManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    public GameObject activePivotPrefab;
 
+    private UniversalVFXManager universalVFXManager;
+
+    private void Start()
+    {
+        universalVFXManager = GameObject.Find("VFX Manager").GetComponent<UniversalVFXManager>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ActivePivotVFX(Transform activePivot, bool shouldPlay)
     {
+        if (shouldPlay)
+            universalVFXManager.PlayVFX(activePivot, activePivotPrefab, Vector3.zero);
 
+        else
+            universalVFXManager.StopVFX(activePivot, activePivotPrefab);
     }
 }

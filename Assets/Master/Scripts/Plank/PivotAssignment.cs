@@ -5,17 +5,17 @@ public class PivotAssignment : MonoBehaviour
 {
     [SerializeField] string targetTag = null;
 
-    private ActivePivotFX activePivotFX;
     private CollisionDetection collisionDetection;
     private PlankManager plankManager;
     private PlankRotation plankRotation;
+    private PlankVFXManager plankVFXManager;
 
     private void Start()
     {
         collisionDetection = GetComponentInParent<CollisionDetection>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
+        plankVFXManager = GameObject.Find("VFX Manager").GetComponent<PlankVFXManager>();
         plankRotation = GetComponentInParent<PlankRotation>();
-        activePivotFX = GetComponentInParent<ActivePivotFX>();
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -26,6 +26,8 @@ public class PivotAssignment : MonoBehaviour
             // Assign this pivot as Plank's rotation pivot
             plankRotation.activePivot = this.transform;
             AssignSurrogatePivot(transform);
+
+            if (collisionDetection.isCollidingWithTarget) plankVFXManager.ActivePivotVFX(transform, true);
         }
     }
 
@@ -48,7 +50,9 @@ public class PivotAssignment : MonoBehaviour
             // Only used with surrogate pivot
             plankRotation.isConnectedBack = false;
 
-            if (activePivotFX.pulse) activePivotFX.DespawnPulse();
+            // Stop active pivot VFX
+            plankVFXManager.ActivePivotVFX(transform, false);
+
         }
     }
 
@@ -68,7 +72,6 @@ public class PivotAssignment : MonoBehaviour
         if (foundPlank)
         {
             plankRotation.activePivot = this.transform;
-            if ((collisionDetection.isCollidingWithTarget != true)) activePivotFX.SpawnPulse(transform.position);
             return;
         }
 
@@ -86,8 +89,6 @@ public class PivotAssignment : MonoBehaviour
             // If a pivot has been found
             if (foundPivot)
             {
-                if (collisionDetection.isCollidingWithTarget != true) activePivotFX.SpawnPulse(foundPivot.transform.position);
-
                 // Set local variable surrogatePivot to foundPivot's transform
                 Transform surrogatePivot = foundPivot.gameObject.transform;
 
