@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
     public bool isDoubleSwiping = false;
     public readonly float inputBuffer = .3f;
 
-    public UIDebugLog debugLog;
+    public string debugMessage;
 
     private float timer = 0f;
 
@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.WindowsPlayer) isUsingTouch = false;
 
-        debugLog = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>(); // Set message with debugMessage
+        debugMessage = GameObject.Find("UI").GetComponentInChildren<UIDebugLog>().debugMessage; // Set message with debugMessage
     }
 
     private void Update()

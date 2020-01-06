@@ -23,8 +23,12 @@ public class UniversalVFXManager : MonoBehaviour
         else
         {
             var pS = existingParticle.GetComponent<ParticleSystem>();
-            pS.time = 0;
-            pS.Play();
+
+            if (!pS.isPlaying)
+            {
+                pS.time = 0;
+                pS.Play();
+            }
         }
     }
 

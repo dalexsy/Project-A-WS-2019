@@ -106,7 +106,7 @@ public class PlankRotation : MonoBehaviour
     private int TouchInput()
     {
         // If player is double swiping, input is not valid
-        if (inputManager.isDoubleSwiping == true) return 0;
+        if (inputManager.isDoubleSwiping == true || pauseManager.isPaused) return 0;
 
         if (Input.touchCount == 1)
         {
@@ -334,7 +334,7 @@ public class PlankRotation : MonoBehaviour
         Transform rotationPivot = pivot;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
-        
+
 
         plankAudioManager.ActivationSuccessSFX(pivot);
 

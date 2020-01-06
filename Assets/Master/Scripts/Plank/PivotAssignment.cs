@@ -48,9 +48,9 @@ public class PivotAssignment : MonoBehaviour
             // Only used with surrogate pivot
             plankRotation.isConnectedBack = false;
 
-            // Stop active pivot VFX
-            plankVFXManager.ActivePivotVFX(transform, false);
-
+            // Stop active pivot VFX if player has not reached goal
+            if (!plankManager.hasReachedGoal)
+                plankVFXManager.ActivePivotVFX(transform, false);
         }
     }
 

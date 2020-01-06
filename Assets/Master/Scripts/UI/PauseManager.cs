@@ -38,17 +38,16 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    // Fades out audio and shows pause screen
+    // Shows pause screen and fades out audio
     private IEnumerator FadeOut()
     {
-        while (AudioListener.volume > 0)
-        {
-            AudioListener.volume -= .05f;
-            yield return null;
-        }
-
         ShowPaused();
+
+        while (AudioListener.volume > 0)
+            AudioListener.volume -= .01f;
+
         AudioListener.pause = true;
+        yield return null;
     }
 
     // Hides pause screen and fades in audio
@@ -58,10 +57,9 @@ public class PauseManager : MonoBehaviour
         AudioListener.pause = false;
 
         while (AudioListener.volume < 1)
-        {
-            AudioListener.volume += .05f;
-            yield return null;
-        }
+            AudioListener.volume += .01f;
+
+        yield return null;
     }
 
     // Shows all UI elements tagged with ShowOnPause

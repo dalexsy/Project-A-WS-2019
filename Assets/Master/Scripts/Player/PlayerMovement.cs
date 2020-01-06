@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
 
                 // If touch distance is smaller than threshold, select tapped waypoint
                 case TouchPhase.Ended:
-                    if (Vector3.Distance(touch.position, startInputPos) < 2f) SelectWaypoint();
+                    if (Vector3.Distance(touch.position, startInputPos) < 50f) SelectWaypoint();
                     break;
             }
         }
