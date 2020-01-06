@@ -272,7 +272,7 @@ public class PlayerMovement : MonoBehaviour
             if (currentWaypoint == lastWaypoint) nextWaypoint = firstWaypoint;
 
             // Otherwise, next and target waypoint is next waypoint in array
-            else nextWaypoint = waypoints[currentIndex + arrayDirection];
+            else nextWaypoint = waypoints[currentIndex + 1];
             targetWaypoint = nextWaypoint;
 
             StartCoroutine(TransitionWaypoints(1));
