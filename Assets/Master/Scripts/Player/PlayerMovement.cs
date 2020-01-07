@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject[] waypoints;
     private float distance;
-    private float timer = 0f;
     [SerializeField] private GameObject currentWaypoint;
     private GameObject targetWaypoint;
     private GameObject nextWaypoint;
@@ -16,17 +15,22 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rightWaypoint;
     private int arrayDirection;
     private InputManager inputManager;
+    private InputVFXManager inputVFXManager;
     private PauseManager pauseManager;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
+    private PlayerAudioManager playerAudioManager;
     private PlayerManager playerManager;
+    private Vector3 startInputPos;
 
     private void Start()
     {
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
+        inputVFXManager = GameObject.Find("VFX Manager").GetComponent<InputVFXManager>();
         pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
+        playerAudioManager = GameObject.Find("SFX Manager").GetComponent<PlayerAudioManager>();
         playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
 
         // Find all waypoints in scene
@@ -42,7 +46,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        //inputManager.debugLog.debugMessage = (timer.ToString() + " " + Input.GetTouch(0).phase.ToString());
+        // If player has reached goal, move Player around level
+        if (plankManager.hasReachedGoal) RunCircles();
 
         // If Player is moving, Plank is rotating, or game is paused, accept no input
         if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping || pauseManager.isPaused) return;
@@ -58,22 +63,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.touchCount == 1)
         {
-            timer += Time.deltaTime;
             Touch touch = Input.GetTouch(0);
 
             switch (touch.phase)
             {
                 case TouchPhase.Began:
+                    startInputPos = touch.position;
                     break;
 
-                case TouchPhase.Stationary:
-                    break;
-
-                // If touch is shorter than threshold, select tapped waypoint
-                // Prevents swipes from selecting waypoints on finger up
+                // If touch distance is smaller than threshold, select tapped waypoint
                 case TouchPhase.Ended:
-                    if (timer < .2f) SelectWaypoint();
-                    timer = 0f;
+                    if (Vector3.Distance(touch.position, startInputPos) < 50f) SelectWaypoint();
                     break;
             }
         }
@@ -81,16 +81,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void MouseInput()
     {
-        // Run timer up while left mouse botton is pressed
-        if (Input.GetMouseButton(0)) timer += Time.deltaTime;
+        // Set starting mouse position on mouse down
+        if (Input.GetMouseButtonDown(0)) startInputPos = Input.mousePosition;
 
-        // If click was shorter than threshold, select clicked waypoint
-        // Prevents swipes from selecting waypoints on mouse button up
-        if (Input.GetMouseButtonUp(0) && timer < .2f) SelectWaypoint();
-
-        // Even if click was invalid, reset timer
-        if (Input.GetMouseButtonUp(0)) timer = 0f;
-        Debug.Log(timer);
+        // If distance moved was smaller than threshold, select clicked waypoint
+        if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f))
+            SelectWaypoint();
     }
 
     private void SelectWaypoint()
@@ -107,6 +103,9 @@ public class PlayerMovement : MonoBehaviour
 
             // If target is same as current waypoint, exit method
             if (targetWaypoint == currentWaypoint) return;
+
+            // Play selection SFX
+            playerAudioManager.WaypointSelectionSFX(targetWaypoint.transform);
 
             // Find array position of current waypoint
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
@@ -136,6 +135,9 @@ public class PlayerMovement : MonoBehaviour
                 // Set next waypoint as next waypoint in array using direction
                 nextWaypoint = waypoints[currentIndex + arrayDirection];
             }
+
+            // Play waypoint selection VFX
+            inputVFXManager.WaypointSelectionVFX(targetWaypoint.transform);
 
             // Start transitioning
             StartCoroutine(TransitionWaypoints(arrayDirection));
@@ -207,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.12f);
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
         }
@@ -256,6 +258,25 @@ public class PlayerMovement : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    // Moves Player around level on completion
+    private void RunCircles()
+    {
+        while (!playerManager.isMoving)
+        {
+            // Set next waypoint as next waypoint in array using previous array direction
+            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+
+            // If current waypoint is last waypoint, next waypoint is first waypoint
+            if (currentWaypoint == lastWaypoint) nextWaypoint = firstWaypoint;
+
+            // Otherwise, next and target waypoint is next waypoint in array
+            else nextWaypoint = waypoints[currentIndex + 1];
+            targetWaypoint = nextWaypoint;
+
+            StartCoroutine(TransitionWaypoints(1));
+        }
     }
 
     private void OnTriggerStay(Collider collider)

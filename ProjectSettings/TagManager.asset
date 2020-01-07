@@ -22,7 +22,7 @@ TagManager:
   - 
   - 
   - Waypoint Triggers
-  - 
+  - VFX
   - 
   - 
   - 
@@ -48,4 +48,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: VFX
+    uniqueID: 3598371613
     locked: 0

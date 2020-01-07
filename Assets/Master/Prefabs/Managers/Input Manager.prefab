@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38f6e56b855ace4e9971712040008b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUsingTouch: 1
+  isUsingTouch: 0
   isSwiping: 0
   isDoubleSwiping: 0
+  debugLog: {fileID: 0}

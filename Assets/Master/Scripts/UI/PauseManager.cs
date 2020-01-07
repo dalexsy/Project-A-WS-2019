@@ -1,5 +1,6 @@
 ﻿using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections;
 
 public class PauseManager : MonoBehaviour
 {
@@ -26,17 +27,42 @@ public class PauseManager : MonoBehaviour
         {
             isPaused = true;
             Time.timeScale = 0;
-            ShowPaused();
+            StartCoroutine(FadeOut());
         }
 
         else if (Time.timeScale == 0)
         {
             isPaused = false;
             Time.timeScale = 1;
-            HidePaused();
+            StartCoroutine(FadeIn());
         }
     }
 
+    // Shows pause screen and fades out audio
+    private IEnumerator FadeOut()
+    {
+        ShowPaused();
+
+        while (AudioListener.volume > 0)
+            AudioListener.volume -= .01f;
+
+        AudioListener.pause = true;
+        yield return null;
+    }
+
+    // Hides pause screen and fades in audio
+    private IEnumerator FadeIn()
+    {
+        HidePaused();
+        AudioListener.pause = false;
+
+        while (AudioListener.volume < 1)
+            AudioListener.volume += .01f;
+
+        yield return null;
+    }
+
+    // Shows all UI elements tagged with ShowOnPause
     public void ShowPaused()
     {
         foreach (GameObject g in showOnPause)
@@ -46,6 +72,7 @@ public class PauseManager : MonoBehaviour
             g.SetActive(false);
     }
 
+    // Hides all UI elements tagged with ShowOnPause
     public void HidePaused()
     {
         foreach (GameObject g in showOnPause)

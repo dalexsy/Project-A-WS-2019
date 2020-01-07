@@ -45,8 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   isRotating: 0
+  isUsingInvertedGravity: 0
   moveSpeed: 1.43
   gravity: 10
   gravityDirection: 1
-  isUsingGravity: 1
-  isUsingInvertedGravity: 0
+  currentPlank: {fileID: 0}

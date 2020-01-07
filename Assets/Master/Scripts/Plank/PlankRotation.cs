@@ -13,13 +13,13 @@ public class PlankRotation : MonoBehaviour
     public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
     public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
-    private ActivePivotFX activePivotFX;
     private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
     private InputManager inputManager;
     private MoveCounter moveCounter;
     private PauseManager pauseManager;
     private PivotOrientationDetection pivotOrientationDetection;
+    private PlankAudioManager plankAudioManager;
     private PlankConnection plankConnection;
     private PlankManager plankManager;
     private PlankRotationManager plankRotationManager;
@@ -34,12 +34,12 @@ public class PlankRotation : MonoBehaviour
 
     private void Start()
     {
-        activePivotFX = GetComponent<ActivePivotFX>();
         cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
         inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
         moveCounter = GameObject.Find("Game Manager").GetComponent<MoveCounter>();
         pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
+        plankAudioManager = GameObject.Find("SFX Manager").GetComponent<PlankAudioManager>();
         plankConnection = GetComponent<PlankConnection>();
         plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
         plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
@@ -50,6 +50,9 @@ public class PlankRotation : MonoBehaviour
     {
         // If game is paused, accept no input
         if (pauseManager.isPaused) return;
+
+        // If no active pivot is given and Plank is colliding with target, check for rotation activation failure
+        if (!activePivot && collisionDetection.isCollidingWithTarget) ActivationFailure();
 
         // If Plank is not colliding with Player, accept rotation input
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
@@ -103,7 +106,7 @@ public class PlankRotation : MonoBehaviour
     private int TouchInput()
     {
         // If player is double swiping, input is not valid
-        if (inputManager.isDoubleSwiping == true) return 0;
+        if (inputManager.isDoubleSwiping == true || pauseManager.isPaused) return 0;
 
         if (Input.touchCount == 1)
         {
@@ -170,6 +173,67 @@ public class PlankRotation : MonoBehaviour
 
         // If no valid input is given, return zero
         return 0;
+    }
+
+    private void ActivationFailure()
+    {
+        if (!inputManager.isUsingTouch)
+        {
+            // On left mouse button down, set start position and reset input offset
+            if (Input.GetMouseButtonDown(0))
+            {
+                startPosMouse = Input.mousePosition;
+                inputOffset = 0;
+            }
+
+            // On left mouse button up, determine input direction if over input buffer
+            if (Input.GetMouseButtonUp(0))
+            {
+                var currentPosition = Input.mousePosition;
+                inputOffset = Vector2.Distance(currentPosition, startPosMouse);
+
+                // Set input buffer to prevent input oversensitivity
+                inputBuffer = Screen.height * .1f;
+
+                // If input is over input buffer, return direction of input
+                var direction = Mathf.Sign(inputOffset);
+
+                // If input offset is over input buffer, play activation failure SFX
+                if (Mathf.Abs(inputOffset) > inputBuffer) plankAudioManager.ActivationFailureSFX(transform);
+            }
+        }
+
+        else
+        {
+            if (inputManager.isDoubleSwiping == true) return;
+
+            if (Input.touchCount == 1)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                switch (touch.phase)
+                {
+                    // Set start position to touch position and reset offset
+                    case TouchPhase.Began:
+                        startPosTouch = touch.position;
+                        inputOffset = 0;
+                        break;
+
+                    case TouchPhase.Ended:
+
+                        // Calculate offset from start position to end position in screenspace
+                        var currentPosition = touch.position;
+                        inputOffset = Vector2.Distance(currentPosition, startPosTouch);
+
+                        // Set input buffer to prevent input oversensitivity
+                        inputBuffer = Screen.width * .1f;
+
+                        // If input offset is over input buffer, play activation failure SFX
+                        if (Mathf.Abs(inputOffset) > inputBuffer) plankAudioManager.ActivationFailureSFX(transform);
+                        break;
+                }
+            }
+        }
     }
 
     // Returns direction of input
@@ -270,7 +334,9 @@ public class PlankRotation : MonoBehaviour
         Transform rotationPivot = pivot;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
-        if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Stop();
+
+
+        plankAudioManager.ActivationSuccessSFX(pivot);
 
         // Variable used to move through animation curve
         float lerpTime = 1f;
@@ -333,9 +399,6 @@ public class PlankRotation : MonoBehaviour
 
         // Disconnect all connected planks
         plankConnection.DisconnectPlanks(transform);
-
-        // If active pulse FX is paused, restart
-        if (activePivotFX.pulse) activePivotFX.pulse.GetComponent<ParticleSystem>().Play();
 
         // Increase move counter
         moveCounter.moveCount += 1;
