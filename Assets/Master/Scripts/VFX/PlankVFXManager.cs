@@ -13,8 +13,14 @@ public class PlankVFXManager : MonoBehaviour
 
     public void ActivePivotVFX(Transform activePivot, bool shouldPlay)
     {
+        var rotation = Quaternion.identity;
+
+        // Flip VFX if using left pivot
+        if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
+
+
         if (shouldPlay)
-            UniversalVFXManager.instance.PlayVFX(activePivot, activePivotPrefab, Vector3.zero);
+            UniversalVFXManager.instance.PlayVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
 
         else
             UniversalVFXManager.instance.StopVFX(activePivot, activePivotPrefab);

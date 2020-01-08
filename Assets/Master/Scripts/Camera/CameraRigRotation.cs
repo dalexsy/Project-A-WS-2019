@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System;
 using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
 
-[ExecuteInEditMode]
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 public class CameraRigRotation : MonoBehaviour
 {
     [HideInInspector] public bool isRotating = false;
@@ -38,7 +41,6 @@ public class CameraRigRotation : MonoBehaviour
 
         // Sort Planks alphabetically
         Array.Sort(planks, (x, y) => String.Compare(x.transform.name, y.transform.name));
-        transform.rotation = Quaternion.identity;
     }
 
     private void Update()
@@ -61,7 +63,16 @@ public class CameraRigRotation : MonoBehaviour
     {
         if (PauseManager.instance.isPaused) return;
 
-        if (PlankManager.instance.hasReachedGoal && EditorApplication.isPlaying)
+#if UNITY_EDITOR
+
+        if (!EditorApplication.isPlaying)
+        {
+            transform.rotation = Quaternion.identity;
+            return;
+        }
+#endif
+
+        if (PlankManager.instance.hasReachedGoal)
         {
             RotateAroundLevel();
             return;

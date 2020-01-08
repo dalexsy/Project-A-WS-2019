@@ -9,7 +9,8 @@ public class UniversalVFXManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
     }
-    public void PlayVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset)
+    
+    public void PlayVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset, Quaternion rotation = default(Quaternion))
     {
         var existingParticle = vfxSource.transform.Find(particlePrefab.name);
 
@@ -19,7 +20,7 @@ public class UniversalVFXManager : MonoBehaviour
             // Create new particle system as child of VFX source
             GameObject particle = Instantiate(particlePrefab,
                                                     vfxSource.position,
-                                                    vfxSource.transform.rotation * particlePrefab.transform.rotation);
+                                                    vfxSource.transform.rotation * particlePrefab.transform.rotation * rotation);
 
             particle.transform.name = particlePrefab.name;
             particle.transform.parent = vfxSource;
