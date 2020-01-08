@@ -13,7 +13,6 @@ public class PlankRotation : MonoBehaviour
     public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
     public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
-    private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
     private PivotOrientationDetection pivotOrientationDetection;
     private PlankConnection plankConnection;
@@ -27,7 +26,6 @@ public class PlankRotation : MonoBehaviour
 
     private void Start()
     {
-        cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
         plankConnection = GetComponent<PlankConnection>();
     }
