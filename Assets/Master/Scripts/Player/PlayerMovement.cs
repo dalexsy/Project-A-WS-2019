@@ -14,25 +14,10 @@ public class PlayerMovement : MonoBehaviour
     private GameObject leftWaypoint;
     private GameObject rightWaypoint;
     private int arrayDirection;
-    private InputManager inputManager;
-    private InputVFXManager inputVFXManager;
-    private PauseManager pauseManager;
-    private PlankManager plankManager;
-    private PlankRotationManager plankRotationManager;
-    private PlayerAudioManager playerAudioManager;
-    private PlayerManager playerManager;
     private Vector3 startInputPos;
 
     private void Start()
     {
-        inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
-        inputVFXManager = GameObject.Find("VFX Manager").GetComponent<InputVFXManager>();
-        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
-        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
-        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
-        playerAudioManager = GameObject.Find("SFX Manager").GetComponent<PlayerAudioManager>();
-        playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
-
         // Find all waypoints in scene
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
 
@@ -47,19 +32,19 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // If player has reached goal, move Player around level
-        if (plankManager.hasReachedGoal) RunCircles();
+        if (PlankManager.instance.hasReachedGoal) RunCircles();
 
         // If Player is moving, Plank is rotating, or game is paused, accept no input
-        if (playerManager.isMoving || plankRotationManager.isRotating || inputManager.isSwiping || pauseManager.isPaused) return;
+        if (PlayerManager.instance.isMoving || PlankRotationManager.instance.isRotating || InputManager.instance.isSwiping || PauseManager.instance.isPaused) return;
 
-        if (!inputManager.isUsingTouch || Application.platform == RuntimePlatform.WebGLPlayer) MouseInput();
+        if (!InputManager.instance.isUsingTouch || Application.platform == RuntimePlatform.WebGLPlayer) MouseInput();
 
-        if (inputManager.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer) TouchInput();
+        if (InputManager.instance.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer) TouchInput();
     }
 
     private void TouchInput()
     {
-        if (inputManager.isDoubleSwiping == true || inputManager.isSwiping == true) return;
+        if (InputManager.instance.isDoubleSwiping == true || InputManager.instance.isSwiping == true) return;
 
         if (Input.touchCount == 1)
         {
@@ -105,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
             if (targetWaypoint == currentWaypoint) return;
 
             // Play selection SFX
-            playerAudioManager.WaypointSelectionSFX(targetWaypoint.transform);
+            PlayerAudioManager.instance.WaypointSelectionSFX(targetWaypoint.transform);
 
             // Find array position of current waypoint
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
@@ -117,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             arrayDirection = Math.Sign(targetIndex - currentIndex);
 
             // If level is connected
-            if (plankManager.isLevelConnected)
+            if (PlankManager.instance.isLevelConnected)
             {
                 // Find shortest distance between current and target waypoints
                 arrayDirection = ShortestDirection(currentIndex, targetIndex);
@@ -137,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Play waypoint selection VFX
-            inputVFXManager.WaypointSelectionVFX(targetWaypoint.transform);
+            InputVFXManager.instance.WaypointSelectionVFX(targetWaypoint.transform);
 
             // Start transitioning
             StartCoroutine(TransitionWaypoints(arrayDirection));
@@ -163,10 +148,10 @@ public class PlayerMovement : MonoBehaviour
         // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
-        playerManager.isMoving = true;
+        PlayerManager.instance.isMoving = true;
 
         // If level is connected
-        if (plankManager.isLevelConnected)
+        if (PlankManager.instance.isLevelConnected)
         {
             // If current waypoint is last waypoint and direction is forward in array, next waypoint is first waypoint
             if (currentWaypoint == lastWaypoint && arrayDirection == 1)
@@ -174,8 +159,8 @@ public class PlayerMovement : MonoBehaviour
                 nextWaypoint = firstWaypoint;
 
                 // If level is connected successfully, flip gravity
-                if (plankManager.hasReachedGoal)
-                    playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+                if (PlankManager.instance.hasReachedGoal)
+                    PlayerManager.instance.isUsingInvertedGravity = !PlayerManager.instance.isUsingInvertedGravity;
             }
 
             // If current waypoint is first waypoint and direction is forward in array, next waypoint is last waypoint
@@ -184,8 +169,8 @@ public class PlayerMovement : MonoBehaviour
                 nextWaypoint = lastWaypoint;
 
                 // If level is connected successfully, flip gravity
-                if (plankManager.hasReachedGoal)
-                    playerManager.isUsingInvertedGravity = !playerManager.isUsingInvertedGravity;
+                if (PlankManager.instance.hasReachedGoal)
+                    PlayerManager.instance.isUsingInvertedGravity = !PlayerManager.instance.isUsingInvertedGravity;
             }
         }
 
@@ -201,9 +186,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
-        if (V3Equal(transform.up, nextWaypoint.transform.up * playerManager.gravityDirection))
+        if (V3Equal(transform.up, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection))
         {
-            transform.LookAt(targetPosition, nextWaypoint.transform.up * playerManager.gravityDirection);
+            transform.LookAt(targetPosition, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection);
         }
 
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
@@ -211,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(.12f);
             transform.position = nextWaypoint.transform.position;
-            transform.up = nextWaypoint.transform.up * playerManager.gravityDirection;
+            transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
         }
 
         // Set current position as Player's position
@@ -227,10 +212,10 @@ public class PlayerMovement : MonoBehaviour
             distance = Vector3.Distance(transform.position, nextWaypoint.transform.position);
 
             // Pause movement while Player is rotating
-            while (playerManager.isRotating) yield return null;
+            while (PlayerManager.instance.isRotating) yield return null;
 
             // Set rate as move speed over time
-            float rate = playerManager.moveSpeed * Time.deltaTime;
+            float rate = PlayerManager.instance.moveSpeed * Time.deltaTime;
 
             // Translate Player forward
             transform.Translate(0, 0, rate);
@@ -239,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        playerManager.isMoving = false;
+        PlayerManager.instance.isMoving = false;
 
         // If next waypoint is not target waypoint, flag next waypoint as transitional
         if (nextWaypoint != targetWaypoint) nextWaypoint.GetComponent<WaypointMarker>().isTransitional = true;
@@ -263,7 +248,7 @@ public class PlayerMovement : MonoBehaviour
     // Moves Player around level on completion
     private void RunCircles()
     {
-        while (!playerManager.isMoving)
+        while (!PlayerManager.instance.isMoving)
         {
             // Set next waypoint as next waypoint in array using previous array direction
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));

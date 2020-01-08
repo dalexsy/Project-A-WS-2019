@@ -3,20 +3,37 @@
 public class PlankVFXManager : MonoBehaviour
 {
     public GameObject activePivotPrefab;
+    public GameObject rotationActivationPrefab;
+    public static PlankVFXManager instance;
 
-    private UniversalVFXManager universalVFXManager;
-
-    private void Start()
+    private void Awake()
     {
-        universalVFXManager = GameObject.Find("VFX Manager").GetComponent<UniversalVFXManager>();
+        if (instance == null) instance = this;
+        else Destroy(this);
     }
 
     public void ActivePivotVFX(Transform activePivot, bool shouldPlay)
     {
+        var rotation = Quaternion.identity;
+
+        // Flip VFX if using left pivot
+        if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
+
+
         if (shouldPlay)
-            universalVFXManager.PlayVFX(activePivot, activePivotPrefab, Vector3.zero);
+            UniversalVFXManager.instance.PlayVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
 
         else
-            universalVFXManager.StopVFX(activePivot, activePivotPrefab);
+            UniversalVFXManager.instance.StopVFX(activePivot, activePivotPrefab);
+    }
+
+    public void RotationActivationVFX(Transform activePivot)
+    {
+        var rotation = Quaternion.identity;
+
+        // Flip VFX if using left pivot
+        if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
+
+        UniversalVFXManager.instance.PlayVFX(activePivot, rotationActivationPrefab, Vector3.zero, rotation);
     }
 }

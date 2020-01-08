@@ -5,8 +5,15 @@ using System.Collections;
 public class PauseManager : MonoBehaviour
 {
     public bool isPaused = false;
+    public static PauseManager instance;
     private GameObject[] showOnPause;
     private GameObject[] hideOnPause;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
 
     private void Start()
     {

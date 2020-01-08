@@ -4,24 +4,24 @@ public class PlankAudioManager : MonoBehaviour
 {
     public AudioClip[] activationSuccess;
     public AudioClip[] activationFailure;
+    public static PlankAudioManager instance;
 
     private float lowPitchRange = .75f;
     private float highPitchRange = 1.25f;
 
-    private UniversalAudioManager universalAudioManager;
-
-    private void Start()
+    private void Awake()
     {
-        universalAudioManager = GameObject.Find("SFX Manager").GetComponent<UniversalAudioManager>();
+        if (instance == null) instance = this;
+        else Destroy(this);
     }
 
     public void ActivationSuccessSFX(Transform activePivot)
     {
-        universalAudioManager.PlaySFX(activePivot, activationSuccess, lowPitchRange, highPitchRange);
+        UniversalAudioManager.instance.PlaySFX(activePivot, activationSuccess, lowPitchRange, highPitchRange);
     }
 
     public void ActivationFailureSFX(Transform activePivot)
     {
-        universalAudioManager.PlaySFX(activePivot, activationFailure, lowPitchRange, highPitchRange);
+        UniversalAudioManager.instance.PlaySFX(activePivot, activationFailure, lowPitchRange, highPitchRange);
     }
 }

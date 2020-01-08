@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PivotOrientationDetection : MonoBehaviour
 {
-    private PlankManager plankManager;
     [SerializeField] private Transform topCollider;
     [SerializeField] private Transform bottomCollider;
     private Vector3 topColliderPosition;
@@ -12,8 +9,6 @@ public class PivotOrientationDetection : MonoBehaviour
 
     private void Start()
     {
-        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
-
         SetColliders();
     }
 
@@ -30,16 +25,16 @@ public class PivotOrientationDetection : MonoBehaviour
         {
             var child = transform.parent.GetChild(c);
 
-            if (this.gameObject.name == plankManager.leftPivotName && child.tag == plankManager.leftColliderTag)
+            if (this.gameObject.name == PlankManager.instance.leftPivotName && child.tag == PlankManager.instance.leftColliderTag)
             {
-                if (child.name == plankManager.topColliderName) topCollider = child.transform;
-                if (child.name == plankManager.bottomColliderName) bottomCollider = child.transform;
+                if (child.name == PlankManager.instance.topColliderName) topCollider = child.transform;
+                if (child.name == PlankManager.instance.bottomColliderName) bottomCollider = child.transform;
             }
 
-            if (this.gameObject.name == plankManager.rightPivotName && child.tag == plankManager.rightColliderTag)
+            if (this.gameObject.name == PlankManager.instance.rightPivotName && child.tag == PlankManager.instance.rightColliderTag)
             {
-                if (child.name == plankManager.topColliderName) topCollider = child.transform;
-                if (child.name == plankManager.bottomColliderName) bottomCollider = child.transform;
+                if (child.name == PlankManager.instance.topColliderName) topCollider = child.transform;
+                if (child.name == PlankManager.instance.bottomColliderName) bottomCollider = child.transform;
             }
         }
     }

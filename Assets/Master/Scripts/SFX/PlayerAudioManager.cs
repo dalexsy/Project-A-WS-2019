@@ -3,19 +3,18 @@
 public class PlayerAudioManager : MonoBehaviour
 {
     public AudioClip[] waypointSelection;
-
+    public static PlayerAudioManager instance;
     private float lowPitchRange = 1f;
     private float highPitchRange = 1.2f;
 
-    private UniversalAudioManager universalAudioManager;
-
-    private void Start()
+    private void Awake()
     {
-        universalAudioManager = GameObject.Find("SFX Manager").GetComponent<UniversalAudioManager>();
+        if (instance == null) instance = this;
+        else Destroy(this);
     }
 
     public void WaypointSelectionSFX(Transform waypointPosition)
     {
-        universalAudioManager.PlaySFX(waypointPosition, waypointSelection, lowPitchRange, highPitchRange);
+        UniversalAudioManager.instance.PlaySFX(waypointPosition, waypointSelection, lowPitchRange, highPitchRange);
     }
 }

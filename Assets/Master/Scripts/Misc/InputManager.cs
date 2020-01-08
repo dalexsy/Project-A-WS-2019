@@ -7,10 +7,16 @@ public class InputManager : MonoBehaviour
     public bool isSwiping = false;
     public bool isDoubleSwiping = false;
     public readonly float inputBuffer = .3f;
-
+    public static InputManager instance;
     public string debugMessage;
 
     private float timer = 0f;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
 
     private void OnEnable()
     {
