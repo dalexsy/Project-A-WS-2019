@@ -1356,9 +1356,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7149675155858691313, guid: d25701e31adc2f24abad3e467c6bf1d0,
         type: 3}
-      propertyPath: activePivotPrefab
+      propertyPath: rotationActivationPrefab
       value: 
-      objectReference: {fileID: 5851382750196069416, guid: 38f65891e81d3744a85cfd0d008c138a,
+      objectReference: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d25701e31adc2f24abad3e467c6bf1d0, type: 3}

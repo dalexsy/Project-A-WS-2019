@@ -21,7 +21,7 @@ public class PlankVFXManager : MonoBehaviour
 
 
         if (shouldPlay)
-            UniversalVFXManager.instance.PlayVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
+            UniversalVFXManager.instance.PlayRotatedVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
 
         else
             UniversalVFXManager.instance.StopVFX(activePivot, activePivotPrefab);
@@ -34,6 +34,6 @@ public class PlankVFXManager : MonoBehaviour
         // Flip VFX if using left pivot
         if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
 
-        UniversalVFXManager.instance.PlayVFX(activePivot, rotationActivationPrefab, Vector3.zero, rotation);
+        UniversalVFXManager.instance.PlayRotatedVFX(activePivot, rotationActivationPrefab, Vector3.zero, rotation);
     }
 }
