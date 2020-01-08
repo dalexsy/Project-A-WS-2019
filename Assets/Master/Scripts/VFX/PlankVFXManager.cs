@@ -3,20 +3,20 @@
 public class PlankVFXManager : MonoBehaviour
 {
     public GameObject activePivotPrefab;
+    public static PlankVFXManager instance;
 
-    private UniversalVFXManager universalVFXManager;
-
-    private void Start()
+    private void Awake()
     {
-        universalVFXManager = GameObject.Find("VFX Manager").GetComponent<UniversalVFXManager>();
+        if (instance == null) instance = this;
+        else Destroy(this);
     }
 
     public void ActivePivotVFX(Transform activePivot, bool shouldPlay)
     {
         if (shouldPlay)
-            universalVFXManager.PlayVFX(activePivot, activePivotPrefab, Vector3.zero);
+            UniversalVFXManager.instance.PlayVFX(activePivot, activePivotPrefab, Vector3.zero);
 
         else
-            universalVFXManager.StopVFX(activePivot, activePivotPrefab);
+            UniversalVFXManager.instance.StopVFX(activePivot, activePivotPrefab);
     }
 }

@@ -2,6 +2,13 @@
 
 public class UniversalAudioManager : MonoBehaviour
 {
+    public static UniversalAudioManager instance;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
     // Plays random SFX from array of audio clips at given position
     public void PlaySFX(Transform sfxSource, AudioClip[] clips, float lowPitchRange, float highPitchRange)
     {

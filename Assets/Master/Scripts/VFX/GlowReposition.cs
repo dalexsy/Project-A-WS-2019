@@ -21,12 +21,12 @@ public class GlowReposition : MonoBehaviour
         cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         startPosition = this.transform.position;
         offset = new Vector3(0, startPosition.y, 0);
-        this.transform.position = cameraRigRotation.averagePlankPosition + offset;
+        this.transform.position = CameraRigRotation.instance.averagePlankPosition + offset;
     }
 
     private void Update()
     {
         // Keep particle system aligned with current average plank position
-        this.transform.position = Vector3.SmoothDamp(this.transform.position, cameraRigRotation.averagePlankPosition + offset, ref velocity, repositionRate);
+        this.transform.position = Vector3.SmoothDamp(this.transform.position, CameraRigRotation.instance.averagePlankPosition + offset, ref velocity, repositionRate);
     }
 }

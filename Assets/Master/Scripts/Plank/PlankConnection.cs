@@ -6,17 +6,14 @@ public class PlankConnection : MonoBehaviour
     public Transform passivePivot = null;
 
     private CollisionDetection collisionDetection;
-    private PlankManager plankManager;
     private Transform lPivot = null;
     private Transform rPivot = null;
 
     private void Start()
     {
         collisionDetection = GetComponent<CollisionDetection>();
-        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
-
-        lPivot = transform.Find(plankManager.leftPivotName);
-        rPivot = transform.Find(plankManager.rightPivotName);
+        lPivot = transform.Find(PlankManager.instance.leftPivotName);
+        rPivot = transform.Find(PlankManager.instance.rightPivotName);
     }
 
     // Method to connect planks using active Plank's active pivot
@@ -48,8 +45,8 @@ public class PlankConnection : MonoBehaviour
         if (foundPivot)
         {
             // If last Plank finds first Plank or first Plank finds last Plank, no need to connect them
-            if ((transform == plankManager.lastPlank && foundPivot.transform.parent == plankManager.firstPlank) ||
-                (transform == plankManager.firstPlank && foundPivot.transform.parent == plankManager.lastPlank)) return;
+            if ((transform == PlankManager.instance.lastPlank && foundPivot.transform.parent == PlankManager.instance.firstPlank) ||
+                (transform == PlankManager.instance.firstPlank && foundPivot.transform.parent == PlankManager.instance.lastPlank)) return;
 
             // Set parent of found pivot as foundPlank
             Transform foundPlank = foundPivot.gameObject.transform.parent;
@@ -58,8 +55,8 @@ public class PlankConnection : MonoBehaviour
             foundPlank.transform.parent = this.transform;
 
             // If found Plank is the first or last Plank, no need to connect it to anything else
-            if (foundPlank == plankManager.lastPlank ||
-                foundPlank == plankManager.firstPlank) return;
+            if (foundPlank == PlankManager.instance.lastPlank ||
+                foundPlank == PlankManager.instance.firstPlank) return;
 
             // Run this method from the found Plank's script using the found pivot
             else foundPlank.GetComponent<PlankConnection>().ConnectPlanks(foundPivot.transform);

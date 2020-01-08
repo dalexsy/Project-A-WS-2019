@@ -2,6 +2,13 @@
 
 public class UniversalVFXManager : MonoBehaviour
 {
+    public static UniversalVFXManager instance;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
     public void PlayVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset)
     {
         var existingParticle = vfxSource.transform.Find(particlePrefab.name);

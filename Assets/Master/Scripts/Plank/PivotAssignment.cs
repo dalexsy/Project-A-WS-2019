@@ -6,15 +6,11 @@ public class PivotAssignment : MonoBehaviour
     [SerializeField] string targetTag = null;
 
     private CollisionDetection collisionDetection;
-    private PlankManager plankManager;
     private PlankRotation plankRotation;
-    private PlankVFXManager plankVFXManager;
 
     private void Start()
     {
         collisionDetection = GetComponentInParent<CollisionDetection>();
-        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
-        plankVFXManager = GameObject.Find("VFX Manager").GetComponent<PlankVFXManager>();
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
@@ -49,8 +45,8 @@ public class PivotAssignment : MonoBehaviour
             plankRotation.isConnectedBack = false;
 
             // Stop active pivot VFX if player has not reached goal
-            if (!plankManager.hasReachedGoal)
-                plankVFXManager.ActivePivotVFX(transform, false);
+            if (!PlankManager.instance.hasReachedGoal)
+                PlankVFXManager.instance.ActivePivotVFX(transform, false);
         }
     }
 
@@ -70,7 +66,7 @@ public class PivotAssignment : MonoBehaviour
         if (foundPlank)
         {
             plankRotation.activePivot = this.transform;
-            plankVFXManager.ActivePivotVFX(transform, true);
+            PlankVFXManager.instance.ActivePivotVFX(transform, true);
             return;
         }
 
@@ -94,14 +90,14 @@ public class PivotAssignment : MonoBehaviour
                 // Set plank's surrogatePivot to local surrogatePivot
                 plankRotation.surrogatePivot = surrogatePivot;
 
-                plankVFXManager.ActivePivotVFX(surrogatePivot, true);
+                PlankVFXManager.instance.ActivePivotVFX(surrogatePivot, true);
 
                 // Look for colliders in range of surrogate pivot's position
                 Collider[] thirdColliders = Physics.OverlapSphere(surrogatePivot.position, .5f);
 
                 // Find front in thirdColliders array
                 var foundFrontCollider = Array.Find(secondColliders, collider =>
-                collider.name.Equals(plankManager.frontColliderName) &&
+                collider.name.Equals(PlankManager.instance.frontColliderName) &&
                 collider.gameObject == this.gameObject);
 
                 // If a front collider is found Plank is connected front

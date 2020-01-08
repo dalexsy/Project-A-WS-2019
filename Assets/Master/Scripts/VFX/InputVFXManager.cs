@@ -3,8 +3,15 @@
 public class InputVFXManager : MonoBehaviour
 {
     public GameObject waypointSelectPrefab;
-
     private UniversalVFXManager universalVFXManager;
+
+    public static InputVFXManager instance;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
 
     private void Start()
     {
@@ -13,6 +20,6 @@ public class InputVFXManager : MonoBehaviour
 
     public void WaypointSelectionVFX(Transform targetWaypoint)
     {
-        universalVFXManager.PlayVFX(targetWaypoint, waypointSelectPrefab, new Vector3(0, .06f, 0));
+        UniversalVFXManager.instance.PlayVFX(targetWaypoint, waypointSelectPrefab, new Vector3(0, .06f, 0));
     }
 }

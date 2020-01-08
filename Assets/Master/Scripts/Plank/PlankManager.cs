@@ -2,6 +2,14 @@
 
 public class PlankManager : MonoBehaviour
 {
+    public static PlankManager instance;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
+
     // Disabled unused variable warning
 #pragma warning disable 0414
 

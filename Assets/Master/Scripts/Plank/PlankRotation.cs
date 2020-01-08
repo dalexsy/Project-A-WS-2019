@@ -15,15 +15,8 @@ public class PlankRotation : MonoBehaviour
 
     private CameraRigRotation cameraRigRotation;
     private CollisionDetection collisionDetection;
-    private InputManager inputManager;
-    private MoveCounter moveCounter;
-    private PauseManager pauseManager;
     private PivotOrientationDetection pivotOrientationDetection;
-    private PlankAudioManager plankAudioManager;
     private PlankConnection plankConnection;
-    private PlankManager plankManager;
-    private PlankRotationManager plankRotationManager;
-    private PlayerManager playerManager;
 
     private float inputBuffer = 0f;
     private float inputOffset = 0f;
@@ -36,20 +29,13 @@ public class PlankRotation : MonoBehaviour
     {
         cameraRigRotation = GameObject.Find("Camera Rig").GetComponent<CameraRigRotation>();
         collisionDetection = GetComponent<CollisionDetection>();
-        inputManager = GameObject.Find("Input Manager").GetComponent<InputManager>();
-        moveCounter = GameObject.Find("Game Manager").GetComponent<MoveCounter>();
-        pauseManager = GameObject.Find("Game Manager").GetComponent<PauseManager>();
-        plankAudioManager = GameObject.Find("SFX Manager").GetComponent<PlankAudioManager>();
         plankConnection = GetComponent<PlankConnection>();
-        plankManager = GameObject.Find("Plank Manager").GetComponent<PlankManager>();
-        plankRotationManager = GameObject.Find("Plank Manager").GetComponent<PlankRotationManager>();
-        playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
     }
 
     private void Update()
     {
         // If game is paused, accept no input
-        if (pauseManager.isPaused) return;
+        if (PauseManager.instance.isPaused) return;
 
         // If no active pivot is given and Plank is colliding with target, check for rotation activation failure
         if (!activePivot && collisionDetection.isCollidingWithTarget) ActivationFailure();
@@ -58,47 +44,47 @@ public class PlankRotation : MonoBehaviour
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
 
         // Else if Plank is colliding with Player, Plank is current Plank
-        else playerManager.currentPlank = transform;
+        else PlayerManager.instance.currentPlank = transform;
     }
 
     private void RotationInput()
     {
         // If no pivots are given or camera rig is currently rotating, accept no input
-        if (!activePivot || cameraRigRotation.isRotating) return;
+        if (!activePivot || CameraRigRotation.instance.isRotating) return;
 
         // If Player is on last Plank and this Plank is first or vice versa, accept no input
-        if ((playerManager.currentPlank == plankManager.lastPlank && transform == plankManager.firstPlank)
-         || (playerManager.currentPlank == plankManager.firstPlank && transform == plankManager.lastPlank)) return;
+        if ((PlayerManager.instance.currentPlank == PlankManager.instance.lastPlank && transform == PlankManager.instance.firstPlank)
+         || (PlayerManager.instance.currentPlank == PlankManager.instance.firstPlank && transform == PlankManager.instance.lastPlank)) return;
 
         // If level is over, accept no input
-        if (plankManager.hasReachedGoal) return;
+        if (PlankManager.instance.hasReachedGoal) return;
 
         // If Plank can rotate clockwise and using right pivot
         if (canRotateClockwiseR && activePivot.name.Equals("Pivot R"))
         {
-            if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(1);
-            if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(1);
+            if (!InputManager.instance.isUsingTouch && MouseInput() == 1) StartRotation(1);
+            if (InputManager.instance.isUsingTouch && TouchInput() == 1) StartRotation(1);
         }
 
         // If Plank can rotate clockwise and using left pivot
         if (canRotateClockwiseL && activePivot.name.Equals("Pivot L"))
         {
-            if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(1);
-            if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(1);
+            if (!InputManager.instance.isUsingTouch && MouseInput() == -1) StartRotation(1);
+            if (InputManager.instance.isUsingTouch && TouchInput() == -1) StartRotation(1);
         }
 
         //  If Plank can rotate counterclockwise and using right pivot
         if (canRotateCounterclockwiseR && activePivot.name.Equals("Pivot R"))
         {
-            if (!inputManager.isUsingTouch && MouseInput() == -1) StartRotation(-1);
-            if (inputManager.isUsingTouch && TouchInput() == -1) StartRotation(-1);
+            if (!InputManager.instance.isUsingTouch && MouseInput() == -1) StartRotation(-1);
+            if (InputManager.instance.isUsingTouch && TouchInput() == -1) StartRotation(-1);
         }
 
         //  If Plank can rotate counterclockwise and using left pivot
         if (canRotateCounterclockwiseL && activePivot.name.Equals("Pivot L"))
         {
-            if (!inputManager.isUsingTouch && MouseInput() == 1) StartRotation(-1);
-            if (inputManager.isUsingTouch && TouchInput() == 1) StartRotation(-1);
+            if (!InputManager.instance.isUsingTouch && MouseInput() == 1) StartRotation(-1);
+            if (InputManager.instance.isUsingTouch && TouchInput() == 1) StartRotation(-1);
         }
     }
 
@@ -106,7 +92,7 @@ public class PlankRotation : MonoBehaviour
     private int TouchInput()
     {
         // If player is double swiping, input is not valid
-        if (inputManager.isDoubleSwiping == true || pauseManager.isPaused) return 0;
+        if (InputManager.instance.isDoubleSwiping == true || PauseManager.instance.isPaused) return 0;
 
         if (Input.touchCount == 1)
         {
@@ -177,7 +163,7 @@ public class PlankRotation : MonoBehaviour
 
     private void ActivationFailure()
     {
-        if (!inputManager.isUsingTouch)
+        if (!InputManager.instance.isUsingTouch)
         {
             // On left mouse button down, set start position and reset input offset
             if (Input.GetMouseButtonDown(0))
@@ -199,13 +185,13 @@ public class PlankRotation : MonoBehaviour
                 var direction = Mathf.Sign(inputOffset);
 
                 // If input offset is over input buffer, play activation failure SFX
-                if (Mathf.Abs(inputOffset) > inputBuffer) plankAudioManager.ActivationFailureSFX(transform);
+                if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);
             }
         }
 
         else
         {
-            if (inputManager.isDoubleSwiping == true) return;
+            if (InputManager.instance.isDoubleSwiping == true) return;
 
             if (Input.touchCount == 1)
             {
@@ -229,7 +215,7 @@ public class PlankRotation : MonoBehaviour
                         inputBuffer = Screen.width * .1f;
 
                         // If input offset is over input buffer, play activation failure SFX
-                        if (Mathf.Abs(inputOffset) > inputBuffer) plankAudioManager.ActivationFailureSFX(transform);
+                        if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);
                         break;
                 }
             }
@@ -302,12 +288,12 @@ public class PlankRotation : MonoBehaviour
     // Uses direction from MouseInput/TouchInput
     private void StartRotation(int direction)
     {
-        if (direction == 0 || plankRotationManager.isRotating || playerManager.isMoving) return;
+        if (direction == 0 || PlankRotationManager.instance.isRotating || PlayerManager.instance.isMoving) return;
 
         if (isConnectedFront)
         {
             // Set isRotating to true to prevent multiple rotations
-            plankRotationManager.isRotating = true;
+            PlankRotationManager.instance.isRotating = true;
 
             // Rotate Plank clockwise
             // Will rotate from surrogate pivot's position
@@ -317,7 +303,7 @@ public class PlankRotation : MonoBehaviour
         else
         {
             // Set isRotating to true to prevent multiple rotations
-            plankRotationManager.isRotating = true;
+            PlankRotationManager.instance.isRotating = true;
 
             // Rotate Plank counterclockwise 
             // Will rotate from active pivot's position
@@ -336,7 +322,7 @@ public class PlankRotation : MonoBehaviour
 
 
 
-        plankAudioManager.ActivationSuccessSFX(pivot);
+        PlankAudioManager.instance.ActivationSuccessSFX(pivot);
 
         // Variable used to move through animation curve
         float lerpTime = 1f;
@@ -361,17 +347,17 @@ public class PlankRotation : MonoBehaviour
         }
 
         // Create visual feedback on pivot to be rotated from
-        GameObject pulse = Instantiate(plankRotationManager.rotateParticlePrefab, rotationPivot.transform.position, plankRotationManager.rotateParticlePrefab.transform.rotation);
+        GameObject pulse = Instantiate(PlankRotationManager.instance.rotateParticlePrefab, rotationPivot.transform.position, PlankRotationManager.instance.rotateParticlePrefab.transform.rotation);
 
         // Destroy particle system once system has run once
         Destroy(pulse, pulse.GetComponent<ParticleSystem>().main.startLifetimeMultiplier);
 
         // While the Plank has not reached max rotation
-        while (currentRotation < plankRotationManager.maxRotation)
+        while (currentRotation < PlankRotationManager.instance.maxRotation)
         {
             // Increase currentLerpTime per frame
             // Rotation speed adjusts animation curve frame rate
-            currentLerpTime += Time.deltaTime * plankRotationManager.rotationSpeed;
+            currentLerpTime += Time.deltaTime * PlankRotationManager.instance.rotationSpeed;
 
             // Gate maximum lerp time
             if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
@@ -381,17 +367,17 @@ public class PlankRotation : MonoBehaviour
             float t = currentLerpTime / lerpTime;
 
             // Increase current rotation by value from animation curve
-            currentRotation += plankRotationManager.animationCurve.Evaluate(t);
+            currentRotation += PlankRotationManager.instance.animationCurve.Evaluate(t);
 
             // If current rotation exceeds max rotation, set max angle correction to difference
             // Will only be used for last frame of animation
             float maxAngleCorrection = 0f;
 
-            if (currentRotation > plankRotationManager.maxRotation)
-                maxAngleCorrection = currentRotation - plankRotationManager.maxRotation;
+            if (currentRotation > PlankRotationManager.instance.maxRotation)
+                maxAngleCorrection = currentRotation - PlankRotationManager.instance.maxRotation;
 
             // Rotate plank around given pivot in given direction
-            transform.RotateAround(rotationPivot.position, rotationAxis * direction, plankRotationManager.animationCurve.Evaluate(t) - maxAngleCorrection);
+            transform.RotateAround(rotationPivot.position, rotationAxis * direction, PlankRotationManager.instance.animationCurve.Evaluate(t) - maxAngleCorrection);
 
             // Returns to top of while loop after fixed update
             yield return new WaitForFixedUpdate();
@@ -401,9 +387,9 @@ public class PlankRotation : MonoBehaviour
         plankConnection.DisconnectPlanks(transform);
 
         // Increase move counter
-        moveCounter.moveCount += 1;
+        MoveCounter.instance.moveCount += 1;
 
         // Sets isRotating to false after Plank has reached max rotation
-        plankRotationManager.isRotating = false;
+        PlankRotationManager.instance.isRotating = false;
     }
 }
