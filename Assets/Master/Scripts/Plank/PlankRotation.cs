@@ -345,10 +345,7 @@ public class PlankRotation : MonoBehaviour
         }
 
         // Create visual feedback on pivot to be rotated from
-        GameObject pulse = Instantiate(PlankRotationManager.instance.rotateParticlePrefab, rotationPivot.transform.position, PlankRotationManager.instance.rotateParticlePrefab.transform.rotation);
-
-        // Destroy particle system once system has run once
-        Destroy(pulse, pulse.GetComponent<ParticleSystem>().main.startLifetimeMultiplier);
+        PlankVFXManager.instance.RotationActivationVFX(activePivot);
 
         // While the Plank has not reached max rotation
         while (currentRotation < PlankRotationManager.instance.maxRotation)

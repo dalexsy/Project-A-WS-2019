@@ -9,7 +9,7 @@ public class UniversalVFXManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
     }
-    
+
     public void PlayVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset, Quaternion rotation = default(Quaternion))
     {
         var existingParticle = vfxSource.transform.Find(particlePrefab.name);
