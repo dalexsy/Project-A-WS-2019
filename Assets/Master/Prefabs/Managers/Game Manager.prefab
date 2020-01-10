@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2111411627156241195}
   - component: {fileID: 3947535347970551570}
+  - component: {fileID: 508783911}
+  - component: {fileID: 508783912}
+  - component: {fileID: 508783913}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -43,3 +46,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90e8b4f0baed5b646952cf31b2016888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &508783911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570132763206106750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbc94bfa2f01d7c4f95d02627b945d99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchIcon: {fileID: 0}
+  mouseIcon: {fileID: 0}
+--- !u!114 &508783912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570132763206106750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45203ebf4417b1443b5e0806bccbe3a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveCount: 0
+--- !u!114 &508783913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570132763206106750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa2df32de053f447b45d10d2aedd9ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPaused: 0

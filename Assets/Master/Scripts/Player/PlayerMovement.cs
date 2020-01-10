@@ -197,6 +197,11 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForSeconds(.12f);
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
+
+            // If Player is moving backwards, rotate Player backwards
+            Quaternion rotationOffset = Quaternion.identity;
+            if (arrayDirection == -1) rotationOffset = Quaternion.Euler(0, 180, 0);
+            transform.rotation = nextWaypoint.transform.rotation * rotationOffset;
         }
 
         // Set current position as Player's position

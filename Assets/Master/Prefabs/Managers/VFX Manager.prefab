@@ -61,6 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePivotPrefab: {fileID: 5851382750196069416, guid: 38f65891e81d3744a85cfd0d008c138a,
     type: 3}
+  rotationActivationPrefab: {fileID: 3293795605481788444, guid: 1e24426bce7794342b6789c8ac41461e,
+    type: 3}
 --- !u!114 &8945150603937486212
 MonoBehaviour:
   m_ObjectHideFlags: 0
