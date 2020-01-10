@@ -24,7 +24,7 @@ public class PivotAssignment : MonoBehaviour
             PlankVFXManager.instance.ActivePivotVFX(transform, false);
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerStay(Collider collider)
     {
         // If Player enters collider range
         if (collider.gameObject.tag == targetTag)
@@ -54,6 +54,7 @@ public class PivotAssignment : MonoBehaviour
             // Only used with surrogate pivot
             plankRotation.isConnectedBack = false;
 
+            // Stop active pivot VFX
             PlankVFXManager.instance.ActivePivotVFX(transform, false);
         }
     }
