@@ -1001,12 +1001,12 @@ PrefabInstance:
     - target: {fileID: 3390349635072212598, guid: 47d7c6d9866c435489500bf3cc9fbf23,
         type: 3}
       propertyPath: m_Size.z
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3390349635072212598, guid: 47d7c6d9866c435489500bf3cc9fbf23,
         type: 3}
       propertyPath: m_Size.y
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4978636946281177988, guid: 47d7c6d9866c435489500bf3cc9fbf23,
         type: 3}
@@ -1957,13 +1957,13 @@ PrefabInstance:
     - target: {fileID: -3563281845941685498, guid: 150c60d0473994a4b85e0bfa877c0322,
         type: 3}
       propertyPath: activationSuccess.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3563281845941685498, guid: 150c60d0473994a4b85e0bfa877c0322,
         type: 3}
       propertyPath: activationSuccess.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 87fd8f4b964971c479b219823090622b, type: 3}
+      objectReference: {fileID: 8300000, guid: e7e05102f6d41ee478e852324052da78, type: 3}
     - target: {fileID: -3563281845941685498, guid: 150c60d0473994a4b85e0bfa877c0322,
         type: 3}
       propertyPath: activationFailure.Array.data[0]
@@ -2741,7 +2741,7 @@ PrefabInstance:
     - target: {fileID: 8901319747207456890, guid: 8456e009bc309f744ae3f8dfdb243ea2,
         type: 3}
       propertyPath: offset.y
-      value: 0
+      value: 0.39
       objectReference: {fileID: 0}
     - target: {fileID: 8901319747207456890, guid: 8456e009bc309f744ae3f8dfdb243ea2,
         type: 3}
