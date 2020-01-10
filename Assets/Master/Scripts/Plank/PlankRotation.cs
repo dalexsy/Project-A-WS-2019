@@ -318,8 +318,6 @@ public class PlankRotation : MonoBehaviour
         Transform rotationPivot = pivot;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
-
-
         PlankAudioManager.instance.ActivationSuccessSFX(pivot);
 
         // Variable used to move through animation curve
