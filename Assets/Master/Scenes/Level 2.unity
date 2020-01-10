@@ -510,6 +510,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90e8b4f0baed5b646952cf31b2016888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &508783910 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 508783913, guid: c21c472d80fc77b488a5e9e5fda09ee3,
+    type: 3}
+  m_PrefabInstance: {fileID: 8400490860099484521}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508783908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa2df32de053f447b45d10d2aedd9ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &508783911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1250,7 +1262,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 508783913}
+      objectReference: {fileID: 508783910}
+    - target: {fileID: 2314392968323113166, guid: 52f982c1d5cd0f249a0946779da1ea07,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PauseGame
+      objectReference: {fileID: 0}
     - target: {fileID: 721072784, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

@@ -199,9 +199,16 @@ public class PlayerMovement : MonoBehaviour
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
 
             // If Player is moving backwards, rotate Player backwards
-            Quaternion rotationOffset = Quaternion.identity;
-            if (arrayDirection == -1) rotationOffset = Quaternion.Euler(0, 180, 0);
-            transform.rotation = nextWaypoint.transform.rotation * rotationOffset;
+            if (!PlankManager.instance.hasReachedGoal)
+            {
+                if (arrayDirection == -1)
+                {
+                    Quaternion rotationOffset = Quaternion.Euler(0, 180, 0);
+                    transform.rotation = nextWaypoint.transform.rotation * rotationOffset;
+                }
+
+                else transform.rotation = nextWaypoint.transform.rotation;
+            }
         }
 
         // Set current position as Player's position
