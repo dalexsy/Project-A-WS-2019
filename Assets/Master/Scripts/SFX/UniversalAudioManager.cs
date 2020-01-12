@@ -25,6 +25,10 @@ public class UniversalAudioManager : MonoBehaviour
         audioSource.clip = clips[randomClip];
         previousClip = audioSource.clip;
 
+        // Parent sound to source and name after parent
+        sound.transform.parent = sfxSource.transform;
+        sound.transform.name = sfxSource.name + " SFX";
+
         // Randomly pitch clip
         audioSource.pitch = Random.Range(lowPitchRange, highPitchRange);
         previousPitch = audioSource.pitch;
