@@ -10,8 +10,6 @@ public class GoalDetection : MonoBehaviour
         {
             PlankManager.instance.isLevelConnected = true;
             PlankManager.instance.hasReachedGoal = true;
-
-            PlankVFXManager.instance.ActivePivotVFX(transform, true);
         }
     }
 }

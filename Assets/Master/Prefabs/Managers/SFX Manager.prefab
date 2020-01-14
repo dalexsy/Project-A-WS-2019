@@ -47,17 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activationSuccess:
   - {fileID: 8300000, guid: 87fd8f4b964971c479b219823090622b, type: 3}
-  - {fileID: 8300000, guid: da61ca4d18d32db4f8d8b8883baf9f84, type: 3}
-  - {fileID: 8300000, guid: db51f3a19a82c494ba7c75907dde43e7, type: 3}
-  - {fileID: 8300000, guid: 43f87f36a69a6384b82d705e02060349, type: 3}
-  - {fileID: 8300000, guid: 15c9d9ab56b284b449f8683a79f36a2d, type: 3}
   - {fileID: 8300000, guid: e7e05102f6d41ee478e852324052da78, type: 3}
   activationFailure:
-  - {fileID: 8300000, guid: 295a6c9cffe42e6459bc40beacf1ee18, type: 3}
-  - {fileID: 8300000, guid: 22d6cb06f9c635f49a54d6e67d4bfa5f, type: 3}
-  - {fileID: 8300000, guid: 92fa6f7d60e2d3c46a08037f7da17032, type: 3}
   - {fileID: 8300000, guid: d4ab6303014fcdf49a7d6deb50eb2d6c, type: 3}
-  - {fileID: 8300000, guid: 9c1fdb9f76816a54592c80f6b9d693a2, type: 3}
 --- !u!114 &-5079459234747729061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3642185e0c18b34cb6ffce3d036aa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypointSelection:
+  - {fileID: 8300000, guid: 0a4e9f40ab7ba3f4b80e7ba8fbee840e, type: 3}
 --- !u!114 &7467561741392703287
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-
 public class CameraRigRotation : MonoBehaviour
 {
     [HideInInspector] public bool isRotating = false;
@@ -23,6 +22,8 @@ public class CameraRigRotation : MonoBehaviour
     private float inputBuffer = 0;
     private float inputOffset = 0;
     private float orthoZoomSpeed = -0.003f;
+    private float zoom;
+    private float zoomSpeed = 5f;
     private int turnDirection = 0;
     private Vector2 startPosMouse = Vector2.zero;
 
@@ -35,6 +36,8 @@ public class CameraRigRotation : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+
+        zoom = mainCamera.orthographicSize;
 
         // Find all Planks in scene
         planks = GameObject.FindGameObjectsWithTag("Plank");
@@ -79,8 +82,13 @@ public class CameraRigRotation : MonoBehaviour
         }
 
         if (InputManager.instance.isUsingTouch) TouchRotation();
-        if (!InputManager.instance.isUsingTouch && MouseInput() == 1) MouseRotation(1);
-        if (!InputManager.instance.isUsingTouch && MouseInput() == -1) MouseRotation(-1);
+
+        else
+        {
+            MouseZoom();
+            if (MouseInput() == 1) MouseRotation(1);
+            if (MouseInput() == -1) MouseRotation(-1);
+        }
     }
 
     private void FixedUpdate()
@@ -117,7 +125,8 @@ public class CameraRigRotation : MonoBehaviour
 
             if (Application.platform != RuntimePlatform.WebGLPlayer)
 
-            {   // Zoom camera based on pinch amount
+            {
+                // Zoom camera based on pinch amount
                 mainCamera.orthographicSize += pinchAmount * orthoZoomSpeed;
 
                 // Gate zoom amount
@@ -159,6 +168,17 @@ public class CameraRigRotation : MonoBehaviour
         if (direction == 0 || isRotating) return;
 
         StartCoroutine(RotateRig(MouseInput()));
+    }
+
+    private void MouseZoom()
+    {
+        // Zoom camera based on scroll amount
+        zoom -= Input.GetAxis("Mouse ScrollWheel");
+
+        // Gate zoom amount
+        zoom = Mathf.Clamp(zoom, 2f, 5f);
+
+        mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
     }
 
     // Returns direction of input

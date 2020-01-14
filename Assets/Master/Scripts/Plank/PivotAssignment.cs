@@ -14,7 +14,17 @@ public class PivotAssignment : MonoBehaviour
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void Update()
+    {
+        // If Player is currently on pivot's parent Plank and this pivot is an active pivot, start VFX
+        if (collisionDetection.isCollidingWithTarget && plankRotation.activePivot == transform)
+            PlankVFXManager.instance.ActivePivotVFX(transform, true);
+
+        else
+            PlankVFXManager.instance.ActivePivotVFX(transform, false);
+    }
+
+    private void OnTriggerStay(Collider collider)
     {
         // If Player enters collider range
         if (collider.gameObject.tag == targetTag)
@@ -44,9 +54,8 @@ public class PivotAssignment : MonoBehaviour
             // Only used with surrogate pivot
             plankRotation.isConnectedBack = false;
 
-            // Stop active pivot VFX if player has not reached goal
-            if (!PlankManager.instance.hasReachedGoal)
-                PlankVFXManager.instance.ActivePivotVFX(transform, false);
+            // Stop active pivot VFX
+            PlankVFXManager.instance.ActivePivotVFX(transform, false);
         }
     }
 
@@ -66,7 +75,6 @@ public class PivotAssignment : MonoBehaviour
         if (foundPlank)
         {
             plankRotation.activePivot = this.transform;
-            PlankVFXManager.instance.ActivePivotVFX(transform, true);
             return;
         }
 
@@ -89,8 +97,6 @@ public class PivotAssignment : MonoBehaviour
 
                 // Set plank's surrogatePivot to local surrogatePivot
                 plankRotation.surrogatePivot = surrogatePivot;
-
-                PlankVFXManager.instance.ActivePivotVFX(surrogatePivot, true);
 
                 // Look for colliders in range of surrogate pivot's position
                 Collider[] thirdColliders = Physics.OverlapSphere(surrogatePivot.position, .5f);

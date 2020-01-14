@@ -4,6 +4,7 @@ public class PlankVFXManager : MonoBehaviour
 {
     public GameObject activePivotPrefab;
     public GameObject rotationActivationPrefab;
+    [HideInInspector] public Transform playerPivot;
     public static PlankVFXManager instance;
 
     private void Awake()
@@ -19,12 +20,14 @@ public class PlankVFXManager : MonoBehaviour
         // Flip VFX if using left pivot
         if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
 
-
         if (shouldPlay)
-            UniversalVFXManager.instance.PlayVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
+        {
+            if (PlankManager.instance.hasReachedGoal) return;
+            UniversalVFXManager.instance.PlayRotatedVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
+        }
 
         else
-            UniversalVFXManager.instance.StopVFX(activePivot, activePivotPrefab);
+            UniversalVFXManager.instance.StopVFX(activePivot, activePivotPrefab, true);
     }
 
     public void RotationActivationVFX(Transform activePivot)
@@ -34,6 +37,6 @@ public class PlankVFXManager : MonoBehaviour
         // Flip VFX if using left pivot
         if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
 
-        UniversalVFXManager.instance.PlayVFX(activePivot, rotationActivationPrefab, Vector3.zero, rotation);
+        UniversalVFXManager.instance.PlayRotatedVFX(activePivot, rotationActivationPrefab, Vector3.zero, rotation);
     }
 }
