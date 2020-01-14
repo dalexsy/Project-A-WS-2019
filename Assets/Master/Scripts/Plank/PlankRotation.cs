@@ -38,6 +38,9 @@ public class PlankRotation : MonoBehaviour
         // If no active pivot is given and Plank is colliding with target, check for rotation activation failure
         if (!activePivot && collisionDetection.isCollidingWithTarget) ActivationFailure();
 
+        // If there's an active pivot and Player is on current Plank, active pivot is player pivot
+        if (activePivot && collisionDetection.isCollidingWithTarget) PlankVFXManager.instance.playerPivot = activePivot;
+
         // If Plank is not colliding with Player, accept rotation input
         if (collisionDetection.isCollidingWithTarget == false) RotationInput();
 
@@ -343,7 +346,7 @@ public class PlankRotation : MonoBehaviour
         }
 
         // Create visual feedback on pivot to be rotated from
-        PlankVFXManager.instance.RotationActivationVFX(activePivot);
+        PlankVFXManager.instance.RotationActivationVFX(PlankVFXManager.instance.playerPivot);
 
         // While the Plank has not reached max rotation
         while (currentRotation < PlankRotationManager.instance.maxRotation)

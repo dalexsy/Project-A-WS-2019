@@ -4,6 +4,7 @@ public class PlankVFXManager : MonoBehaviour
 {
     public GameObject activePivotPrefab;
     public GameObject rotationActivationPrefab;
+    [HideInInspector] public Transform playerPivot;
     public static PlankVFXManager instance;
 
     private void Awake()
@@ -15,7 +16,7 @@ public class PlankVFXManager : MonoBehaviour
     public void ActivePivotVFX(Transform activePivot, bool shouldPlay)
     {
         var rotation = Quaternion.identity;
-        
+
         // Flip VFX if using left pivot
         if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
 
