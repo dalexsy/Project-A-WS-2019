@@ -15,7 +15,8 @@ public class PlankVFXManager : MonoBehaviour
 
     public void ActivePivotVFX(Transform activePivot, bool shouldPlay)
     {
-        var rotation = Quaternion.identity;
+        Quaternion rotation = Quaternion.identity;
+        Vector3 offset = new Vector3(0, 0, Offset(activePivot));
 
         // Flip VFX if using left pivot
         if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
@@ -23,7 +24,7 @@ public class PlankVFXManager : MonoBehaviour
         if (shouldPlay)
         {
             if (PlankManager.instance.hasReachedGoal) return;
-            UniversalVFXManager.instance.PlayRotatedVFX(activePivot, activePivotPrefab, Vector3.zero, rotation);
+            UniversalVFXManager.instance.PlayRotatedVFX(activePivot, activePivotPrefab, offset, rotation);
         }
 
         else
@@ -32,11 +33,34 @@ public class PlankVFXManager : MonoBehaviour
 
     public void RotationActivationVFX(Transform activePivot)
     {
-        var rotation = Quaternion.identity;
+        Quaternion rotation = Quaternion.identity;
+        Vector3 offset = new Vector3(0, 0, Offset(activePivot));
 
         // Flip VFX if using left pivot
         if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) rotation = Quaternion.Euler(0, 0, 180);
 
-        UniversalVFXManager.instance.PlayRotatedVFX(activePivot, rotationActivationPrefab, Vector3.zero, rotation);
+        UniversalVFXManager.instance.PlayRotatedVFX(activePivot, rotationActivationPrefab, offset, rotation);
+    }
+
+    private float Offset(Transform activePivot)
+    {
+        if (IsOffset(activePivot) == true) return .03f;
+        else return 0f;
+    }
+
+    private bool IsOffset(Transform activePivot)
+    {
+        GameObject grandparent = activePivot.parent.gameObject;
+        PlankRotation plankRotation = grandparent.GetComponent<PlankRotation>();
+
+        // If bottom of Plank cannot rotate, offset VFX
+        if (activePivot.name.Equals(PlankManager.instance.rightPivotName)
+                    && !plankRotation.canRotateCounterclockwiseR) return true;
+
+        else if (activePivot.name.Equals(PlankManager.instance.leftPivotName)
+            && !plankRotation.canRotateClockwiseL) return true;
+
+        // Otherwise, VFX can stay centered
+        else return false;
     }
 }
