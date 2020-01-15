@@ -53,9 +53,6 @@ public class PivotAssignment : MonoBehaviour
             // Resets isConnectedBack in Plank
             // Only used with surrogate pivot
             plankRotation.isConnectedBack = false;
-
-            // Stop active pivot VFX
-            PlankVFXManager.instance.ActivePivotVFX(transform, false);
         }
     }
 

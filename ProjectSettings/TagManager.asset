@@ -12,6 +12,7 @@ TagManager:
   - Waypoint
   - ShowOnPause
   - HideOnPause
+  - Level Complete
   layers:
   - Default
   - TransparentFX
