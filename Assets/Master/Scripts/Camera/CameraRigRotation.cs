@@ -3,10 +3,6 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class CameraRigRotation : MonoBehaviour
 {
     [HideInInspector] public bool isRotating = false;
@@ -26,6 +22,7 @@ public class CameraRigRotation : MonoBehaviour
     private float zoomSpeed = 5f;
     private int turnDirection = 0;
     private Vector2 startPosMouse = Vector2.zero;
+    private Vector3 targetPosition;
 
     private void Awake()
     {
@@ -36,7 +33,6 @@ public class CameraRigRotation : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-
         zoom = mainCamera.orthographicSize;
 
         // Find all Planks in scene
@@ -58,22 +54,15 @@ public class CameraRigRotation : MonoBehaviour
         // Return average position of all Planks
         averagePlankPosition = GetMeanVector(plankPositions);
 
-        // Set rig's position to average Plank position
-        this.transform.position = averagePlankPosition + offset;
+        targetPosition = averagePlankPosition + offset;
     }
 
     private void LateUpdate()
     {
+        // Set rig's position to average Plank position
+        transform.position = Vector3.Lerp(transform.position, targetPosition, 5f * Time.deltaTime);
+
         if (PauseManager.instance.isPaused) return;
-
-#if UNITY_EDITOR
-
-        if (!EditorApplication.isPlaying)
-        {
-            transform.rotation = Quaternion.identity;
-            return;
-        }
-#endif
 
         if (PlankManager.instance.hasReachedGoal)
         {
