@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
             distance = Vector3.Distance(transform.position, nextWaypoint.transform.position);
 
             // Pause movement while Player is rotating
-            while (PlayerManager.instance.isRotating) yield return null;
+            while (PlayerManager.instance.isRotating || PauseManager.instance.isPaused) yield return null;
 
             // Set rate as move speed over time
             float rate = PlayerManager.instance.moveSpeed * Time.deltaTime;
