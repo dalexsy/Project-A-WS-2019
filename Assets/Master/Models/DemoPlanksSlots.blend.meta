@@ -20,7 +20,7 @@ ModelImporter:
       name: plankTop
     second: {fileID: 2100000, guid: 81786160e27b5c049bfccbbb89c3020f, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
