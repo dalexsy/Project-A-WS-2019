@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
-    public static PlayerAnimationManager instance;
-    [SerializeField] private Animator animator;
+    [SerializeField] public AnimationCurve animationCurve = null;
+    [SerializeField] public Animator animator;
+    public static PlayerAnimationManager instance = null;
+    [SerializeField] [Range(1, 10)] public float rotationSpeed = 1f;
 
     public bool isJumping = false;
     public bool isWalking = false;
@@ -17,7 +19,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void Update()
     {
-        animator.SetBool("isWalking", isWalking);
         animator.SetBool("isJumping", isJumping);
+        animator.SetBool("isWalking", isWalking);
     }
 }

@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject lastWaypoint;
     private GameObject leftWaypoint;
     private GameObject rightWaypoint;
-    private int arrayDirection;
+    private int arrayDirection = 1;
     private Vector3 startInputPos;
 
     private void Start()
@@ -98,8 +98,17 @@ public class PlayerMovement : MonoBehaviour
             // Find array position of target waypoint
             var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
 
+            int previousDirection = arrayDirection;
+
             // Find direction between target and current waypoint
             arrayDirection = Math.Sign(targetIndex - currentIndex);
+
+            // If Player is moving in a new direction, Player is turning
+            if (previousDirection != arrayDirection)
+            {
+                PlayerAnimationManager.instance.animator.SetTrigger("isTurning");
+                StartCoroutine(RotatePlayer(180, 1));
+            }
 
             // If level is connected
             if (PlankManager.instance.isLevelConnected)
@@ -143,10 +152,45 @@ public class PlayerMovement : MonoBehaviour
         return Math.Sign(targetIndex - currentIndex);
     }
 
+    private IEnumerator RotatePlayer(int angle, int direction)
+    {
+        PlayerManager.instance.isTurning = true;
+
+        // Set target rotation to given angle around Player's y-axis in given direction
+        Vector3 targetRotation = new Vector3(0, angle * direction, 0);
+
+        // Set start rotation as Player's current rotation
+        Quaternion startRotation = transform.rotation;
+
+        // Set end rotation as start rotation plus target rotation
+        Quaternion endRotation = startRotation * Quaternion.Euler(targetRotation);
+
+        // Reset time
+        float t = 0f;
+
+        // While running
+        while (t < 1f)
+        {
+            // Increase time by rotation speed
+            t += Time.deltaTime * PlayerAnimationManager.instance.rotationSpeed;
+
+            // Rotate towards end rotation using animation curve
+            transform.rotation = Quaternion.Slerp(startRotation, endRotation, PlayerAnimationManager.instance.animationCurve.Evaluate(t));
+
+            // Return to top of while loop
+            yield return null;
+        }
+
+        PlayerManager.instance.isTurning = false;
+        yield return null;
+    }
+
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
         // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
+
+        while (PlayerManager.instance.isTurning == true) yield return null;
 
         PlayerManager.instance.isMoving = true;
 
