@@ -5,7 +5,6 @@ public class PlayerManager : MonoBehaviour
     private bool isUsingGravity = true;
 
     public bool isMoving = false;
-    public bool isRotating = false;
     public bool isUsingInvertedGravity = false;
     public float moveSpeed;
     [HideInInspector] public float gravity = 10f;
