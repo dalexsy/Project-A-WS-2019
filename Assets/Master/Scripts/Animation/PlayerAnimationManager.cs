@@ -9,6 +9,9 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] [Range(1, 10)] public float rotationSpeed = 1f;
 
     public bool isJumping = false;
+    public bool isMoving = false;
+    public bool isTransitioningPlanks = false;
+    public bool isTurning = false;
     public bool isWalking = false;
 
     private void Awake()

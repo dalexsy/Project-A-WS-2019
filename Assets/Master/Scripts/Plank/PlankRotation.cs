@@ -289,7 +289,7 @@ public class PlankRotation : MonoBehaviour
     // Uses direction from MouseInput/TouchInput
     private void StartRotation(int direction)
     {
-        if (direction == 0 || PlankRotationManager.instance.isRotating || PlayerManager.instance.isMoving) return;
+        if (direction == 0 || PlankRotationManager.instance.isRotating || PlayerAnimationManager.instance.isMoving) return;
 
         if (isConnectedFront)
         {
@@ -321,7 +321,16 @@ public class PlankRotation : MonoBehaviour
         Transform rotationPivot = pivot;
         Vector3 rotationAxis = rotationPivot.transform.right;
 
+        // Play activation success SFX
         PlankAudioManager.instance.ActivationSuccessSFX(pivot);
+
+        // Rotate Player towards active pivot
+        // Trigger Player plank rotation animation
+        PlayerMovement.instance.RotatePlayer();
+        int orientation = direction;
+        if (activePivot.name.Equals(PlankManager.instance.leftPivotName)) orientation *= -1;
+        if (orientation == -1) PlayerAnimationManager.instance.animator.SetTrigger("isRotatingPlankUp");
+        else PlayerAnimationManager.instance.animator.SetTrigger("isRotatingPlankDown");
 
         // Variable used to move through animation curve
         float lerpTime = 1f;

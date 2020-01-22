@@ -4,14 +4,13 @@ public class PlayerManager : MonoBehaviour
 {
     private bool isUsingGravity = true;
 
-    public bool isMoving = false;
-    public bool isTurning = false;
     public bool isUsingInvertedGravity = false;
     public float moveSpeed;
     [HideInInspector] public float gravity = 10f;
     [HideInInspector] public int gravityDirection = 1;
     public static PlayerManager instance;
     public Transform currentPlank = null;
+    public Transform activePivot = null;
 
     private void Awake()
     {
@@ -21,6 +20,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        if (currentPlank) activePivot = currentPlank.GetComponent<PlankRotation>().activePivot;
         if (!isUsingGravity) gravity = 0f;
         if (isUsingInvertedGravity) gravityDirection = -1;
         else gravityDirection = 1;

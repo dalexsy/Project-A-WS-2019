@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance;
     [SerializeField] private GameObject[] waypoints;
     private float distance;
     [SerializeField] private GameObject currentWaypoint;
@@ -15,6 +16,12 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rightWaypoint;
     private int arrayDirection = 1;
     private Vector3 startInputPos;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
 
     private void Start()
     {
@@ -35,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         if (PlankManager.instance.hasReachedGoal) RunCircles();
 
         // If Player is moving, Plank is rotating, or game is paused, accept no input
-        if (PlayerManager.instance.isMoving || PlankRotationManager.instance.isRotating || InputManager.instance.isSwiping || PauseManager.instance.isPaused) return;
+        if (PlayerAnimationManager.instance.isMoving || PlankRotationManager.instance.isRotating || InputManager.instance.isSwiping || PauseManager.instance.isPaused) return;
 
         if (!InputManager.instance.isUsingTouch || Application.platform == RuntimePlatform.WebGLPlayer) MouseInput();
 
@@ -106,8 +113,8 @@ public class PlayerMovement : MonoBehaviour
             // If Player is moving in a new direction, Player is turning
             if (previousDirection != arrayDirection)
             {
-                PlayerAnimationManager.instance.animator.SetTrigger("isTurning");
-                StartCoroutine(RotatePlayer(180, 1));
+                //PlayerAnimationManager.instance.animator.SetTrigger("isTurning");
+                StartCoroutine(TurnPlayer(180, 1));
             }
 
             // If level is connected
@@ -152,9 +159,9 @@ public class PlayerMovement : MonoBehaviour
         return Math.Sign(targetIndex - currentIndex);
     }
 
-    private IEnumerator RotatePlayer(int angle, int direction)
+    private IEnumerator TurnPlayer(int angle, int direction)
     {
-        PlayerManager.instance.isTurning = true;
+        PlayerAnimationManager.instance.isTurning = true;
 
         // Set target rotation to given angle around Player's y-axis in given direction
         Vector3 targetRotation = new Vector3(0, angle * direction, 0);
@@ -181,8 +188,59 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        PlayerManager.instance.isTurning = false;
+        PlayerAnimationManager.instance.isTurning = false;
         yield return null;
+    }
+
+    // Requires direction (1, -1) and pivot (lPivot, rPivot)
+    IEnumerator TransitionPlanks(int direction, Transform pivot)
+    {
+        // Save local variable rotationPivot from active pivot
+        // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned (should no longer happen)
+        Transform rotationPivot = pivot;
+        Vector3 rotationAxis = rotationPivot.transform.right;
+
+        // Variable used to move through animation curve
+        float lerpTime = 1f;
+
+        // Reset current lerp time
+        float currentLerpTime = 0f;
+
+        // Reset current rotation
+        float currentRotation = 0f;
+
+        // While the Plank has not reached max rotation
+        while (currentRotation < PlankRotationManager.instance.maxRotation)
+        {
+            // Increase currentLerpTime per frame
+            // Rotation speed adjusts animation curve frame rate
+            currentLerpTime += Time.deltaTime * PlankRotationManager.instance.rotationSpeed;
+
+            // Gate maximum lerp time
+            if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
+
+            // Define t as percentage of lerpTime
+            // Used to move through frames of animation curve
+            float t = currentLerpTime / lerpTime;
+
+            // Increase current rotation by value from animation curve
+            currentRotation += PlankRotationManager.instance.animationCurve.Evaluate(t);
+
+            // If current rotation exceeds max rotation, set max angle correction to difference
+            // Will only be used for last frame of animation
+            float maxAngleCorrection = 0f;
+
+            if (currentRotation > PlankRotationManager.instance.maxRotation)
+                maxAngleCorrection = currentRotation - PlankRotationManager.instance.maxRotation;
+
+            // Rotate plank around given pivot in given direction
+            transform.RotateAround(rotationPivot.position, rotationAxis * direction, PlayerAnimationManager.instance.animationCurve.Evaluate(t) - maxAngleCorrection);
+
+            // Returns to top of while loop after fixed update
+            yield return new WaitForFixedUpdate();
+        }
+
+        PlayerAnimationManager.instance.isTransitioningPlanks = false;
     }
 
     IEnumerator TransitionWaypoints(int arrayDirection)
@@ -190,9 +248,10 @@ public class PlayerMovement : MonoBehaviour
         // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
-        while (PlayerManager.instance.isTurning == true) yield return null;
+        // Pause coroutine until Player is done turning
+        while (PlayerAnimationManager.instance.isTurning == true) yield return null;
 
-        PlayerManager.instance.isMoving = true;
+        PlayerAnimationManager.instance.isMoving = true;
 
         // If level is connected
         if (PlankManager.instance.isLevelConnected)
@@ -239,8 +298,13 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             //PlayerAnimationManager.instance.isJumping = true;
+            //PlayerAnimationManager.instance.isTransitioningPlanks = true;
+            //StartCoroutine(TransitionPlanks(1, PlayerManager.instance.activePivot));
+            //while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
+            //PlayerAnimationManager.instance.isJumping = false;
 
             yield return new WaitForSeconds(.2f);
+
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
 
@@ -260,8 +324,6 @@ public class PlayerMovement : MonoBehaviour
 
             // Otherwise, Player takes rotation of next waypoint
             else transform.rotation = nextWaypoint.transform.rotation;
-
-            //PlayerAnimationManager.instance.isJumping = false;
         }
         // Set current position as Player's position
         var currentPosition = transform.position;
@@ -290,7 +352,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        PlayerManager.instance.isMoving = false;
+        PlayerAnimationManager.instance.isMoving = false;
         PlayerAnimationManager.instance.isWalking = false;
 
         // If next waypoint is not target waypoint, flag next waypoint as transitional
@@ -315,7 +377,7 @@ public class PlayerMovement : MonoBehaviour
     // Moves Player around level on completion
     private void RunCircles()
     {
-        while (!PlayerManager.instance.isMoving)
+        while (!PlayerAnimationManager.instance.isMoving)
         {
             // Set next waypoint as next waypoint in array using previous array direction
             var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
@@ -329,6 +391,11 @@ public class PlayerMovement : MonoBehaviour
 
             StartCoroutine(TransitionWaypoints(1));
         }
+    }
+
+    public void RotatePlayer()
+    {
+        transform.LookAt(PlayerManager.instance.activePivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
     }
 
     private void OnTriggerStay(Collider collider)
