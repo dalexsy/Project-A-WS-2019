@@ -194,7 +194,9 @@ public class PlayerMovement : MonoBehaviour
         // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
         else
         {
-            yield return new WaitForSeconds(.12f);
+            //PlayerAnimationManager.instance.isJumping = true;
+
+            yield return new WaitForSeconds(.2f);
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
 
@@ -215,8 +217,8 @@ public class PlayerMovement : MonoBehaviour
             // Otherwise, Player takes rotation of next waypoint
             else transform.rotation = nextWaypoint.transform.rotation;
 
+            //PlayerAnimationManager.instance.isJumping = false;
         }
-
         // Set current position as Player's position
         var currentPosition = transform.position;
 
@@ -226,11 +228,13 @@ public class PlayerMovement : MonoBehaviour
         while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
            Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
         {
+            PlayerAnimationManager.instance.isWalking = true;
+
             // Take distance from Player's position to next waypoint's position
             distance = Vector3.Distance(transform.position, nextWaypoint.transform.position);
 
             // Pause movement while Player is rotating
-            while (PlayerManager.instance.isRotating || PauseManager.instance.isPaused) yield return null;
+            while (PauseManager.instance.isPaused) yield return null;
 
             // Set rate as move speed over time
             float rate = PlayerManager.instance.moveSpeed * Time.deltaTime;
@@ -243,6 +247,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         PlayerManager.instance.isMoving = false;
+        PlayerAnimationManager.instance.isWalking = false;
 
         // If next waypoint is not target waypoint, flag next waypoint as transitional
         if (nextWaypoint != targetWaypoint) nextWaypoint.GetComponent<WaypointMarker>().isTransitional = true;
