@@ -298,9 +298,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             //PlayerAnimationManager.instance.isJumping = true;
-            //PlayerAnimationManager.instance.isTransitioningPlanks = true;
-            //StartCoroutine(TransitionPlanks(1, PlayerManager.instance.activePivot));
-            //while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
+
+            PlayerAnimationManager.instance.isTransitioningPlanks = true;
+            StartCoroutine(TransitionPlanks(1, PlayerManager.instance.activePivot));
+            while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
+
             //PlayerAnimationManager.instance.isJumping = false;
 
             yield return new WaitForSeconds(.2f);
