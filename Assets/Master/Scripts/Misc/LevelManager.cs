@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Time before fade out starts in seconds")]
     [SerializeField] [Range(0, 10)] private float timeBeforeFade = 2f;
+    [SerializeField] [Range(0, 10)] private float timeBeforeNextLevel = 4f;
 
     [Header("Rate at which alpha value increases on fade per frame. Full opacity is 1.")]
     [SerializeField] [Range(0, .2f)] private float fadeOutRate = .005f;
@@ -27,7 +28,7 @@ public class LevelManager : MonoBehaviour
         if (PlankManager.instance.hasReachedGoal)
         {
             StartCoroutine(FadeOut());
-            Invoke("LoadNextLevel", 4f);
+            Invoke("LoadNextLevel", timeBeforeNextLevel);
         }
     }
 

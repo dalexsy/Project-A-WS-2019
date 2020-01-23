@@ -1901,39 +1901,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
-      propertyPath: animationCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
-        type: 3}
       propertyPath: animator
       value: 
       objectReference: {fileID: 2371595473583379256}
-    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
-        type: 3}
-      propertyPath: animationCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
-        type: 3}
-      propertyPath: animationCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
-        type: 3}
-      propertyPath: rotationSpeed
-      value: 8.62
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
-        type: 3}
-      propertyPath: animationCurve.m_Curve.Array.data[0].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
-        type: 3}
-      propertyPath: animationCurve.m_Curve.Array.data[0].outSlope
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6575028252603811297, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
       propertyPath: m_Name
@@ -2803,56 +2773,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.000015258789
       objectReference: {fileID: 0}
-    - target: {fileID: 2733696971690821328, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: 2178f8b4c3042f044b828e650f099542, type: 3}
-    - target: {fileID: 2733696971690821328, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3065092970769290422, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7610133806684317988, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7610133806684317988, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: cf16ea9a0b9783f47b7e0a956ac7c6a6, type: 2}
-    - target: {fileID: 8737283733983650112, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8737283733983650112, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_CullingMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8737283733983650112, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_UpdateMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9123713176235104441, guid: e45958cfd9b85254381e4f22ee7e73ba,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7565386166129663635, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
-    - {fileID: 1864662244288833255, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
-    - {fileID: 8192847499859253390, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
-    - {fileID: 8296172668252088017, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e45958cfd9b85254381e4f22ee7e73ba, type: 3}
 --- !u!1001 &7708155717577358966
 PrefabInstance:
@@ -2940,7 +2866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 174854912, guid: c21c472d80fc77b488a5e9e5fda09ee3, type: 3}
       propertyPath: fadeInRate
-      value: 0.01
+      value: 0.0825
       objectReference: {fileID: 0}
     - target: {fileID: 2111411627156241195, guid: c21c472d80fc77b488a5e9e5fda09ee3,
         type: 3}

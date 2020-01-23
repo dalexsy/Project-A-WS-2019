@@ -2,7 +2,7 @@
 
 public class PlayerManager : MonoBehaviour
 {
-    private bool isUsingGravity = true;
+    private bool isUsingGravity = false;
 
     public bool isUsingInvertedGravity = false;
     public float moveSpeed;
