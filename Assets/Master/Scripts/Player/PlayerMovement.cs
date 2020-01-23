@@ -195,6 +195,7 @@ public class PlayerMovement : MonoBehaviour
     // Requires direction (1, -1) and pivot (lPivot, rPivot)
     IEnumerator TransitionPlanks(int direction, Transform pivot)
     {
+        /*
         // Save local variable rotationPivot from active pivot
         // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned (should no longer happen)
         Transform rotationPivot = pivot;
@@ -212,6 +213,8 @@ public class PlayerMovement : MonoBehaviour
         // While the Plank has not reached max rotation
         while (currentRotation < PlankRotationManager.instance.maxRotation)
         {
+
+            GetComponent<BoxCollider>().enabled = false;
             // Increase currentLerpTime per frame
             // Rotation speed adjusts animation curve frame rate
             currentLerpTime += Time.deltaTime * PlankRotationManager.instance.rotationSpeed;
@@ -240,6 +243,24 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+        GetComponent<BoxCollider>().enabled = true;
+        PlayerAnimationManager.instance.isTransitioningPlanks = false;
+        */
+
+        GetComponent<BoxCollider>().enabled = false;
+
+        Vector3 position = transform.position - pivot.position;
+        var currentRotation = 0;
+        while (currentRotation < 270)
+        {
+            position = Quaternion.Euler(1, 0, 0) * position;
+            var playerRotation = transform.rotation;
+            playerRotation *= Quaternion.Euler(0.3333f, 0, 0);
+            transform.rotation = playerRotation;
+            currentRotation += 1;
+            transform.position = pivot.position + position;
+            yield return new WaitForFixedUpdate();
+        }
         PlayerAnimationManager.instance.isTransitioningPlanks = false;
     }
 
@@ -303,12 +324,14 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(TransitionPlanks(1, PlayerManager.instance.activePivot));
             while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
 
-            //PlayerAnimationManager.instance.isJumping = false;
+            yield return new WaitForSeconds(.5f);
 
-            yield return new WaitForSeconds(.2f);
+            //PlayerAnimationManager.instance.isJumping = false;
 
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
+            GetComponent<BoxCollider>().enabled = true;
+
 
             // If Player is moving backwards, rotate Player backwards
             if (arrayDirection == -1)
