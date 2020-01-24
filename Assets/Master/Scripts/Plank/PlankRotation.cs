@@ -26,7 +26,6 @@ public class PlankRotation : MonoBehaviour
 
     private void Start()
     {
-        collisionDetection = GetComponent<CollisionDetection>();
         plankConnection = GetComponent<PlankConnection>();
     }
 
@@ -36,16 +35,13 @@ public class PlankRotation : MonoBehaviour
         if (PauseManager.instance.isPaused) return;
 
         // If no active pivot is given and Plank is colliding with target, check for rotation activation failure
-        if (!activePivot && collisionDetection.isCollidingWithTarget) ActivationFailure();
+        if (!activePivot && PlayerManager.instance.currentPlank == transform) ActivationFailure();
 
         // If there's an active pivot and Player is on current Plank, active pivot is player pivot
-        if (activePivot && collisionDetection.isCollidingWithTarget) PlankVFXManager.instance.playerPivot = activePivot;
+        if (activePivot && PlayerManager.instance.currentPlank == transform) PlankVFXManager.instance.playerPivot = activePivot;
 
         // If Plank is not colliding with Player, accept rotation input
-        if (collisionDetection.isCollidingWithTarget == false) RotationInput();
-
-        // Else if Plank is colliding with Player, Plank is current Plank
-        else PlayerManager.instance.currentPlank = transform;
+        if (PlayerManager.instance.currentPlank != transform) RotationInput();
     }
 
     private void RotationInput()

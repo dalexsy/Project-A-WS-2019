@@ -192,78 +192,8 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
-    // Requires direction (1, -1) and pivot (lPivot, rPivot)
-    IEnumerator TransitionPlanks(int direction, Transform pivot)
-    {
-        /*
-        // Save local variable rotationPivot from active pivot
-        // Needed in case Player leaves range of pivot during coroutine and pivot is unassigned (should no longer happen)
-        Transform rotationPivot = pivot;
-        Vector3 rotationAxis = rotationPivot.transform.right;
-
-        // Variable used to move through animation curve
-        float lerpTime = 1f;
-
-        // Reset current lerp time
-        float currentLerpTime = 0f;
-
-        // Reset current rotation
-        float currentRotation = 0f;
-
-        // While the Plank has not reached max rotation
-        while (currentRotation < PlankRotationManager.instance.maxRotation)
-        {
-
-            GetComponent<BoxCollider>().enabled = false;
-            // Increase currentLerpTime per frame
-            // Rotation speed adjusts animation curve frame rate
-            currentLerpTime += Time.deltaTime * PlankRotationManager.instance.rotationSpeed;
-
-            // Gate maximum lerp time
-            if (currentLerpTime > lerpTime) currentLerpTime = lerpTime;
-
-            // Define t as percentage of lerpTime
-            // Used to move through frames of animation curve
-            float t = currentLerpTime / lerpTime;
-
-            // Increase current rotation by value from animation curve
-            currentRotation += PlankRotationManager.instance.animationCurve.Evaluate(t);
-
-            // If current rotation exceeds max rotation, set max angle correction to difference
-            // Will only be used for last frame of animation
-            float maxAngleCorrection = 0f;
-
-            if (currentRotation > PlankRotationManager.instance.maxRotation)
-                maxAngleCorrection = currentRotation - PlankRotationManager.instance.maxRotation;
-
-            // Rotate plank around given pivot in given direction
-            transform.RotateAround(rotationPivot.position, rotationAxis * direction, PlayerAnimationManager.instance.animationCurve.Evaluate(t) - maxAngleCorrection);
-
-            // Returns to top of while loop after fixed update
-            yield return new WaitForFixedUpdate();
-        }
-
-        GetComponent<BoxCollider>().enabled = true;
-        PlayerAnimationManager.instance.isTransitioningPlanks = false;
-        */
-
-        GetComponent<BoxCollider>().enabled = false;
-
-        Vector3 position = transform.position - pivot.position;
-        var currentRotation = 0;
-        while (currentRotation < 270)
-        {
-            position = Quaternion.Euler(1, 0, 0) * position;
-            var playerRotation = transform.rotation;
-            playerRotation *= Quaternion.Euler(0.3333f, 0, 0);
-            transform.rotation = playerRotation;
-            currentRotation += 1;
-            transform.position = pivot.position + position;
-            yield return new WaitForFixedUpdate();
-        }
-        PlayerAnimationManager.instance.isTransitioningPlanks = false;
-    }
-
+    // Moves Player between waypoints
+    // Requires direction to move through waypoint array with
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
         // If no next waypoint is given, exit coroutine
@@ -315,23 +245,21 @@ public class PlayerMovement : MonoBehaviour
             transform.LookAt(targetPosition, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection);
         }
 
-        // Else if next waypoint is not aligned with current waypoint, teleport Player to next waypoint
+        // Else if next waypoint is not aligned with current waypoint, rotate Player towards next waypoint
         else
         {
-            //PlayerAnimationManager.instance.isJumping = true;
-
             PlayerAnimationManager.instance.isTransitioningPlanks = true;
-            StartCoroutine(TransitionPlanks(1, PlayerManager.instance.activePivot));
+
+            // Rotate Player towards pivot
+            RotatePlayer();
+
+            SetJumpAngle();
+
             while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
-
-            yield return new WaitForSeconds(.5f);
-
-            //PlayerAnimationManager.instance.isJumping = false;
 
             transform.position = nextWaypoint.transform.position;
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
-            GetComponent<BoxCollider>().enabled = true;
-
+            PlayerManager.instance.isUsingGravity = true;
 
             // If Player is moving backwards, rotate Player backwards
             if (arrayDirection == -1)
@@ -399,6 +327,53 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
+    // Jumps Player from plank to plank
+    // Requires pivot as rotation reference and angle to rotate
+    IEnumerator JumpPlanks(Transform pivot, int angle)
+    {
+        // Set rotation position as distance from Player to given pivot
+        Vector3 rotationPosition = transform.position - pivot.position;
+
+        // If Player is rotating using right pivot, inverse direction
+        int direction = 1;
+        if (pivot.name.Equals(PlankManager.instance.rightPivotName)) direction *= -1;
+
+        // Reset current rotation
+        int currentRotation = 0;
+        int rotationRate = 6 * direction;
+
+        // If Player is moving up a plank, inverse model rotation direction
+        int flip = 1;
+        if (angle == 90) flip = -1;
+
+        // Disable box collider to prevent displacement from plank
+        GetComponent<BoxCollider>().enabled = false;
+
+        // While Player has not reached target angle
+        while (Math.Abs(currentRotation) < angle)
+        {
+            // Set rotation position as angle from          
+            rotationPosition = Quaternion.Euler(pivot.right.x * rotationRate, pivot.right.y * rotationRate, pivot.right.z * rotationRate) * rotationPosition;
+
+
+            Quaternion playerRotation = transform.rotation;
+            playerRotation *= Quaternion.Euler((90f / angle * flip) * rotationRate * direction, 0, 0);
+            transform.rotation = playerRotation;
+            currentRotation += rotationRate;
+            transform.position = pivot.position + rotationPosition;
+
+            // Re-enable box collider if jump is over 80% complete
+            if (Math.Abs(currentRotation) > angle * .8f) GetComponent<BoxCollider>().enabled = true;
+
+            Debug.DrawLine(pivot.position, transform.position, Color.red, 1f);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        transform.position = currentWaypoint.transform.position;
+        PlayerAnimationManager.instance.isTransitioningPlanks = false;
+    }
+
     // Moves Player around level on completion
     private void RunCircles()
     {
@@ -418,19 +393,41 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Rotates Player towards active pivot
     public void RotatePlayer()
     {
         transform.LookAt(PlayerManager.instance.activePivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
+    }
+
+    // Sets angle at which Player should jump
+    private void SetJumpAngle()
+    {
+        int angle = 270;
+        Transform pivot = PlayerManager.instance.activePivot;
+        PlankRotation parentRotation = pivot.parent.GetComponent<PlankRotation>();
+
+        // If top collider of current plank is colliding with another top collider, Player should rotate 90 degrees 
+        if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL) ||
+        (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
+            angle = 90;
+
+        // Start jumping planks with given pivot and angle
+        StartCoroutine(JumpPlanks(pivot, angle));
     }
 
     private void OnTriggerStay(Collider collider)
     {
         // Set current waypoint as last waypoint Player has collided with
         if (collider.gameObject.tag == "Waypoint")
+        {
             currentWaypoint = collider.gameObject;
+
+            // Set current plank as parent of current waypoint
+            PlayerManager.instance.currentPlank = currentWaypoint.transform.parent;
+        }
     }
 
-    // Compares rounded Vector3s because MonoBehaviour doesn't do it well
+    // Compares rounded Vector3s
     private bool V3Equal(Vector3 a, Vector3 b)
     {
         return Vector3.SqrMagnitude(a - b) < 0.9;
