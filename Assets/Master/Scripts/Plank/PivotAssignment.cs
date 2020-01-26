@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class PivotAssignment : MonoBehaviour
 {
-    [SerializeField] string targetTag = null;
+    public bool isValid = true;
+    [SerializeField] private string targetTag = null;
 
     private CollisionDetection collisionDetection;
     private PlankRotation plankRotation;
@@ -17,7 +18,7 @@ public class PivotAssignment : MonoBehaviour
     private void Update()
     {
         // If Player is currently on pivot's parent Plank and this pivot is an active pivot, start VFX
-        if (collisionDetection.isCollidingWithTarget && plankRotation.activePivot == transform)
+        if (PlayerManager.instance.currentPlank == transform.parent && plankRotation.activePivot == transform && isValid)
             PlankVFXManager.instance.ActivePivotVFX(transform, true);
 
         else
@@ -27,7 +28,7 @@ public class PivotAssignment : MonoBehaviour
     private void OnTriggerStay(Collider collider)
     {
         // If Player enters collider range
-        if (collider.gameObject.tag == targetTag)
+        if (collider.gameObject.tag == targetTag && isValid)
         {
             // Assign this pivot as Plank's rotation pivot
             plankRotation.activePivot = this.transform;

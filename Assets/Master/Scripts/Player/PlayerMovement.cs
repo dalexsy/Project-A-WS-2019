@@ -365,8 +365,6 @@ public class PlayerMovement : MonoBehaviour
             // Re-enable box collider if jump is over 80% complete
             if (Math.Abs(currentRotation) > angle * .8f) GetComponent<BoxCollider>().enabled = true;
 
-            Debug.DrawLine(pivot.position, transform.position, Color.red, 1f);
-
             yield return new WaitForFixedUpdate();
         }
 

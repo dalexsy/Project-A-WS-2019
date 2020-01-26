@@ -12,4 +12,10 @@ public class GoalDetection : MonoBehaviour
             PlankManager.instance.hasReachedGoal = true;
         }
     }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        PlankManager.instance.isLevelConnected = false;
+        PlankManager.instance.hasReachedGoal = false;
+    }
 }
