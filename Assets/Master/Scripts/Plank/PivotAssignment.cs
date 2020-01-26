@@ -28,7 +28,7 @@ public class PivotAssignment : MonoBehaviour
     private void OnTriggerStay(Collider collider)
     {
         // If Player enters collider range
-        if (collider.gameObject.tag == targetTag && isValid)
+        if (collider.gameObject.tag == targetTag)
         {
             // Assign this pivot as Plank's rotation pivot
             plankRotation.activePivot = this.transform;

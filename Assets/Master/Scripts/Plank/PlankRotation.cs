@@ -32,16 +32,16 @@ public class PlankRotation : MonoBehaviour
     private void Update()
     {
         // If game is paused, accept no input
-        if (PauseManager.instance.isPaused) return;
+        if (PauseManager.instance.isPaused || !activePivot) return;
 
-        // If no active pivot is given and Plank is colliding with target, check for rotation activation failure
-        if (!activePivot && PlayerManager.instance.currentPlank == transform) ActivationFailure();
+        // If active pivot is not valid and Plank is colliding with target, check for rotation activation failure
+        if (!activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank == transform) ActivationFailure();
 
         // If there's an active pivot and Player is on current Plank, active pivot is player pivot
-        if (activePivot && PlayerManager.instance.currentPlank == transform) PlankVFXManager.instance.playerPivot = activePivot;
+        if (activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank == transform) PlankVFXManager.instance.playerPivot = activePivot;
 
         // If Plank is not colliding with Player, accept rotation input
-        if (PlayerManager.instance.currentPlank != transform) RotationInput();
+        if (activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank != transform) RotationInput();
     }
 
     private void RotationInput()

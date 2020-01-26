@@ -12,8 +12,6 @@ public class PlayerMovement : MonoBehaviour
     private GameObject nextWaypoint;
     private GameObject firstWaypoint;
     private GameObject lastWaypoint;
-    private GameObject leftWaypoint;
-    private GameObject rightWaypoint;
     private int arrayDirection = 1;
     private Vector3 startInputPos;
 
@@ -78,7 +76,9 @@ public class PlayerMovement : MonoBehaviour
 
         // If distance moved was smaller than threshold, select clicked waypoint
         if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f))
+        {
             SelectWaypoint();
+        }
     }
 
     private void SelectWaypoint()
@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
             if (previousDirection != arrayDirection)
             {
                 //PlayerAnimationManager.instance.animator.SetTrigger("isTurning");
-                StartCoroutine(TurnPlayer(180, 1));
+                //StartCoroutine(TurnPlayer(180, 1));
             }
 
             // If level is connected
@@ -127,7 +127,10 @@ public class PlayerMovement : MonoBehaviour
                 if (currentWaypoint == lastWaypoint && arrayDirection == 1) nextWaypoint = firstWaypoint;
 
                 // If current waypoint is first waypoint and direction is backwards in array, next waypoint is last waypoint
-                if (currentWaypoint == firstWaypoint && arrayDirection == -1) nextWaypoint = lastWaypoint;
+                else if (currentWaypoint == firstWaypoint && arrayDirection == -1) nextWaypoint = lastWaypoint;
+
+                // Otherwise, set next waypoint traditionally
+                else nextWaypoint = waypoints[currentIndex + arrayDirection];
             }
 
             // If level is not connected
@@ -199,10 +202,10 @@ public class PlayerMovement : MonoBehaviour
         // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
+        PlayerAnimationManager.instance.isMoving = true;
+
         // Pause coroutine until Player is done turning
         while (PlayerAnimationManager.instance.isTurning == true) yield return null;
-
-        PlayerAnimationManager.instance.isMoving = true;
 
         // If level is connected
         if (PlankManager.instance.isLevelConnected)
@@ -242,6 +245,7 @@ public class PlayerMovement : MonoBehaviour
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
         if (V3Equal(transform.up, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection))
         {
+            Debug.DrawRay(targetPosition, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection, Color.red, 1f);
             transform.LookAt(targetPosition, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection);
         }
 
@@ -252,7 +256,6 @@ public class PlayerMovement : MonoBehaviour
 
             // Rotate Player towards pivot
             RotatePlayer();
-
             SetJumpAngle();
 
             while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
@@ -276,8 +279,12 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Otherwise, Player takes rotation of next waypoint
-            else transform.rotation = nextWaypoint.transform.rotation;
+            else
+            {
+                transform.rotation = nextWaypoint.transform.rotation;
+            }
         }
+
         // Set current position as Player's position
         var currentPosition = transform.position;
 
@@ -355,7 +362,6 @@ public class PlayerMovement : MonoBehaviour
             // Set rotation position as angle from          
             rotationPosition = Quaternion.Euler(pivot.right.x * rotationRate, pivot.right.y * rotationRate, pivot.right.z * rotationRate) * rotationPosition;
 
-
             Quaternion playerRotation = transform.rotation;
             playerRotation *= Quaternion.Euler((90f / angle * flip) * rotationRate * direction, 0, 0);
             transform.rotation = playerRotation;
@@ -405,8 +411,9 @@ public class PlayerMovement : MonoBehaviour
         PlankRotation parentRotation = pivot.parent.GetComponent<PlankRotation>();
 
         // If top collider of current plank is colliding with another top collider, Player should rotate 90 degrees 
-        if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL) ||
-        (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
+        if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
+            || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR)
+            || PlayerManager.instance.isUsingInvertedGravity)
             angle = 90;
 
         // Start jumping planks with given pivot and angle
