@@ -4,8 +4,10 @@ public class PlankAudioManager : MonoBehaviour
 {
     public AudioClip[] activationSuccess;
     public AudioClip[] activationFailure;
+    public AudioClip[] goal;
     public static PlankAudioManager instance;
 
+    private bool hasPlayedGoalSFX = false;
     private float lowPitchRange = .75f;
     private float highPitchRange = 1.25f;
     private Transform previousPivot;
@@ -14,6 +16,15 @@ public class PlankAudioManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(this);
+    }
+
+    private void Update()
+    {
+        if (PlankManager.instance.hasReachedGoal && !hasPlayedGoalSFX)
+        {
+            hasPlayedGoalSFX = true;
+            UniversalAudioManager.instance.PlaySFX(transform, goal, 1f, 1f);
+        }
     }
 
     public void ActivationSuccessSFX(Transform activePivot)
