@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
         if (InputManager.instance.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer) TouchInput();
     }
 
+    // Detects valid touch input
     private void TouchInput()
     {
         if (InputManager.instance.isDoubleSwiping == true || InputManager.instance.isSwiping == true) return;
@@ -69,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Detects valid mouse input
     private void MouseInput()
     {
         // Set starting mouse position on mouse down
@@ -81,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Selects waypoint based on player input
     private void SelectWaypoint()
     {
         RaycastHit hit;
@@ -105,17 +108,8 @@ public class PlayerMovement : MonoBehaviour
             // Find array position of target waypoint
             var targetIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(targetWaypoint.name));
 
-            int previousDirection = arrayDirection;
-
             // Find direction between target and current waypoint
             arrayDirection = Math.Sign(targetIndex - currentIndex);
-
-            // If Player is moving in a new direction, Player is turning
-            if (previousDirection != arrayDirection)
-            {
-                //PlayerAnimationManager.instance.animator.SetTrigger("isTurning");
-                //StartCoroutine(TurnPlayer(180, 1));
-            }
 
             // If level is connected
             if (PlankManager.instance.isLevelConnected)
@@ -129,11 +123,11 @@ public class PlayerMovement : MonoBehaviour
                 // If current waypoint is first waypoint and direction is backwards in array, next waypoint is last waypoint
                 else if (currentWaypoint == firstWaypoint && arrayDirection == -1) nextWaypoint = lastWaypoint;
 
-                // Otherwise, set next waypoint traditionally
+                // Otherwise, set next waypoint as next waypoint in array using direction
                 else nextWaypoint = waypoints[currentIndex + arrayDirection];
             }
 
-            // If level is not connected
+            // Otherwise, level is not connected
             else
             {
                 // Set next waypoint as next waypoint in array using direction
@@ -143,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
             // Play waypoint selection VFX
             InputVFXManager.instance.WaypointSelectionVFX(targetWaypoint.transform);
 
-            // Start transitioning
+            // Start transitioning between waypoints
             StartCoroutine(TransitionWaypoints(arrayDirection));
         }
     }
@@ -162,50 +156,15 @@ public class PlayerMovement : MonoBehaviour
         return Math.Sign(targetIndex - currentIndex);
     }
 
-    private IEnumerator TurnPlayer(int angle, int direction)
-    {
-        PlayerAnimationManager.instance.isTurning = true;
-
-        // Set target rotation to given angle around Player's y-axis in given direction
-        Vector3 targetRotation = new Vector3(0, angle * direction, 0);
-
-        // Set start rotation as Player's current rotation
-        Quaternion startRotation = transform.rotation;
-
-        // Set end rotation as start rotation plus target rotation
-        Quaternion endRotation = startRotation * Quaternion.Euler(targetRotation);
-
-        // Reset time
-        float t = 0f;
-
-        // While running
-        while (t < 1f)
-        {
-            // Increase time by rotation speed
-            t += Time.deltaTime * PlayerAnimationManager.instance.rotationSpeed;
-
-            // Rotate towards end rotation using animation curve
-            transform.rotation = Quaternion.Slerp(startRotation, endRotation, PlayerAnimationManager.instance.animationCurve.Evaluate(t));
-
-            // Return to top of while loop
-            yield return null;
-        }
-
-        PlayerAnimationManager.instance.isTurning = false;
-        yield return null;
-    }
-
     // Moves Player between waypoints
-    // Requires direction to move through waypoint array with
+    // Requires direction to move through waypoint array
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
         // If no next waypoint is given, exit coroutine
         if (nextWaypoint == null) yield break;
 
+        // Flag Player as moving
         PlayerAnimationManager.instance.isMoving = true;
-
-        // Pause coroutine until Player is done turning
-        while (PlayerAnimationManager.instance.isTurning == true) yield return null;
 
         // If level is connected
         if (PlankManager.instance.isLevelConnected)
@@ -245,24 +204,29 @@ public class PlayerMovement : MonoBehaviour
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
         if (V3Equal(transform.up, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection))
         {
-            Debug.DrawRay(targetPosition, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection, Color.red, 1f);
             transform.LookAt(targetPosition, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection);
         }
 
         // Else if next waypoint is not aligned with current waypoint, rotate Player towards next waypoint
         else
         {
+            // Flag Player as transitioning planks
             PlayerAnimationManager.instance.isTransitioningPlanks = true;
 
             // Rotate Player towards pivot
             RotatePlayer();
+
+            // Set jump angle and execute jump
             SetJumpAngle();
 
+            // While Player is transitioning planks, pause coroutine
             while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
 
+            // Position Player at next waypoint's position
             transform.position = nextWaypoint.transform.position;
+
+            // Set Player's up as next waypoint's up using gravity direction
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
-            PlayerManager.instance.isUsingGravity = true;
 
             // If Player is moving backwards, rotate Player backwards
             if (arrayDirection == -1)
@@ -288,12 +252,14 @@ public class PlayerMovement : MonoBehaviour
         // Set current position as Player's position
         var currentPosition = transform.position;
 
+        // Reset distance
         distance = 100f;
 
         // While Player has not reached next waypoint's postion
         while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
            Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
         {
+            // Flag Player as walking
             PlayerAnimationManager.instance.isWalking = true;
 
             // Take distance from Player's position to next waypoint's position
@@ -312,6 +278,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
+        // Unflag Player to exit animation
         PlayerAnimationManager.instance.isMoving = false;
         PlayerAnimationManager.instance.isWalking = false;
 
@@ -347,6 +314,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Reset current rotation
         int currentRotation = 0;
+
+        // Set rotation rate
         int rotationRate = 6 * direction;
 
         // If Player is moving up a plank, inverse model rotation direction
@@ -359,13 +328,22 @@ public class PlayerMovement : MonoBehaviour
         // While Player has not reached target angle
         while (Math.Abs(currentRotation) < angle)
         {
-            // Set rotation position as angle from          
+            // Set rotation position as angle from 
             rotationPosition = Quaternion.Euler(pivot.right.x * rotationRate, pivot.right.y * rotationRate, pivot.right.z * rotationRate) * rotationPosition;
 
+            // Set playerRotation as current rotation
             Quaternion playerRotation = transform.rotation;
+
+            // Adjust player rotation around X-axis using rotation rate
             playerRotation *= Quaternion.Euler((90f / angle * flip) * rotationRate * direction, 0, 0);
+
+            // Set Player rotation as playerRotation
             transform.rotation = playerRotation;
+
+            // Increase current rotation by rotation rate
             currentRotation += rotationRate;
+
+            // Move Player to pivot's position plus rotationPosition
             transform.position = pivot.position + rotationPosition;
 
             // Re-enable box collider if jump is over 80% complete
@@ -400,7 +378,14 @@ public class PlayerMovement : MonoBehaviour
     // Rotates Player towards active pivot
     public void RotatePlayer()
     {
-        transform.LookAt(PlayerManager.instance.activePivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
+        if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint) 
+        
+        { 
+            var pivot = PlayerManager.instance.activePivot.parent.Find("Goal");
+            transform.LookAt(pivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
+        }
+
+        else transform.LookAt(PlayerManager.instance.activePivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
     }
 
     // Sets angle at which Player should jump
@@ -428,6 +413,8 @@ public class PlayerMovement : MonoBehaviour
              || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateClockwiseL))
                 angle = 90;
         }
+
+        if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint) pivot = pivot.parent.Find("Goal");
 
         // Start jumping planks with given pivot and angle
         StartCoroutine(JumpPlanks(pivot, angle));
