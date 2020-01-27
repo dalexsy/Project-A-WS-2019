@@ -10,8 +10,6 @@ public class PlankRotation : MonoBehaviour
     public bool canRotateCounterclockwiseR = true;
     public bool canRotateClockwiseL = true;
     public bool canRotateCounterclockwiseL = true;
-    public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
-    public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
     private CollisionDetection collisionDetection;
     private PivotOrientationDetection pivotOrientationDetection;
@@ -287,25 +285,13 @@ public class PlankRotation : MonoBehaviour
     {
         if (direction == 0 || PlankRotationManager.instance.isRotating || PlayerAnimationManager.instance.isMoving) return;
 
-        if (isConnectedFront)
-        {
-            // Set isRotating to true to prevent multiple rotations
-            PlankRotationManager.instance.isRotating = true;
+        // Set isRotating to true to prevent multiple rotations
+        PlankRotationManager.instance.isRotating = true;
 
-            // Rotate Plank clockwise
-            // Will rotate from surrogate pivot's position
-            StartCoroutine(RotatePlank(direction, activePivot));
-        }
+        // Rotate Plank counterclockwise 
+        // Will rotate from active pivot's position
+        StartCoroutine(RotatePlank(direction * -1, activePivot));
 
-        else
-        {
-            // Set isRotating to true to prevent multiple rotations
-            PlankRotationManager.instance.isRotating = true;
-
-            // Rotate Plank counterclockwise 
-            // Will rotate from active pivot's position
-            StartCoroutine(RotatePlank(direction * -1, activePivot));
-        }
     }
 
     // Rotates Plank

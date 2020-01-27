@@ -410,11 +410,16 @@ public class PlayerMovement : MonoBehaviour
         Transform pivot = PlayerManager.instance.activePivot;
         PlankRotation parentRotation = pivot.parent.GetComponent<PlankRotation>();
 
-        // If top collider of current plank is colliding with another top collider, Player should rotate 90 degrees 
-        if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
-            || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR)
-            || PlayerManager.instance.isUsingInvertedGravity)
-            angle = 90;
+        if (!PlayerManager.instance.isUsingInvertedGravity)
+        {
+            //if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && )
+
+            // If top collider of current plank is colliding with another top collider, Player should rotate 90 degrees 
+            if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
+            || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
+                angle = 90;
+        }
+
 
         // Start jumping planks with given pivot and angle
         StartCoroutine(JumpPlanks(pivot, angle));
