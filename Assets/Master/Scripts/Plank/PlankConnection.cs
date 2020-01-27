@@ -5,13 +5,11 @@ public class PlankConnection : MonoBehaviour
 {
     public Transform passivePivot = null;
 
-    private CollisionDetection collisionDetection;
     private Transform lPivot = null;
     private Transform rPivot = null;
 
     private void Start()
     {
-        collisionDetection = GetComponent<CollisionDetection>();
         lPivot = transform.Find(PlankManager.instance.leftPivotName);
         rPivot = transform.Find(PlankManager.instance.rightPivotName);
     }
@@ -20,7 +18,7 @@ public class PlankConnection : MonoBehaviour
     public void ConnectPlanks(Transform pivot)
     {
         // If this Plank is the Player Plank
-        if (collisionDetection.isCollidingWithTarget)
+        if (PlayerManager.instance.currentPlank == transform)
         {
             // Unset any parents from Plank and exit method
             // The Player Plank never needs to be connected to other Planks

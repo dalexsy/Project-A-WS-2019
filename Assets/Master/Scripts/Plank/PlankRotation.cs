@@ -10,8 +10,6 @@ public class PlankRotation : MonoBehaviour
     public bool canRotateCounterclockwiseR = true;
     public bool canRotateClockwiseL = true;
     public bool canRotateCounterclockwiseL = true;
-    public bool isConnectedFront = false; // Only used if surrogate pivot is assigned
-    public bool isConnectedBack = false;  // Only used if surrogate pivot is assigned
 
     private CollisionDetection collisionDetection;
     private PivotOrientationDetection pivotOrientationDetection;
@@ -26,26 +24,22 @@ public class PlankRotation : MonoBehaviour
 
     private void Start()
     {
-        collisionDetection = GetComponent<CollisionDetection>();
         plankConnection = GetComponent<PlankConnection>();
     }
 
     private void Update()
     {
         // If game is paused, accept no input
-        if (PauseManager.instance.isPaused) return;
+        if (PauseManager.instance.isPaused || !activePivot) return;
 
-        // If no active pivot is given and Plank is colliding with target, check for rotation activation failure
-        if (!activePivot && collisionDetection.isCollidingWithTarget) ActivationFailure();
+        // If active pivot is not valid and Plank is colliding with target, check for rotation activation failure
+        if (!activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank == transform) ActivationFailure();
 
         // If there's an active pivot and Player is on current Plank, active pivot is player pivot
-        if (activePivot && collisionDetection.isCollidingWithTarget) PlankVFXManager.instance.playerPivot = activePivot;
+        if (activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank == transform) PlankVFXManager.instance.playerPivot = activePivot;
 
         // If Plank is not colliding with Player, accept rotation input
-        if (collisionDetection.isCollidingWithTarget == false) RotationInput();
-
-        // Else if Plank is colliding with Player, Plank is current Plank
-        else PlayerManager.instance.currentPlank = transform;
+        if (activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank != transform) RotationInput();
     }
 
     private void RotationInput()
@@ -291,25 +285,13 @@ public class PlankRotation : MonoBehaviour
     {
         if (direction == 0 || PlankRotationManager.instance.isRotating || PlayerAnimationManager.instance.isMoving) return;
 
-        if (isConnectedFront)
-        {
-            // Set isRotating to true to prevent multiple rotations
-            PlankRotationManager.instance.isRotating = true;
+        // Set isRotating to true to prevent multiple rotations
+        PlankRotationManager.instance.isRotating = true;
 
-            // Rotate Plank clockwise
-            // Will rotate from surrogate pivot's position
-            StartCoroutine(RotatePlank(direction, activePivot));
-        }
+        // Rotate Plank counterclockwise 
+        // Will rotate from active pivot's position
+        StartCoroutine(RotatePlank(direction * -1, activePivot));
 
-        else
-        {
-            // Set isRotating to true to prevent multiple rotations
-            PlankRotationManager.instance.isRotating = true;
-
-            // Rotate Plank counterclockwise 
-            // Will rotate from active pivot's position
-            StartCoroutine(RotatePlank(direction * -1, activePivot));
-        }
     }
 
     // Rotates Plank

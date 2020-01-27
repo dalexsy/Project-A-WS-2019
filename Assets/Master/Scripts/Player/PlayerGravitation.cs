@@ -7,7 +7,6 @@ public class PlayerGravitation : MonoBehaviour
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();
-        rigid.freezeRotation = true;
     }
 
     private void FixedUpdate()
