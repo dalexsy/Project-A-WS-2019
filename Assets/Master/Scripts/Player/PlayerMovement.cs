@@ -408,18 +408,26 @@ public class PlayerMovement : MonoBehaviour
     {
         int angle = 270;
         Transform pivot = PlayerManager.instance.activePivot;
+        PivotAssignment pivotAssignment = pivot.GetComponent<PivotAssignment>();
         PlankRotation parentRotation = pivot.parent.GetComponent<PlankRotation>();
 
         if (!PlayerManager.instance.isUsingInvertedGravity)
         {
-            //if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && )
-
             // If top collider of current plank is colliding with another top collider, Player should rotate 90 degrees 
-            if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
-            || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
+            if ((pivot.name.Equals(PlankManager.instance.rightPivotName) && pivotAssignment.hasMixedCollisionTop)
+             || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
+             || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
                 angle = 90;
         }
 
+        else
+        {
+            // If top collider of current plank is colliding with another top collider, Player should rotate 90 degrees 
+            if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && pivotAssignment.hasMixedCollisionTop)
+             || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateCounterclockwiseR)
+             || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateClockwiseL))
+                angle = 90;
+        }
 
         // Start jumping planks with given pivot and angle
         StartCoroutine(JumpPlanks(pivot, angle));

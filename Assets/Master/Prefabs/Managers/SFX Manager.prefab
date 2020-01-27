@@ -50,6 +50,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e7e05102f6d41ee478e852324052da78, type: 3}
   activationFailure:
   - {fileID: 8300000, guid: d4ab6303014fcdf49a7d6deb50eb2d6c, type: 3}
+  goal:
+  - {fileID: 8300000, guid: a714b8c4373ef6d4abe8ad9e85e252d5, type: 3}
 --- !u!114 &-5079459234747729061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,3 +78,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00a1ae248384d54c8d61d04c1a36582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousClip: {fileID: 0}
+  previousPitch: 0

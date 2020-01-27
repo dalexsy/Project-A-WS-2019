@@ -3,7 +3,9 @@
 public class PivotAssignment : MonoBehaviour
 {
     public bool isValid = true;
-    public bool hasMixedCollision = false;
+    public bool hasMixedCollisionTop = false;
+    public bool hasMixedCollisionBottom = false;
+
     [SerializeField] private string targetTag = null;
 
     private CollisionDetection collisionDetection;

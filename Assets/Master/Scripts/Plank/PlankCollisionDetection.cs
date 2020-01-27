@@ -46,10 +46,7 @@ public class PlankCollisionDetection : MonoBehaviour
             SetRotationLimiter(false, collider);
         }
 
-        if (PlankManager.instance.hasReachedGoal)
-        {
-            //DetectMixedCollision();
-        }
+        DetectMixedCollision(true, collider);
     }
 
     // Method to limit Plank's rotation (clockwise or counterclockwise)
@@ -73,47 +70,34 @@ public class PlankCollisionDetection : MonoBehaviour
     private void DetectMixedCollision(bool hasMixedCollision, Collider collider)
     {
         if ((this.gameObject.name.Equals(PlankManager.instance.topColliderName)) &&
-                (collider.gameObject.name.Equals(PlankManager.instance.topColliderName)))
+                (collider.gameObject.name.Equals(PlankManager.instance.bottomColliderName)))
         {
-            collisionObject = collider.gameObject.transform;
-
-            // If active pivot is right pivot
-            if (rotatingPivot.name.Equals(PlankManager.instance.rightPivotName))
+            if (tag.Equals(PlankManager.instance.rightColliderTag))
             {
-                // Pivot can rotate clockwise
-                if (tag.Equals(PlankManager.instance.rightColliderTag)) plankRotation.canRotateClockwiseR = hasMixedCollision;
-                else plankRotation.canRotateClockwiseL = hasMixedCollision;
+                Transform rightPivot = transform.parent.Find(PlankManager.instance.rightPivotName);
+                rightPivot.GetComponent<PivotAssignment>().hasMixedCollisionTop = hasMixedCollision;
             }
 
-            // Else if active pivot is left pivot
-            else
+            else if (tag.Equals(PlankManager.instance.leftColliderTag))
             {
-                // Pivot can rotate counterclockwise
-                if (tag.Equals(PlankManager.instance.rightColliderTag)) plankRotation.canRotateCounterclockwiseR = hasMixedCollision;
-                else plankRotation.canRotateCounterclockwiseL = hasMixedCollision;
+                Transform leftPivot = transform.parent.Find(PlankManager.instance.leftPivotName);
+                leftPivot.GetComponent<PivotAssignment>().hasMixedCollisionTop = hasMixedCollision;
             }
         }
 
-        // If this collider is a bottom collider collides with another bottom collider
         if ((this.gameObject.name.Equals(PlankManager.instance.bottomColliderName)) &&
-        (collider.gameObject.name.Equals(PlankManager.instance.bottomColliderName)))
+        (collider.gameObject.name.Equals(PlankManager.instance.topColliderName)))
         {
-            collisionObject = collider.gameObject.transform;
-
-            // If active pivot is right pivot
-            if (rotatingPivot.name.Equals(PlankManager.instance.rightPivotName))
+            if (tag.Equals(PlankManager.instance.rightColliderTag))
             {
-                // Pivot can rotate counterclockwise
-                if (tag.Equals(PlankManager.instance.rightColliderTag)) plankRotation.canRotateCounterclockwiseR = hasMixedCollision;
-                else plankRotation.canRotateCounterclockwiseL = hasMixedCollision;
+                Transform rightPivot = transform.parent.Find(PlankManager.instance.rightPivotName);
+                rightPivot.GetComponent<PivotAssignment>().hasMixedCollisionBottom = hasMixedCollision;
             }
 
-            // Else if active pivot is left pivot
-            else
+            else if (tag.Equals(PlankManager.instance.leftColliderTag))
             {
-                // Pivot can rotate clockwise
-                if (tag.Equals(PlankManager.instance.rightColliderTag)) plankRotation.canRotateClockwiseR = hasMixedCollision;
-                else plankRotation.canRotateClockwiseL = hasMixedCollision;
+                Transform leftPivot = transform.parent.Find(PlankManager.instance.leftPivotName);
+                leftPivot.GetComponent<PivotAssignment>().hasMixedCollisionBottom = hasMixedCollision;
             }
         }
     }
