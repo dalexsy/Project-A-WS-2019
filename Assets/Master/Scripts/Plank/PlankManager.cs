@@ -10,8 +10,7 @@ public class PlankManager : MonoBehaviour
         else Destroy(this);
     }
 
-    // Disabled unused variable warning
-#pragma warning disable 0414
+#pragma warning disable IDE0051 // Remove unused private members
 
     [Header("First & Last Plank")]
     [TextArea(0, 5)]
@@ -60,4 +59,7 @@ public class PlankManager : MonoBehaviour
 
     [Header("Level Connected")]
     public bool isLevelConnected = false;
+
+#pragma warning restore IDE0051 // Remove unused private members
+
 }

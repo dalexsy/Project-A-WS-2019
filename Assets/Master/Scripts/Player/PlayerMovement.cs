@@ -86,12 +86,11 @@ public class PlayerMovement : MonoBehaviour
     // Selects waypoint based on player input
     private void SelectWaypoint()
     {
-        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         int layerMask = LayerMask.GetMask("Waypoint Triggers");
 
         // If any waypoints are tapped
-        if (Physics.Raycast(ray, out hit, 1000f, layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, layerMask))
         {
             // Set target waypoint as tapped waypoint
             targetWaypoint = hit.transform.gameObject;
@@ -423,7 +422,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerStay(Collider collider)
     {
         // Set current waypoint as last waypoint Player has collided with
-        if (collider.gameObject.tag == "Waypoint")
+        if (collider.gameObject.CompareTag("Waypoint"))
         {
             currentWaypoint = collider.gameObject;
 

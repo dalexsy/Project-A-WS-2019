@@ -9,14 +9,14 @@ public class CollisionDetection : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == targetTag)
-            this.isCollidingWithTarget = true;
+        if (collision.gameObject.CompareTag(targetTag))
+            isCollidingWithTarget = true;
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == targetTag)
-            this.isCollidingWithTarget = false;
+        if (collision.gameObject.CompareTag(targetTag))
+            isCollidingWithTarget = false;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -24,8 +24,8 @@ public class CollisionDetection : MonoBehaviour
         if (!isTrigger)
             return;
 
-        if (collider.gameObject.tag == targetTag)
-            this.isCollidingWithTarget = true;
+        if (collider.gameObject.CompareTag(targetTag))
+            isCollidingWithTarget = true;
     }
 
     private void OnTriggerExit(Collider collider)
@@ -33,7 +33,7 @@ public class CollisionDetection : MonoBehaviour
         if (!isTrigger)
             return;
 
-        if (collider.gameObject.tag == targetTag)
-            this.isCollidingWithTarget = false;
+        if (collider.gameObject.CompareTag(targetTag))
+            isCollidingWithTarget = false;
     }
 }

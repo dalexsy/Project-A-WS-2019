@@ -4,9 +4,11 @@ public class GoalDetection : MonoBehaviour
 {
     private void OnTriggerStay(Collider collider)
     {
+        // If a plank is currently rotating, do not perform check
         if (PlankRotationManager.instance.isRotating) return;
 
-        if (collider.gameObject.name.Equals(this.gameObject.name))
+        // If collider object has same name as this object, level is connected
+        if (collider.gameObject.name.Equals(gameObject.name))
         {
             PlankManager.instance.isLevelConnected = true;
             PlankManager.instance.hasReachedGoal = true;

@@ -229,7 +229,7 @@ public class CameraRigRotation : MonoBehaviour
             yield return null;
         }
 
-        this.isRotating = false;
+        isRotating = false;
         yield return null;
     }
 

@@ -40,7 +40,7 @@ public class UniversalVFXManager : MonoBehaviour
         }
     }
 
-    public void PlayRotatedVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset, Quaternion rotation = default(Quaternion))
+    public void PlayRotatedVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset, Quaternion rotation = default)
     {
         var existingParticle = vfxSource.transform.Find(particlePrefab.name);
 

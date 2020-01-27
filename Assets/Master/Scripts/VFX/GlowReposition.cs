@@ -17,14 +17,14 @@ public class GlowReposition : MonoBehaviour
 
     private void Start()
     {
-        startPosition = this.transform.position;
+        startPosition = transform.position;
         offset = new Vector3(0, startPosition.y, 0);
-        this.transform.position = CameraRigRotation.instance.averagePlankPosition + offset;
+        transform.position = CameraRigRotation.instance.averagePlankPosition + offset;
     }
 
     private void Update()
     {
         // Keep particle system aligned with current average plank position
-        this.transform.position = Vector3.SmoothDamp(this.transform.position, CameraRigRotation.instance.averagePlankPosition + offset, ref velocity, repositionRate);
+        transform.position = Vector3.SmoothDamp(transform.position, CameraRigRotation.instance.averagePlankPosition + offset, ref velocity, repositionRate);
     }
 }

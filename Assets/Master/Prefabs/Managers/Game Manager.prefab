@@ -103,7 +103,7 @@ MonoBehaviour:
   fade: {fileID: 0}
   timeBeforeFade: 3
   timeBeforeNextLevel: 5
-  fadeOutRate: 0.005
+  fadeOutRate: 0.024
   fadeInRate: 0.0825
 --- !u!114 &991477670
 MonoBehaviour:

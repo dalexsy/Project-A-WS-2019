@@ -7,13 +7,10 @@ public class PivotAssignment : MonoBehaviour
     public bool hasMixedCollisionBottom = false;
 
     [SerializeField] private string targetTag = null;
-
-    private CollisionDetection collisionDetection;
     private PlankRotation plankRotation;
 
     private void Start()
     {
-        collisionDetection = GetComponentInParent<CollisionDetection>();
         plankRotation = GetComponentInParent<PlankRotation>();
     }
 
@@ -30,17 +27,17 @@ public class PivotAssignment : MonoBehaviour
     private void OnTriggerStay(Collider collider)
     {
         // If Player enters collider range
-        if (collider.gameObject.tag == targetTag)
+        if (collider.gameObject.CompareTag(targetTag))
         {
             // Assign this pivot as Plank's rotation pivot
-            plankRotation.activePivot = this.transform;
+            plankRotation.activePivot = transform;
         }
     }
 
     private void OnTriggerExit(Collider collider)
     {
         // If Player leaves collider range
-        if (collider.gameObject.tag == targetTag)
+        if (collider.gameObject.CompareTag(targetTag))
         {
             // Unassign this pivot as Plank's rotation pivot
             plankRotation.activePivot = null;

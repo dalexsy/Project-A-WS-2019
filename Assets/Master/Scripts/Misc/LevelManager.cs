@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
+        // If level is completed, start fading out current level and load next level
         if (PlankManager.instance.hasReachedGoal)
         {
             StartCoroutine(FadeOut());
@@ -32,6 +33,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // Loads next level by cycling between scenes
     private void LoadNextLevel()
     {
         string scene = SceneManager.GetActiveScene().name;
@@ -51,27 +53,32 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // Fades transition sprite to black
     private IEnumerator FadeOut()
     {
+        // Wait for given amount of time
         yield return new WaitForSeconds(timeBeforeFade);
 
+        // Fade alpha value up to full opacity
         Color color = fade.color;
         while (fade.color.a < 1)
         {
             color.a += fadeOutRate;
             fade.color = color;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
     }
 
+    // Fades transition sprite to clear
     private IEnumerator FadeIn()
     {
+        // Fade alpha value down to zero opacity
         Color color = fade.color;
         while (fade.color.a > 0)
         {
             color.a -= fadeInRate;
             fade.color = color;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
     }
 }

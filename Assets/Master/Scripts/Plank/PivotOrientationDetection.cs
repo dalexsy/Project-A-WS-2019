@@ -25,13 +25,13 @@ public class PivotOrientationDetection : MonoBehaviour
         {
             var child = transform.parent.GetChild(c);
 
-            if (this.gameObject.name == PlankManager.instance.leftPivotName && child.tag == PlankManager.instance.leftColliderTag)
+            if (gameObject.name == PlankManager.instance.leftPivotName && child.CompareTag(PlankManager.instance.leftColliderTag))
             {
                 if (child.name == PlankManager.instance.topColliderName) topCollider = child.transform;
                 if (child.name == PlankManager.instance.bottomColliderName) bottomCollider = child.transform;
             }
 
-            if (this.gameObject.name == PlankManager.instance.rightPivotName && child.tag == PlankManager.instance.rightColliderTag)
+            if (gameObject.name == PlankManager.instance.rightPivotName && child.CompareTag(PlankManager.instance.rightColliderTag))
             {
                 if (child.name == PlankManager.instance.topColliderName) topCollider = child.transform;
                 if (child.name == PlankManager.instance.bottomColliderName) bottomCollider = child.transform;

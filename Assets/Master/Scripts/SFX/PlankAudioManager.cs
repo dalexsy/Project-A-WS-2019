@@ -8,8 +8,8 @@ public class PlankAudioManager : MonoBehaviour
     public static PlankAudioManager instance;
 
     private bool hasPlayedGoalSFX = false;
-    private float lowPitchRange = .75f;
-    private float highPitchRange = 1.25f;
+    private readonly float lowPitchRange = .75f;
+    private readonly float highPitchRange = 1.25f;
     private Transform previousPivot;
 
     private void Awake()
