@@ -10,8 +10,8 @@ public class PlankManager : MonoBehaviour
         else Destroy(this);
     }
 
-    // Disabled unused variable warning
-#pragma warning disable 0414
+#pragma warning disable 0414 // private field assigned but not used.
+
 
     [Header("First & Last Plank")]
     [TextArea(0, 5)]

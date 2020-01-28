@@ -11,7 +11,6 @@ public class PlankRotation : MonoBehaviour
     public bool canRotateClockwiseL = true;
     public bool canRotateCounterclockwiseL = true;
 
-    private CollisionDetection collisionDetection;
     private PivotOrientationDetection pivotOrientationDetection;
     private PlankConnection plankConnection;
 
@@ -20,7 +19,6 @@ public class PlankRotation : MonoBehaviour
 
     private Vector2 startPosMouse = Vector2.zero;
     private Vector2 startPosTouch = Vector2.zero;
-    private Vector2 inputDirection = Vector2.zero;
 
     private void Start()
     {
@@ -175,9 +173,6 @@ public class PlankRotation : MonoBehaviour
 
                 // Set input buffer to prevent input oversensitivity
                 inputBuffer = Screen.height * .1f;
-
-                // If input is over input buffer, return direction of input
-                var direction = Mathf.Sign(inputOffset);
 
                 // If input offset is over input buffer, play activation failure SFX
                 if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);

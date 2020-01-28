@@ -36,7 +36,7 @@ public class PlankConnection : MonoBehaviour
         // Find Plank other than this pivot's parent in firstColliders array
         // Lambda expression to find tagged collider
         var foundPivot = Array.Find(hitColliders, collider =>
-        collider.tag.Equals("Pivot") &&
+        collider.CompareTag("Pivot") &&
         collider.gameObject.transform.parent != transform);
 
         // If a pivot has been found
@@ -50,7 +50,7 @@ public class PlankConnection : MonoBehaviour
             Transform foundPlank = foundPivot.gameObject.transform.parent;
 
             // Sets this Plank as connected Plank's parent
-            foundPlank.transform.parent = this.transform;
+            foundPlank.transform.parent = transform;
 
             // If found Plank is the first or last Plank, no need to connect it to anything else
             if (foundPlank == PlankManager.instance.lastPlank ||
@@ -71,7 +71,7 @@ public class PlankConnection : MonoBehaviour
             Transform connectedPlank = activePlank.transform.GetChild(c);
 
             // If a child is found tagged with Plank
-            if (connectedPlank.tag.Equals("Plank"))
+            if (connectedPlank.CompareTag("Plank"))
             {
                 // Run this script in connected Plank
                 connectedPlank.GetComponent<PlankConnection>().DisconnectPlanks(connectedPlank);
