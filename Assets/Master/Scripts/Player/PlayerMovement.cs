@@ -200,6 +200,8 @@ public class PlayerMovement : MonoBehaviour
         // Set target position as next waypoint's position with Player's Y position
         Vector3 targetPosition = nextWaypoint.transform.position + transform.up * .05f;
 
+        bool hasJumped = false;
+
         // If next waypoint is aligned with current waypoint, rotate Player towards target position
         if (V3Equal(transform.up, nextWaypoint.transform.up * PlayerManager.instance.gravityDirection))
         {
@@ -221,8 +223,7 @@ public class PlayerMovement : MonoBehaviour
             // While Player is transitioning planks, pause coroutine
             while (PlayerAnimationManager.instance.isTransitioningPlanks == true) yield return null;
 
-            // Position Player at next waypoint's position
-            transform.position = nextWaypoint.transform.position;
+            hasJumped = true;
 
             // Set Player's up as next waypoint's up using gravity direction
             transform.up = nextWaypoint.transform.up * PlayerManager.instance.gravityDirection;
@@ -248,38 +249,41 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // Set current position as Player's position
-        var currentPosition = transform.position;
-
-        // Reset distance
-        distance = 100f;
-
-        // While Player has not reached next waypoint's postion
-        while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
-           Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
+        if (!hasJumped)
         {
-            // Flag Player as walking
-            PlayerAnimationManager.instance.isWalking = true;
+            // Set current position as Player's position
+            var currentPosition = transform.position;
 
-            // Take distance from Player's position to next waypoint's position
-            distance = Vector3.Distance(transform.position, nextWaypoint.transform.position);
+            // Reset distance
+            distance = 100f;
 
-            // Pause movement while Player is rotating
-            while (PauseManager.instance.isPaused) yield return null;
+            // While Player has not reached next waypoint's postion
+            while (Vector3.Distance(transform.position, nextWaypoint.transform.position) < distance &&
+               Vector3.Distance(transform.position, nextWaypoint.transform.position) >= .001f)
+            {
+                // Flag Player as walking
+                PlayerAnimationManager.instance.isWalking = true;
 
-            // Set rate as move speed over time
-            float rate = PlayerManager.instance.moveSpeed * Time.deltaTime;
+                // Take distance from Player's position to next waypoint's position
+                distance = Vector3.Distance(transform.position, nextWaypoint.transform.position);
 
-            // Translate Player forward
-            transform.Translate(0, 0, rate);
+                // Pause movement while Player is rotating
+                while (PauseManager.instance.isPaused) yield return null;
 
-            // Return to top of while loop
-            yield return null;
+                // Set rate as move speed over time
+                float rate = PlayerManager.instance.moveSpeed * Time.deltaTime;
+
+                // Translate Player forward
+                transform.Translate(0, 0, rate);
+
+                // Return to top of while loop
+                yield return null;
+            }
+            PlayerAnimationManager.instance.isWalking = false;
         }
 
         // Unflag Player to exit animation
         PlayerAnimationManager.instance.isMoving = false;
-        PlayerAnimationManager.instance.isWalking = false;
 
         // If next waypoint is not target waypoint, flag next waypoint as transitional
         if (nextWaypoint != targetWaypoint) nextWaypoint.GetComponent<WaypointMarker>().isTransitional = true;
@@ -304,6 +308,9 @@ public class PlayerMovement : MonoBehaviour
     // Requires pivot as rotation reference and angle to rotate
     IEnumerator JumpPlanks(Transform pivot, int angle)
     {
+        // Trigger jump animation
+        PlayerAnimationManager.instance.animator.SetTrigger("isJumping");
+
         // Set rotation position as distance from Player to given pivot
         Vector3 rotationPosition = transform.position - pivot.position;
 
@@ -351,7 +358,7 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        transform.position = currentWaypoint.transform.position;
+        transform.position = currentWaypoint.transform.position + transform.up * .05f * PlayerManager.instance.gravityDirection;
         PlayerAnimationManager.instance.isTransitioningPlanks = false;
     }
 
@@ -377,9 +384,9 @@ public class PlayerMovement : MonoBehaviour
     // Rotates Player towards active pivot
     public void RotatePlayer()
     {
-        if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint) 
-        
-        { 
+        if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint)
+
+        {
             var pivot = PlayerManager.instance.activePivot.parent.Find("Goal");
             transform.LookAt(pivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
         }
@@ -390,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
     // Sets angle at which Player should jump
     private void SetJumpAngle()
     {
-        int angle = 270;
+        int angle = 250;
         Transform pivot = PlayerManager.instance.activePivot;
         PivotAssignment pivotAssignment = pivot.GetComponent<PivotAssignment>();
         PlankRotation parentRotation = pivot.parent.GetComponent<PlankRotation>();

@@ -69,8 +69,13 @@ MonoBehaviour:
     m_RotationOrder: 4
   animator: {fileID: 0}
   rotationSpeed: 8.62
-  isJumping: 0
   isMoving: 0
   isTransitioningPlanks: 0
   isTurning: 0
   isWalking: 0
+  walkCycles:
+  - {fileID: 7400000, guid: 9dd77f313a878464b82310caebfc8291, type: 2}
+  - {fileID: 7400000, guid: fe2693bda761d5a498b732b9e4f474cb, type: 2}
+  idleCycles:
+  - {fileID: 7400000, guid: 1bb49c92a677f684cb47814d0e30a391, type: 2}
+  - {fileID: 7400000, guid: 458c1d3e08810704999638a733fb750b, type: 2}

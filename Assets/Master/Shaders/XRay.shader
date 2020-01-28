@@ -21,15 +21,16 @@ Shader "XRay" {
 		Name "Darken"
 		//Cull off
 		Zwrite off
-		Blend dstcolor zero
+		Blend SrcAlpha OneMinusSrcAlpha		
 		ZTEST GREATER
+		//ColorMask RGB
 				
 		CGPROGRAM
 		
 		#pragma vertex vert_surf
 		#pragma fragment frag_surf
 		#pragma fragmentoption ARB_precision_hint_fastest
-		//#pragma multi_compile_fwdbase
+		#pragma multi_compile_fwdbase
 
 		#include "HLSLSupport.cginc"
 		#include "UnityCG.cginc"
@@ -41,8 +42,8 @@ Shader "XRay" {
 		};
 		
 		uniform half4 _Color;
-		//uniform half _Rim;
-		//uniform half _Inside;
+		uniform half _Rim;
+		uniform half _Inside;
 		v2f_surf vert_surf (appdata_base v) {
 		v2f_surf o;
 			

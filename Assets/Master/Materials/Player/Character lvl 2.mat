@@ -27,7 +27,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2001
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -86,8 +86,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_4DA148DA: {r: 0.31132078, g: 0.16447136, b: 0.28195092, a: 1}
-    - Color_DE632B36: {r: 0.5, g: 0.2971698, b: 0.48617062, a: 1}
+    - Color_4DA148DA: {r: 0.16981131, g: 0.064880736, b: 0.14995955, a: 1}
+    - Color_DE632B36: {r: 0.4056604, g: 0.2277056, b: 0.3919715, a: 1}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
