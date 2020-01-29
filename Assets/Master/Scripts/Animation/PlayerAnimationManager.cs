@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System;
+using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
@@ -14,12 +16,16 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private bool hasBecomeSad = false;
     private bool hasCelebrated = false;
+    private bool canBlink = false;
+
+    private float blinkTimer = 0f;
 
     public AnimationClip[] idleCycles;
     public AnimationClip[] jumpCycles;
     public AnimationClip[] walkCycles;
 
     public Texture[] faceTextures;
+    public Texture[] happyBlink;
 
     private Renderer rend;
 
@@ -43,6 +49,11 @@ public class PlayerAnimationManager : MonoBehaviour
         animator.SetBool("isWalking", isWalking);
 
         SetAnimations();
+    }
+
+    private void FixedUpdate()
+    {
+        Blink();
     }
 
     private void SetAnimations()
@@ -75,5 +86,29 @@ public class PlayerAnimationManager : MonoBehaviour
         // If jump angle is 90 degrees, use shorter jump animation, otherwise use longer animation
         if (PlayerMovement.instance.jumpAngle == 90) animatorOverrideController["Player_Jump"] = jumpCycles[0];
         else animatorOverrideController["Player_Jump"] = jumpCycles[1];
+    }
+
+    private void Blink()
+    {
+        // Increase blink timer
+        blinkTimer += Time.deltaTime;
+
+        // If blink timer is over threshold, Player can blink again
+        if (blinkTimer > 3) canBlink = true;
+
+        // If Player can blink, sequentially change face texture using texture array
+        if (canBlink && !hasBecomeSad)
+        {
+            int index = Mathf.FloorToInt(Time.time / .05f);
+            index = index % happyBlink.Length;
+            rend.material.SetTexture("_BaseMap", happyBlink[index]);
+
+            // If end of animation is reached, reset bool and reset timer
+            if (index == happyBlink.Length - 1)
+            {
+                canBlink = false;
+                blinkTimer = 0;
+            }
+        }
     }
 }

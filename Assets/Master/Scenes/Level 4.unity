@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1063,6 +1063,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
+      propertyPath: happyBlink.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
       propertyPath: animator
       value: 
       objectReference: {fileID: 386171258}
@@ -1081,6 +1086,56 @@ PrefabInstance:
       propertyPath: faceTextures.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: 544cbdbcfe4f37a4c95ecbfaf04faf6b, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[0]
+      value: 
+      objectReference: {fileID: 2800000, guid: 184307ec499a41e49986a55381b690a7, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[1]
+      value: 
+      objectReference: {fileID: 2800000, guid: de9deb6a2e004f149ba074a1c89096c8, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[2]
+      value: 
+      objectReference: {fileID: 2800000, guid: dd1fcfdf46cd7a34299c98d792e28f8c, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: 72b0252ee5899d74a8f6d2f64891ce37, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[4]
+      value: 
+      objectReference: {fileID: 2800000, guid: 62fda1dbfc684af428083ccf648171f5, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[5]
+      value: 
+      objectReference: {fileID: 2800000, guid: 3f9effdf1b635894b9a12ff91ea01643, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[6]
+      value: 
+      objectReference: {fileID: 2800000, guid: ca09e8f1b15ca964ab5c06d0fb5d604c, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[7]
+      value: 
+      objectReference: {fileID: 2800000, guid: b9b8c03b2a512224ab315ea5585764c4, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[8]
+      value: 
+      objectReference: {fileID: 2800000, guid: 23d3cd47c230b8948aa667a00597543a, type: 3}
+    - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
+        type: 3}
+      propertyPath: happyBlink.Array.data[9]
+      value: 
+      objectReference: {fileID: 2800000, guid: 10a872a29565c8b489de281d178e9a73, type: 3}
     - target: {fileID: 6575028252603811297, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
       propertyPath: m_Name
