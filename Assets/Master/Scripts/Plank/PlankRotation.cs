@@ -175,7 +175,11 @@ public class PlankRotation : MonoBehaviour
                 inputBuffer = Screen.height * .1f;
 
                 // If input offset is over input buffer, play activation failure SFX
-                if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);
+                if (Mathf.Abs(inputOffset) > inputBuffer)
+                {
+                    PlankAudioManager.instance.ActivationFailureSFX(transform);
+                    PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
+                }
             }
         }
 
@@ -205,7 +209,11 @@ public class PlankRotation : MonoBehaviour
                         inputBuffer = Screen.width * .1f;
 
                         // If input offset is over input buffer, play activation failure SFX
-                        if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);
+                        if (Mathf.Abs(inputOffset) > inputBuffer)
+                        {
+                            PlankAudioManager.instance.ActivationFailureSFX(transform);
+                            PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
+                        }
                         break;
                 }
             }

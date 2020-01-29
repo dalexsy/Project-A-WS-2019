@@ -73,9 +73,15 @@ MonoBehaviour:
   isTransitioningPlanks: 0
   isTurning: 0
   isWalking: 0
-  walkCycles:
-  - {fileID: 7400000, guid: 9dd77f313a878464b82310caebfc8291, type: 2}
-  - {fileID: 7400000, guid: fe2693bda761d5a498b732b9e4f474cb, type: 2}
   idleCycles:
   - {fileID: 7400000, guid: 1bb49c92a677f684cb47814d0e30a391, type: 2}
   - {fileID: 7400000, guid: 458c1d3e08810704999638a733fb750b, type: 2}
+  jumpCycles:
+  - {fileID: 7400000, guid: 1bb49c92a677f684cb47814d0e30a391, type: 2}
+  - {fileID: 7400000, guid: c35125c18ebb75a41814312b3c353b9f, type: 2}
+  walkCycles:
+  - {fileID: 7400000, guid: 9dd77f313a878464b82310caebfc8291, type: 2}
+  - {fileID: 7400000, guid: fe2693bda761d5a498b732b9e4f474cb, type: 2}
+  faceTextures:
+  - {fileID: 2800000, guid: 1f60c8092763ed541bc5a894de155d67, type: 3}
+  - {fileID: 2800000, guid: 0f849a112cf80a34e959158d6376ce3b, type: 3}
