@@ -5,6 +5,7 @@ using System.Collections;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer fade = null;
+    private bool isFadingOut = false;
 
     // Disabled unused variable warning
 #pragma warning disable 0414
@@ -48,7 +49,15 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case "Level 3":
-                SceneManager.LoadScene("Level 1");
+                SceneManager.LoadScene("Level 4");
+                break;
+
+            case "Level 4":
+                SceneManager.LoadScene("Level 5");
+                break;
+
+            case "Level 5":
+                SceneManager.LoadScene("Title Intro");
                 break;
         }
     }
@@ -72,10 +81,15 @@ public class LevelManager : MonoBehaviour
     // Fades transition sprite to clear
     private IEnumerator FadeIn()
     {
-        // Fade alpha value down to zero opacity
+        // Reset alpha to full opacity
         Color color = fade.color;
+        color.a = 1;
+        fade.color = color;
+
+        // Fade alpha value down to zero opacity
         while (fade.color.a > 0)
         {
+            if (isFadingOut) yield break;
             color.a -= fadeInRate;
             fade.color = color;
             yield return new WaitForFixedUpdate();

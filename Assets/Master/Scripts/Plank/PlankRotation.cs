@@ -175,7 +175,11 @@ public class PlankRotation : MonoBehaviour
                 inputBuffer = Screen.height * .1f;
 
                 // If input offset is over input buffer, play activation failure SFX
-                if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);
+                if (Mathf.Abs(inputOffset) > inputBuffer)
+                {
+                    PlankAudioManager.instance.ActivationFailureSFX(transform);
+                    PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
+                }
             }
         }
 
@@ -205,7 +209,11 @@ public class PlankRotation : MonoBehaviour
                         inputBuffer = Screen.width * .1f;
 
                         // If input offset is over input buffer, play activation failure SFX
-                        if (Mathf.Abs(inputOffset) > inputBuffer) PlankAudioManager.instance.ActivationFailureSFX(transform);
+                        if (Mathf.Abs(inputOffset) > inputBuffer)
+                        {
+                            PlankAudioManager.instance.ActivationFailureSFX(transform);
+                            PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
+                        }
                         break;
                 }
             }
@@ -365,11 +373,11 @@ public class PlankRotation : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // Disconnect all connected planks
-        plankConnection.DisconnectPlanks(transform);
-
         // Increase move counter
         MoveCounter.instance.moveCount += 1;
+
+        // Disconnect all connected planks
+        plankConnection.DisconnectPlanks(transform);
 
         // Sets isRotating to false after Plank has reached max rotation
         PlankRotationManager.instance.isRotating = false;

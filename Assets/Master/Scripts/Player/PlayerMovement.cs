@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement instance;
+    public int jumpAngle = 270;
+
     [SerializeField] private GameObject[] waypoints;
     private float distance;
     [SerializeField] private GameObject currentWaypoint;
@@ -279,10 +281,8 @@ public class PlayerMovement : MonoBehaviour
                 // Return to top of while loop
                 yield return null;
             }
-            PlayerAnimationManager.instance.isWalking = false;
         }
 
-        // Unflag Player to exit animation
         PlayerAnimationManager.instance.isMoving = false;
 
         // If next waypoint is not target waypoint, flag next waypoint as transitional
@@ -300,6 +300,8 @@ public class PlayerMovement : MonoBehaviour
             // Restart coroutine with new current waypoint
             StartCoroutine(TransitionWaypoints(arrayDirection));
         }
+
+        else PlayerAnimationManager.instance.isWalking = false;
 
         yield return null;
     }
@@ -326,7 +328,7 @@ public class PlayerMovement : MonoBehaviour
 
         // If Player is moving up a plank, inverse model rotation direction
         int flip = 1;
-        if (angle == 90) flip = -1;
+        if (angle == 88) flip = -1;
 
         // Disable box collider to prevent displacement from plank
         GetComponent<BoxCollider>().enabled = false;
@@ -397,7 +399,7 @@ public class PlayerMovement : MonoBehaviour
     // Sets angle at which Player should jump
     private void SetJumpAngle()
     {
-        int angle = 250;
+        jumpAngle = 250;
         Transform pivot = PlayerManager.instance.activePivot;
         PivotAssignment pivotAssignment = pivot.GetComponent<PivotAssignment>();
         PlankRotation parentRotation = pivot.parent.GetComponent<PlankRotation>();
@@ -408,7 +410,7 @@ public class PlayerMovement : MonoBehaviour
             if ((pivot.name.Equals(PlankManager.instance.rightPivotName) && pivotAssignment.hasMixedCollisionTop)
              || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
              || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
-                angle = 90;
+                jumpAngle = 88;
         }
 
         else
@@ -417,13 +419,13 @@ public class PlayerMovement : MonoBehaviour
             if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && pivotAssignment.hasMixedCollisionTop)
              || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateCounterclockwiseR)
              || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateClockwiseL))
-                angle = 90;
+                jumpAngle = 88;
         }
 
         if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint) pivot = pivot.parent.Find("Goal");
 
         // Start jumping planks with given pivot and angle
-        StartCoroutine(JumpPlanks(pivot, angle));
+        StartCoroutine(JumpPlanks(pivot, jumpAngle));
     }
 
     private void OnTriggerStay(Collider collider)
