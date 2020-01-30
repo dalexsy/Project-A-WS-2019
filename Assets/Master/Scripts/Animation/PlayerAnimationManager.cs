@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System;
 using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
@@ -26,6 +25,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public Texture[] faceTextures;
     public Texture[] happyBlink;
+    public Texture[] sadTransition;
 
     private Renderer rend;
 
@@ -74,8 +74,8 @@ public class PlayerAnimationManager : MonoBehaviour
         // If level is completed, change walk animation and speed Player up
         if (PlankManager.instance.hasReachedGoal && !hasCelebrated)
         {
-            animatorOverrideController["Player_Walk"] = walkCycles[0];
-            animator.SetFloat("walkSpeed", 1.1f);
+            animatorOverrideController["Player_Walk"] = walkCycles[2];
+            animator.SetFloat("walkSpeed", 1.7f);
             PlayerManager.instance.moveSpeed *= 1.1f;
 
             // Replace face texture
@@ -84,8 +84,17 @@ public class PlayerAnimationManager : MonoBehaviour
         }
 
         // If jump angle is 90 degrees, use shorter jump animation, otherwise use longer animation
-        if (PlayerMovement.instance.jumpAngle == 90) animatorOverrideController["Player_Jump"] = jumpCycles[0];
-        else animatorOverrideController["Player_Jump"] = jumpCycles[1];
+        if (PlayerMovement.instance.jumpAngle < 100)
+        {
+            animatorOverrideController["Player_Jump"] = jumpCycles[0];
+            animator.SetFloat("jumpSpeed", 2.2f);
+        }
+
+        else
+        {
+            animatorOverrideController["Player_Jump"] = jumpCycles[1];
+            animator.SetFloat("jumpSpeed", 1.0f);
+        }
     }
 
     private void Blink()
@@ -94,10 +103,10 @@ public class PlayerAnimationManager : MonoBehaviour
         blinkTimer += Time.deltaTime;
 
         // If blink timer is over threshold, Player can blink again
-        if (blinkTimer > 3) canBlink = true;
+        if (blinkTimer > 5) canBlink = true;
 
         // If Player can blink, sequentially change face texture using texture array
-        if (canBlink && !hasBecomeSad)
+        if (canBlink && !hasBecomeSad && !hasCelebrated)
         {
             int index = Mathf.FloorToInt(Time.time / .05f);
             index = index % happyBlink.Length;

@@ -373,11 +373,11 @@ public class PlankRotation : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // Disconnect all connected planks
-        plankConnection.DisconnectPlanks(transform);
-
         // Increase move counter
         MoveCounter.instance.moveCount += 1;
+
+        // Disconnect all connected planks
+        plankConnection.DisconnectPlanks(transform);
 
         // Sets isRotating to false after Plank has reached max rotation
         PlankRotationManager.instance.isRotating = false;

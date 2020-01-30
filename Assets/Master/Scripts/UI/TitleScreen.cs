@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using UnityEngine.SceneManagement;
-using System.Collections;
+using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class TitleScreen : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer fade = null;
 
@@ -17,45 +17,32 @@ public class LevelManager : MonoBehaviour
     [SerializeField] [Range(0, .2f)] private float fadeOutRate = .005f;
     [SerializeField] [Range(0, .2f)] private float fadeInRate = .01f;
 
-
     private void Start()
     {
         ResetAlpha();
         StartCoroutine(FadeIn());
     }
 
-    private void Update()
+    public void StartGame()
     {
-        // If level is completed, start fading out current level and load next level
-        if (PlankManager.instance.hasReachedGoal)
-        {
-            StartCoroutine(FadeOut());
-            Invoke("LoadNextLevel", timeBeforeNextLevel);
-        }
+        StartCoroutine(FadeOut());
+        Invoke("LoadLevel", timeBeforeNextLevel);
     }
 
-    // Loads next level by cycling between scenes
-    private void LoadNextLevel()
+    public void SelectLevel()
     {
-        string scene = SceneManager.GetActiveScene().name;
-        switch (scene)
-        {
-            case "Level 1":
-                SceneManager.LoadScene("Level 2");
-                break;
+        StartCoroutine(FadeOut());
+        Invoke("LoadLevelSelect", timeBeforeNextLevel);
+    }
 
-            case "Level 2":
-                SceneManager.LoadScene("Level 3");
-                break;
+    private void LoadLevel()
+    {
+        SceneManager.LoadScene("Level 1");
+    }
 
-            case "Level 3":
-                SceneManager.LoadScene("Level 4");
-                break;
-
-            case "Level 4":
-                SceneManager.LoadScene("Title Intro");
-                break;
-        }
+    private void LoadLevelSelect()
+    {
+        SceneManager.LoadScene("Level 1");
     }
 
     // Sets alpha value of sprite renderer back to full opacity
@@ -69,6 +56,8 @@ public class LevelManager : MonoBehaviour
     // Fades transition sprite to black
     private IEnumerator FadeOut()
     {
+        fade.sortingLayerName = "VFX";
+
         // Wait for given amount of time
         yield return new WaitForSeconds(timeBeforeFade);
 

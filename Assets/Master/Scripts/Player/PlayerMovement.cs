@@ -328,7 +328,7 @@ public class PlayerMovement : MonoBehaviour
 
         // If Player is moving up a plank, inverse model rotation direction
         int flip = 1;
-        if (angle == 90) flip = -1;
+        if (angle == 88) flip = -1;
 
         // Disable box collider to prevent displacement from plank
         GetComponent<BoxCollider>().enabled = false;
@@ -410,7 +410,7 @@ public class PlayerMovement : MonoBehaviour
             if ((pivot.name.Equals(PlankManager.instance.rightPivotName) && pivotAssignment.hasMixedCollisionTop)
              || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateCounterclockwiseL)
              || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateClockwiseR))
-                jumpAngle = 90;
+                jumpAngle = 88;
         }
 
         else
@@ -419,7 +419,7 @@ public class PlayerMovement : MonoBehaviour
             if ((pivot.name.Equals(PlankManager.instance.leftPivotName) && pivotAssignment.hasMixedCollisionTop)
              || (pivot.name.Equals(PlankManager.instance.rightPivotName) && !parentRotation.canRotateCounterclockwiseR)
              || (pivot.name.Equals(PlankManager.instance.leftPivotName) && !parentRotation.canRotateClockwiseL))
-                jumpAngle = 90;
+                jumpAngle = 88;
         }
 
         if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint) pivot = pivot.parent.Find("Goal");
