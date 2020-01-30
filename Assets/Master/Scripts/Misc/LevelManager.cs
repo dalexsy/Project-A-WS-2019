@@ -53,6 +53,10 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case "Level 4":
+                SceneManager.LoadScene("Level 5");
+                break;
+
+            case "Level 5":
                 SceneManager.LoadScene("Title Intro");
                 break;
         }
@@ -70,7 +74,7 @@ public class LevelManager : MonoBehaviour
         {
             color.a += fadeOutRate;
             fade.color = color;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -88,7 +92,7 @@ public class LevelManager : MonoBehaviour
             if (isFadingOut) yield break;
             color.a -= fadeInRate;
             fade.color = color;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 }

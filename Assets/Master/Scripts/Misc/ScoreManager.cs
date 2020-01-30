@@ -43,6 +43,11 @@ public class ScoreManager : MonoBehaviour
                 sadnessThreshold = 10;
                 perfectSolution = 2;
                 break;
+
+            case "Level 5":
+                sadnessThreshold = 20;
+                perfectSolution = 6;
+                break;
         }
     }
 }
