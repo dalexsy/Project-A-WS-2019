@@ -816,22 +816,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1152342351, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1152342353, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1152342353, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -696595683
-      objectReference: {fileID: 0}
-    - target: {fileID: 1152342353, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1241081268, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -840,24 +824,15 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 508783910}
-    - target: {fileID: 1640986815, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1961580332, guid: 52f982c1d5cd0f249a0946779da1ea07, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 508783909}
+      objectReference: {fileID: 508783910}
     - target: {fileID: 2314392967869384202, guid: 52f982c1d5cd0f249a0946779da1ea07,
         type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1488552559}
-    - target: {fileID: 2314392967869384202, guid: 52f982c1d5cd0f249a0946779da1ea07,
-        type: 3}
-      propertyPath: m_PlaneDistance
-      value: -3.76
-      objectReference: {fileID: 0}
     - target: {fileID: 2314392967869384203, guid: 52f982c1d5cd0f249a0946779da1ea07,
         type: 3}
       propertyPath: m_LocalPosition.x

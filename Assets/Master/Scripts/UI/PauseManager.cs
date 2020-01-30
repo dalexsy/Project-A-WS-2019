@@ -45,6 +45,11 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    public void LoadStartScreen()
+    {
+        SceneManager.LoadScene("Title Intro");
+    }
+
     // Shows pause screen and fades out audio
     private IEnumerator FadeOut()
     {

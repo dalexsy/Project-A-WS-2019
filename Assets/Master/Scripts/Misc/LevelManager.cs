@@ -5,6 +5,7 @@ using System.Collections;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer fade = null;
+    private bool isFadingOut = false;
 
     // Disabled unused variable warning
 #pragma warning disable 0414
@@ -20,7 +21,6 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        ResetAlpha();
         StartCoroutine(FadeIn());
     }
 
@@ -58,14 +58,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Sets alpha value of sprite renderer back to full opacity
-    private void ResetAlpha()
-    {
-        Color color = fade.color;
-        color.a = 1;
-        fade.color = color;
-    }
-
     // Fades transition sprite to black
     private IEnumerator FadeOut()
     {
@@ -78,20 +70,25 @@ public class LevelManager : MonoBehaviour
         {
             color.a += fadeOutRate;
             fade.color = color;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
     // Fades transition sprite to clear
     private IEnumerator FadeIn()
     {
-        // Fade alpha value down to zero opacity
+        // Reset alpha to full opacity
         Color color = fade.color;
+        color.a = 1;
+        fade.color = color;
+
+        // Fade alpha value down to zero opacity
         while (fade.color.a > 0)
         {
+            if (isFadingOut) yield break;
             color.a -= fadeInRate;
             fade.color = color;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 }

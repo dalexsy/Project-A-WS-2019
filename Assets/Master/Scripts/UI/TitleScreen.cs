@@ -5,6 +5,7 @@ using UnityEngine;
 public class TitleScreen : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer fade = null;
+    private bool isFadingOut = false;
 
     // Disabled unused variable warning
 #pragma warning disable 0414
@@ -19,7 +20,7 @@ public class TitleScreen : MonoBehaviour
 
     private void Start()
     {
-        ResetAlpha();
+        Time.timeScale = 1;
         StartCoroutine(FadeIn());
     }
 
@@ -45,18 +46,11 @@ public class TitleScreen : MonoBehaviour
         SceneManager.LoadScene("Level 1");
     }
 
-    // Sets alpha value of sprite renderer back to full opacity
-    private void ResetAlpha()
-    {
-        Color color = fade.color;
-        color.a = 1;
-        fade.color = color;
-    }
-
     // Fades transition sprite to black
     private IEnumerator FadeOut()
     {
         fade.sortingLayerName = "VFX";
+        isFadingOut = true;
 
         // Wait for given amount of time
         yield return new WaitForSeconds(timeBeforeFade);
@@ -74,10 +68,15 @@ public class TitleScreen : MonoBehaviour
     // Fades transition sprite to clear
     private IEnumerator FadeIn()
     {
-        // Fade alpha value down to zero opacity
+        // Reset alpha to full opacity
         Color color = fade.color;
+        color.a = 1;
+        fade.color = color;
+
+        // Fade alpha value down to zero opacity
         while (fade.color.a > 0)
         {
+            if (isFadingOut) yield break;
             color.a -= fadeInRate;
             fade.color = color;
             yield return new WaitForFixedUpdate();

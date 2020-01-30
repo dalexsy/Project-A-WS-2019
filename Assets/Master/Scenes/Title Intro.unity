@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fade: {fileID: 1260577260}
   timeBeforeFade: 0
-  timeBeforeNextLevel: 1.5
+  timeBeforeNextLevel: 2
   fadeOutRate: 0.015
   fadeInRate: 0.006
 --- !u!4 &68631782
