@@ -12,6 +12,7 @@ public class PlayerAnimationManager : MonoBehaviour
     public bool isTransitioningPlanks = false;
     public bool isTurning = false;
     public bool isWalking = false;
+    public bool shouldCelebrate = true;
 
     private bool hasBecomeSad = false;
     private bool hasCelebrated = false;
