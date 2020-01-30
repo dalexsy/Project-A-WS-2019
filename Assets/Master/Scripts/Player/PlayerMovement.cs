@@ -367,20 +367,25 @@ public class PlayerMovement : MonoBehaviour
     // Moves Player around level on completion
     private void RunCircles()
     {
-        while (!PlayerAnimationManager.instance.isMoving)
+        if (PlayerAnimationManager.instance.shouldCelebrate)
         {
-            // Set next waypoint as next waypoint in array using previous array direction
-            var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
+            while (!PlayerAnimationManager.instance.isMoving)
+            {
+                // Set next waypoint as next waypoint in array using previous array direction
+                var currentIndex = Array.FindIndex(waypoints, item => item.transform.name.Equals(currentWaypoint.name));
 
-            // If current waypoint is last waypoint, next waypoint is first waypoint
-            if (currentWaypoint == lastWaypoint) nextWaypoint = firstWaypoint;
+                // If current waypoint is last waypoint, next waypoint is first waypoint
+                if (currentWaypoint == lastWaypoint) nextWaypoint = firstWaypoint;
 
-            // Otherwise, next and target waypoint is next waypoint in array
-            else nextWaypoint = waypoints[currentIndex + 1];
-            targetWaypoint = nextWaypoint;
+                // Otherwise, next and target waypoint is next waypoint in array
+                else nextWaypoint = waypoints[currentIndex + 1];
+                targetWaypoint = nextWaypoint;
 
-            StartCoroutine(TransitionWaypoints(1));
+                StartCoroutine(TransitionWaypoints(1));
+            }
         }
+
+        else PlayerAnimationManager.instance.isWalking = true;
     }
 
     // Rotates Player towards active pivot
