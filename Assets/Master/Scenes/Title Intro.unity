@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -504,6 +504,81 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 8901319748550009994}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1626045344
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397679828117081222, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465732565657013947, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 6a9531be968f72d439385982ff690619,
+        type: 2}
+    - target: {fileID: 5936002990306363647, guid: 032e0bc286cf92c4992cf0ddc47315cc,
+        type: 3}
+      propertyPath: m_Name
+      value: Global Volume
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 032e0bc286cf92c4992cf0ddc47315cc, type: 3}
 --- !u!224 &533531114890569632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1139,6 +1214,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 243006100941038259, guid: 8456e009bc309f744ae3f8dfdb243ea2,
+        type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8901319747154508429, guid: 8456e009bc309f744ae3f8dfdb243ea2,
         type: 3}
       propertyPath: m_IsActive
@@ -1224,7 +1304,8 @@ PrefabInstance:
       propertyPath: m_ShowCustomSorter
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8901319747615303416, guid: 8456e009bc309f744ae3f8dfdb243ea2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8456e009bc309f744ae3f8dfdb243ea2, type: 3}
 --- !u!65 &8913536316594227876
 BoxCollider:
