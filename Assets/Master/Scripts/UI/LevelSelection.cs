@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class TitleScreen : MonoBehaviour
+public class LevelSelection : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer fade = null;
     private bool isFadingOut = false;
@@ -24,26 +24,30 @@ public class TitleScreen : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    public void StartGame()
+    public void SelectLevel(int scene)
     {
-        StartCoroutine(FadeOut());
-        Invoke("LoadLevel", timeBeforeNextLevel);
-    }
+        switch (scene)
+        {
+            case 1:
+                SceneManager.LoadScene("Level 1");
+                break;
 
-    public void SelectLevel()
-    {
-        StartCoroutine(FadeOut());
-        Invoke("LoadLevelSelect", timeBeforeNextLevel);
-    }
+            case 2:
+                SceneManager.LoadScene("Level 2");
+                break;
 
-    private void LoadLevel()
-    {
-        SceneManager.LoadScene("Level 1");
-    }
+            case 3:
+                SceneManager.LoadScene("Level 3");
+                break;
 
-    private void LoadLevelSelect()
-    {
-        SceneManager.LoadScene("Level Selection");
+            case 4:
+                SceneManager.LoadScene("Level 4");
+                break;
+
+            case 5:
+                SceneManager.LoadScene("Level 5");
+                break;
+        }
     }
 
     // Fades transition sprite to black
