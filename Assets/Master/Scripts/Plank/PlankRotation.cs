@@ -178,7 +178,10 @@ public class PlankRotation : MonoBehaviour
                 if (Mathf.Abs(inputOffset) > inputBuffer)
                 {
                     PlankAudioManager.instance.ActivationFailureSFX(transform);
-                    PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
+
+                    // If Player is not moving, play rotation failure animation
+                    if (!PlayerAnimationManager.instance.isMoving)
+                        PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
                 }
             }
         }
@@ -212,7 +215,10 @@ public class PlankRotation : MonoBehaviour
                         if (Mathf.Abs(inputOffset) > inputBuffer)
                         {
                             PlankAudioManager.instance.ActivationFailureSFX(transform);
-                            PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
+
+                            // If Player is not moving, play rotation failure animation
+                            if (!PlayerAnimationManager.instance.isMoving)
+                                PlayerAnimationManager.instance.animator.SetTrigger("hasFailedRotation");
                         }
                         break;
                 }
