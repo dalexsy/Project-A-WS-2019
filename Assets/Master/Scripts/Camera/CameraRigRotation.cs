@@ -11,6 +11,7 @@ public class CameraRigRotation : MonoBehaviour
 
     [SerializeField] [Range(0, 1)] private float rotationSpeed = 1f;
     [SerializeField] private AnimationCurve animationCurve = null;
+    [SerializeField] private bool shouldFocusCharacter = false;
     [SerializeField] private GameObject[] planks;
     [SerializeField] private Vector3 offset = new Vector3(0, -.2f, 0);
 
@@ -21,6 +22,7 @@ public class CameraRigRotation : MonoBehaviour
     private float zoom;
     private float zoomSpeed = 5f;
     private int turnDirection = 0;
+    private Transform player;
     private Vector2 startPosMouse = Vector2.zero;
     private Vector3 targetPosition;
 
@@ -38,6 +40,8 @@ public class CameraRigRotation : MonoBehaviour
         // Find all Planks in scene
         planks = GameObject.FindGameObjectsWithTag("Plank");
 
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
         // Sort Planks alphabetically
         Array.Sort(planks, (x, y) => String.Compare(x.transform.name, y.transform.name));
     }
@@ -54,7 +58,10 @@ public class CameraRigRotation : MonoBehaviour
         // Return average position of all Planks
         averagePlankPosition = GetMeanVector(plankPositions);
 
-        targetPosition = averagePlankPosition + offset;
+        if (shouldFocusCharacter)
+            targetPosition = player.position + offset;
+
+        else targetPosition = averagePlankPosition + offset;
     }
 
     private void LateUpdate()
@@ -165,7 +172,7 @@ public class CameraRigRotation : MonoBehaviour
         zoom -= Input.GetAxis("Mouse ScrollWheel");
 
         // Gate zoom amount
-        zoom = Mathf.Clamp(zoom, 2f, 5f);
+        zoom = Mathf.Clamp(zoom, .5f, 5f);
 
         mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
     }
