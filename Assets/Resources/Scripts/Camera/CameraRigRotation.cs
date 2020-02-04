@@ -172,7 +172,7 @@ public class CameraRigRotation : MonoBehaviour
         zoom -= Input.GetAxis("Mouse ScrollWheel");
 
         // Gate zoom amount
-        zoom = Mathf.Clamp(zoom, .5f, 5f);
+        zoom = Mathf.Clamp(zoom, 2f, 5f);
 
         mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
     }
