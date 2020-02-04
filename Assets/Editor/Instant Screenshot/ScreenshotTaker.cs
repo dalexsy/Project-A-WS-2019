@@ -9,14 +9,9 @@ public class Screenshot : EditorWindow
 
 	int resWidth = Screen.width*4; 
 	int resHeight = Screen.height*4;
-
 	public Camera myCamera;
 	int scale = 1;
-
 	string path = "";
-	bool showPreview = true;
-	RenderTexture renderTexture;
-
 	bool isTransparent = false;
 
 	// Add menu item named "My Window" to the Window menu
@@ -27,7 +22,6 @@ public class Screenshot : EditorWindow
 		EditorWindow editorWindow = EditorWindow.GetWindow(typeof(Screenshot));
 		editorWindow.autoRepaintOnSceneChange = true;
 		editorWindow.Show();
-		editorWindow.title = "Screenshot";
 	}
 
 	float lastTime;
@@ -61,13 +55,6 @@ public class Screenshot : EditorWindow
 
 		EditorGUILayout.HelpBox("Choose the folder in which to save the screenshots ",MessageType.None);
 		EditorGUILayout.Space();
-
-
-
-		//isTransparent = EditorGUILayout.Toggle(isTransparent,"Transparent Background");
-
-
-
 		GUILayout.Label ("Select Camera", EditorStyles.boldLabel);
 
 
@@ -103,8 +90,6 @@ public class Screenshot : EditorWindow
 			resWidth = 2560;
 			scale = 1;
 		}
-
-
 
 		EditorGUILayout.EndVertical();
 
@@ -192,13 +177,10 @@ public class Screenshot : EditorWindow
 	
 		
 	public string ScreenShotName(int width, int height) {
-
-		string strPath="";
-
-		strPath = string.Format("{0}/screen_{1}x{2}_{3}.png", 
-		                     path, 
-		                     width, height, 
-		                               System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
+		string strPath = string.Format("{0}/screen_{1}x{2}_{3}.png",
+					 path,
+					 width, height,
+							   System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
 		lastScreenshot = strPath;
 	
 		return strPath;
