@@ -1,6 +1,9 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 
+/// <summary>
+/// Displays version number on screen.
+/// </summary>
 [ExecuteInEditMode]
 public class DisplayVersionNumber : MonoBehaviour
 {

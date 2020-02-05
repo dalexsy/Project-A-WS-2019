@@ -15,6 +15,10 @@ public class LevelCompleteVFX : MonoBehaviour
         if (!hasTriggered) PlayLevelCompleteVFX();
     }
 
+    /// <summary>
+    /// Plays VFX on level completion.
+    /// Starts particle system on all systems tagged with Level Complete.
+    /// </summary>
     private void PlayLevelCompleteVFX()
     {
         if (PlankManager.instance.hasReachedGoal)

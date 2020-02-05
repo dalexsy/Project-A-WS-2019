@@ -6,11 +6,9 @@ public class CameraRepositionEditmode : MonoBehaviour
 {
     private Vector3 averagePlankPosition;
     private GameObject[] planks;
-    private Camera mainCamera;
 
     private void Start()
     {
-        mainCamera = Camera.main;
         planks = GameObject.FindGameObjectsWithTag("Plank");
 
         // Create new list of Plank positions
@@ -26,7 +24,11 @@ public class CameraRepositionEditmode : MonoBehaviour
         transform.position = averagePlankPosition;
     }
 
-    // Returns mean position of list of vectors
+    /// <summary>
+    /// Calculates mean position of planks.
+    /// </summary>
+    /// <param name="positions">List of plank positions</param>
+    /// <returns>Mean position of planks</returns>
     private Vector3 GetMeanVector(List<Vector3> positions)
     {
         // If list is empty, return (0,0,0)

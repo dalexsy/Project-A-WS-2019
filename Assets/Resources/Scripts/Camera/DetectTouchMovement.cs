@@ -8,9 +8,6 @@ public class DetectTouchMovement : MonoBehaviour
     const float pinchRatio = 1;
     const float minPinchDistance = 0;
 
-    const float panRatio = 1;
-    const float minPanDistance = 0;
-
     /// <summary>
     ///   The delta of the angle between two touch points
     /// </summary>

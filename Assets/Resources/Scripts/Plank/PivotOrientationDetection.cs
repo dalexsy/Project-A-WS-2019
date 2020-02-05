@@ -18,7 +18,9 @@ public class PivotOrientationDetection : MonoBehaviour
         bottomColliderPosition = Camera.main.WorldToScreenPoint(bottomCollider.position);
     }
 
-    // Set respective bottom and top colliders of pivot
+    /// <summary>
+    /// Set respective bottom and top colliders of pivot.
+    /// </summary>
     private void SetColliders()
     {
         for (int c = 0; c < transform.parent.childCount; c++)
@@ -39,7 +41,9 @@ public class PivotOrientationDetection : MonoBehaviour
         }
     }
 
-    // Check if top and bottom colliders have the same X position in screenspace
+    /// <summary>
+    /// Check if top and bottom colliders have the same X position in screenspace.
+    /// </summary>
     public bool isVertical()
     {
         // If top and bottom colliders have different X positions, Plank is vertical
@@ -47,8 +51,10 @@ public class PivotOrientationDetection : MonoBehaviour
         else return false;
     }
 
-    // Check if top collider is on top in screenspace
-    // Only used if Plank is horizontal
+    /// <summary>
+    /// Check if top collider is on top in screenspace
+    /// Only used if Plank is horizontal.
+    /// </summary>
     public bool isTopTop()
     {
         if (isVertical()) return false;
@@ -57,8 +63,10 @@ public class PivotOrientationDetection : MonoBehaviour
         return false;
     }
 
-    // Check if top collider is on right in screenspace
-    // Only used if Plank is horizontal
+    /// <summary>
+    /// Check if top collider is on right in screenspace.
+    /// Only used if Plank is horizontal.
+    /// </summary>
     public bool isTopRight()
     {
         if (!isVertical()) return false;
@@ -67,7 +75,9 @@ public class PivotOrientationDetection : MonoBehaviour
         return false;
     }
 
-    // Checks if top collider is in front of bottom
+    /// <summary>
+    /// Checks if top collider is in front of bottom.
+    /// </summary>
     public bool isTopFront()
     {
         var colliderDifference = topColliderPosition.z - bottomColliderPosition.z;

@@ -6,6 +6,7 @@ public class CameraRotation : MonoBehaviour
 
     void LateUpdate()
     {
+        // Face camera towards target
         transform.LookAt(target.transform);
     }
 }

@@ -17,6 +17,7 @@ public class GoalDetection : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
+        // If any colliders exit this collider, reset bools
         PlankManager.instance.isLevelConnected = false;
         PlankManager.instance.hasReachedGoal = false;
     }

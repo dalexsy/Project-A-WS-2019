@@ -2,6 +2,9 @@
 
 public class WaypointMarker : MonoBehaviour
 {
+    /// <summary>
+    /// Marks waypoint as transitional, meaning Player will not stop at this waypoint.
+    /// </summary>
     public bool isTransitional = false;
 
     private void Update()

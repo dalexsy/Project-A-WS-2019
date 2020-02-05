@@ -24,6 +24,10 @@ public class LevelSelection : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
+    /// <summary>
+    /// Selects level to load.
+    /// </summary>
+    /// <param name="scene">Level number.</param>
     public void SelectLevel(int scene)
     {
         switch (scene)
@@ -50,7 +54,9 @@ public class LevelSelection : MonoBehaviour
         }
     }
 
-    // Fades transition sprite to black
+    /// <summary>
+    /// Fades transition sprite to black.
+    /// </summary>
     private IEnumerator FadeOut()
     {
         fade.sortingLayerName = "VFX";
@@ -69,7 +75,9 @@ public class LevelSelection : MonoBehaviour
         }
     }
 
-    // Fades transition sprite to clear
+    /// <summary>
+    /// Fades transition sprite to clear.
+    /// </summary>
     private IEnumerator FadeIn()
     {
         // Reset alpha to full opacity

@@ -18,6 +18,9 @@ public class EnableTouch : MonoBehaviour
         if (mouseIcon && !InputManager.instance.isUsingTouch) button.GetComponent<Image>().sprite = mouseIcon;
     }
 
+    /// <summary>
+    /// Toggles between touch and mouse inputs.
+    /// </summary>
     public void TouchToggle()
     {
         InputManager.instance.isUsingTouch = !InputManager.instance.isUsingTouch;

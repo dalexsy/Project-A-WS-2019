@@ -49,7 +49,9 @@ public class PlayerMovement : MonoBehaviour
         if (InputManager.instance.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer) TouchInput();
     }
 
-    // Detects valid touch input
+    /// <summary>
+    /// Detects valid touch input.
+    /// </summary>
     private void TouchInput()
     {
         if (Input.touchCount == 1)
@@ -71,7 +73,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Detects valid mouse input
+    /// <summary>
+    /// Detects valid mouse input.
+    /// </summary>
     private void MouseInput()
     {
         // Set starting mouse position on mouse down
@@ -81,7 +85,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f)) SelectWaypoint();
     }
 
-    // Selects waypoint based on player input
+    /// <summary>
+    /// Selects waypoint based on player input.
+    /// </summary>
     private void SelectWaypoint()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

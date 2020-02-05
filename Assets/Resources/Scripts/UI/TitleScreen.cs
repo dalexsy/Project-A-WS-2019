@@ -24,29 +24,43 @@ public class TitleScreen : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
+    /// <summary>
+    /// Fades out current scene and loads first level.
+    /// </summary>
     public void StartGame()
     {
         StartCoroutine(FadeOut());
         Invoke("LoadLevel", timeBeforeNextLevel);
     }
 
+    /// <summary>
+    /// Fades out current scene and loads level selection screen.
+    /// </summary>
     public void SelectLevel()
     {
         StartCoroutine(FadeOut());
         Invoke("LoadLevelSelect", timeBeforeNextLevel);
     }
 
+    /// <summary>
+    /// Loads first level.
+    /// </summary>
     private void LoadLevel()
     {
         SceneManager.LoadScene("Level 1");
     }
 
+    /// <summary>
+    /// Loads level selection screen.
+    /// </summary>
     private void LoadLevelSelect()
     {
         SceneManager.LoadScene("Level Selection");
     }
 
-    // Fades transition sprite to black
+    /// <summary>
+    /// Fades transition sprite to black.
+    /// </summary>
     private IEnumerator FadeOut()
     {
         fade.sortingLayerName = "VFX";
@@ -65,7 +79,9 @@ public class TitleScreen : MonoBehaviour
         }
     }
 
-    // Fades transition sprite to clear
+    /// <summary>
+    /// Fades transition sprite to clear.
+    /// </summary>
     private IEnumerator FadeIn()
     {
         // Reset alpha to full opacity

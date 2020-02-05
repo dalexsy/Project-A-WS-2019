@@ -42,7 +42,7 @@ public class PlayerAnimationManager : MonoBehaviour
         animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverrideController;
 
-        // Populate happy blink array with resources from level's blink texture folder
+        // Populate texture arrays with textures from this level's folder
         happyBlink = Resources.LoadAll<Texture>("Textures/Player/" + SceneManager.GetActiveScene().name + "/Blink");
         faceTextures[0] = Resources.Load<Texture>("Textures/Player/" + SceneManager.GetActiveScene().name + "/Sad/sad");
         faceTextures[1] = Resources.Load<Texture>("Textures/Player/" + SceneManager.GetActiveScene().name + "/Happy/happy");
@@ -62,6 +62,9 @@ public class PlayerAnimationManager : MonoBehaviour
         Blink();
     }
 
+    /// <summary>
+    /// Sets animations for Player model based on different game states.
+    /// </summary>
     private void SetAnimations()
     {
         // If move counter is over threshold, change walk animation and slow Player down
@@ -103,6 +106,9 @@ public class PlayerAnimationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Animates Player's face texture.
+    /// </summary>
     private void Blink()
     {
         // Increase blink timer

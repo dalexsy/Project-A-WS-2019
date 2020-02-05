@@ -14,7 +14,10 @@ public class PlankConnection : MonoBehaviour
         rPivot = transform.Find(PlankManager.instance.rightPivotName);
     }
 
-    // Method to connect planks using active Plank's active pivot
+    /// <summary>
+    /// Connects planks using active Plank's active pivot.
+    /// </summary>
+    /// <param name="pivot">Plank's active pivot.</param>
     public void ConnectPlanks(Transform pivot)
     {
         // If this Plank is the Player Plank
@@ -61,7 +64,10 @@ public class PlankConnection : MonoBehaviour
         }
     }
 
-    // Method to disconnect Planks using the active Plank's transform
+    /// <summary>
+    /// Method to disconnect Planks using the active Plank's transform.
+    /// </summary>
+    /// <param name="activePlank">Plank used for rotation by Player.</param>
     public void DisconnectPlanks(Transform activePlank)
     {
         // Goes through active Plank's children

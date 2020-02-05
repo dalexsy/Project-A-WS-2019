@@ -10,6 +10,12 @@ public class UniversalVFXManager : MonoBehaviour
         else Destroy(this);
     }
 
+    /// <summary>
+    /// Creates or plays VFX.
+    /// </summary>
+    /// <param name="vfxSource">Position to create VFX and parent of created VFX.</param>
+    /// <param name="particlePrefab">Particle system prefab used for VFX.</param>
+    /// <param name="offset">Distance to offset VFX from VFX source.</param>
     public void PlayVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset)
     {
         var existingParticle = vfxSource.transform.Find(particlePrefab.name);
@@ -40,6 +46,13 @@ public class UniversalVFXManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates or plays VFX with rotation.
+    /// </summary>
+    /// <param name="vfxSource">Position to create VFX and parent of created VFX.</param>
+    /// <param name="particlePrefab">Particle system prefab used for VFX.</param>
+    /// <param name="offset">Distance to offset VFX from VFX source.</param>
+    /// <param name="rotation">Amount to rotate VFX.</param>
     public void PlayRotatedVFX(Transform vfxSource, GameObject particlePrefab, Vector3 offset, Quaternion rotation = default)
     {
         var existingParticle = vfxSource.transform.Find(particlePrefab.name);
@@ -70,6 +83,12 @@ public class UniversalVFXManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stops VFX from playing.
+    /// </summary>
+    /// <param name="vfxSource">Parent of VFX.</param>
+    /// <param name="particlePrefab">Particle system prefab used for VFX.</param>
+    /// <param name="shouldFade">Should particle system fade out or not.</param>
     public void StopVFX(Transform vfxSource, GameObject particlePrefab, bool shouldFade)
     {
         Transform particle = vfxSource.transform.Find(particlePrefab.name);

@@ -13,6 +13,10 @@ public class PlayerAudioManager : MonoBehaviour
         else Destroy(this);
     }
 
+    /// <summary>
+    /// Plays waypoint selection sound effects.
+    /// </summary>
+    /// <param name="waypointPosition">Position of selected waypoint.</param>
     public void WaypointSelectionSFX(Transform waypointPosition)
     {
         UniversalAudioManager.instance.PlaySFX(waypointPosition, waypointSelection, lowPitchRange, highPitchRange);
