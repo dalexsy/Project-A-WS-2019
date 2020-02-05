@@ -1028,6 +1028,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4520501751832679505, guid: 0373c4ab7938da24c9456ecce815d905,
+        type: 3}
+      propertyPath: color.r
+      value: 0.59607846
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520501751832679505, guid: 0373c4ab7938da24c9456ecce815d905,
+        type: 3}
+      propertyPath: color.g
+      value: 0.40784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520501751832679505, guid: 0373c4ab7938da24c9456ecce815d905,
+        type: 3}
+      propertyPath: color.b
+      value: 0.34901962
+      objectReference: {fileID: 0}
     - target: {fileID: 5321016160452361727, guid: 0373c4ab7938da24c9456ecce815d905,
         type: 3}
       propertyPath: m_Name
@@ -1284,7 +1299,7 @@ PrefabInstance:
     - target: {fileID: 6767143786928606509, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767143786928606509, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
@@ -1304,7 +1319,7 @@ PrefabInstance:
     - target: {fileID: 7610133806684317988, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7610133806684317988, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
@@ -1324,7 +1339,7 @@ PrefabInstance:
     - target: {fileID: 9077866248098884537, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9077866248098884537, guid: e45958cfd9b85254381e4f22ee7e73ba,
         type: 3}
@@ -2084,6 +2099,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RenderPostProcessing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 243006100941038259, guid: 8456e009bc309f744ae3f8dfdb243ea2,
+        type: 3}
+      propertyPath: m_RendererIndex
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8901319747154508429, guid: 8456e009bc309f744ae3f8dfdb243ea2,
         type: 3}

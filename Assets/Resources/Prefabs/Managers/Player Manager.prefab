@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7454749746421889527}
   - component: {fileID: 771166163}
+  - component: {fileID: 4520501751832679505}
   m_Layer: 0
   m_Name: Player Manager
   m_TagString: Untagged
@@ -43,10 +44,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a096d1c629ba41e4a8ae98e7eac3323e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMoving: 0
-  isRotating: 0
+  isUsingGravity: 1
   isUsingInvertedGravity: 0
   moveSpeed: 1.43
   gravity: 10
   gravityDirection: 1
   currentPlank: {fileID: 0}
+  activePivot: {fileID: 0}
+--- !u!114 &4520501751832679505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321016160452361727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5c6f43d8b8eb44793846b3422836d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xRay: {fileID: 2100000, guid: 11bb92b3e4ad03e4ba8258c44d282042, type: 2}
+  color: {r: 0.3490566, g: 0.3255698, b: 0.18934675, a: 0}

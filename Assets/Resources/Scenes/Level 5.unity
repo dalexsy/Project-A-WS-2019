@@ -44293,6 +44293,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0373c4ab7938da24c9456ecce815d905, type: 3}
+--- !u!1 &5291362909375514150 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5321016160452361727, guid: 0373c4ab7938da24c9456ecce815d905,
+    type: 3}
+  m_PrefabInstance: {fileID: 5291362909375514149}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5291362909375514151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5291362909375514150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5c6f43d8b8eb44793846b3422836d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xRay: {fileID: 2100000, guid: 11bb92b3e4ad03e4ba8258c44d282042, type: 2}
+  color: {r: 0.48235294, g: 0.09019608, b: 0.0627451, a: 0}
 --- !u!1001 &6450393671385667035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45609,6 +45629,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RenderPostProcessing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 243006100941038259, guid: 8456e009bc309f744ae3f8dfdb243ea2,
+        type: 3}
+      propertyPath: m_RendererIndex
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8901319747154508419, guid: 8456e009bc309f744ae3f8dfdb243ea2,
         type: 3}
