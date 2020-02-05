@@ -14,18 +14,18 @@ public class PlayerAnimationManager : MonoBehaviour
     public bool isWalking = false;
     public bool shouldCelebrate = true;
 
-    private bool hasBecomeSad = false;
-    private bool hasCelebrated = false;
-    private bool canBlink = false;
-
-    private float blinkTimer = 0f;
-
     public AnimationClip[] idleCycles;
     public AnimationClip[] jumpCycles;
     public AnimationClip[] walkCycles;
 
     public Texture[] faceTextures;
     public Texture[] happyBlink;
+
+    private bool hasBecomeSad = false;
+    private bool hasCelebrated = false;
+    private bool canBlink = false;
+
+    private float blinkTimer = 0f;
 
     private Renderer rend;
 

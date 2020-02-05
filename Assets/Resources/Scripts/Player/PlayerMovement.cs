@@ -52,14 +52,13 @@ public class PlayerMovement : MonoBehaviour
     // Detects valid touch input
     private void TouchInput()
     {
-        if (InputManager.instance.isDoubleSwiping == true || InputManager.instance.isSwiping == true) return;
-
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
             switch (touch.phase)
             {
+                // Set start position as current input position
                 case TouchPhase.Began:
                     startInputPos = touch.position;
                     break;
@@ -79,10 +78,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) startInputPos = Input.mousePosition;
 
         // If distance moved was smaller than threshold, select clicked waypoint
-        if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f))
-        {
-            SelectWaypoint();
-        }
+        if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f)) SelectWaypoint();
     }
 
     // Selects waypoint based on player input
