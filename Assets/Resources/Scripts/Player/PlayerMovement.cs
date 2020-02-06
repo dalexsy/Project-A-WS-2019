@@ -308,8 +308,12 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
-    // Jumps Player from plank to plank
-    // Requires pivot as rotation reference and angle to rotate
+    /// <summary>
+    /// Jumps Player from plank to plank
+    /// </summary>
+    /// <param name="pivot">Active player pivot to rotate around</param>
+    /// <param name="angle">Angle to rotate while jumping</param>
+    /// <returns></returns>
     IEnumerator JumpPlanks(Transform pivot, int angle)
     {
         // Trigger jump animation
@@ -366,7 +370,9 @@ public class PlayerMovement : MonoBehaviour
         PlayerAnimationManager.instance.isTransitioningPlanks = false;
     }
 
-    // Moves Player around level on completion
+     /// <summary>
+    /// Moves Player around level on completion
+    /// </summary>
     private void RunCircles()
     {
         if (PlayerAnimationManager.instance.shouldCelebrate)
@@ -390,7 +396,9 @@ public class PlayerMovement : MonoBehaviour
         else PlayerAnimationManager.instance.isWalking = true;
     }
 
-    // Rotates Player towards active pivot
+     /// <summary>
+    /// Rotates Player towards active pivot
+    /// </summary>
     public void RotatePlayer()
     {
         if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint)
@@ -403,7 +411,9 @@ public class PlayerMovement : MonoBehaviour
         else transform.LookAt(PlayerManager.instance.activePivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
     }
 
-    // Sets angle at which Player should jump
+    /// <summary>
+    /// Sets angle at which Player should jump
+    /// </summary>
     private void SetJumpAngle()
     {
         jumpAngle = 250;
