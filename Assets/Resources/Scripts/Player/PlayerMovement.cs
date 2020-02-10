@@ -145,8 +145,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Finds shortest direction between two waypoints
-    // Only used if level is fully connected
+    /// <summary>
+    /// Finds shortest direction between two waypoints
+    /// Only used if level is fully connected
+    /// </summary>
+    /// <param name="currentIndex">Index of current waypoint</param>
+    /// <param name="targetIndex">Index of target waypoint</param>
+    /// <returns></returns>
     private int ShortestDirection(int currentIndex, int targetIndex)
     {
         // Set mean distance as half of array length
@@ -159,8 +164,11 @@ public class PlayerMovement : MonoBehaviour
         return Math.Sign(targetIndex - currentIndex);
     }
 
-    // Moves Player between waypoints
-    // Requires direction to move through waypoint array
+    /// <summary>
+    /// Moves Player between waypoints
+    /// </summary>
+    /// <param name="arrayDirection">Direction to move through waypoint array</param>
+    /// <returns></returns>
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
         // If no next waypoint is given, exit coroutine
@@ -370,7 +378,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerAnimationManager.instance.isTransitioningPlanks = false;
     }
 
-     /// <summary>
+    /// <summary>
     /// Moves Player around level on completion
     /// </summary>
     private void RunCircles()
@@ -396,7 +404,7 @@ public class PlayerMovement : MonoBehaviour
         else PlayerAnimationManager.instance.isWalking = true;
     }
 
-     /// <summary>
+    /// <summary>
     /// Rotates Player towards active pivot
     /// </summary>
     public void RotatePlayer()
@@ -457,7 +465,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Compares rounded Vector3s
+    /// <summary>
+    /// Compares rounded Vector3s
+    /// </summary>
+    /// <param name="a">First Vector3 to compare</param>
+    /// <param name="b">Second Vector3 to compare</param>
+    /// <returns>Are they the same?</returns>
     private bool V3Equal(Vector3 a, Vector3 b)
     {
         return Vector3.SqrMagnitude(a - b) < 0.9;
