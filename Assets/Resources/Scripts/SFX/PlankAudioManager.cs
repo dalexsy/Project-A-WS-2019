@@ -27,6 +27,11 @@ public class PlankAudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Plays rotation activation success SFX.
+    /// SFX is pitched up following successive rotation from same pivot.
+    /// </summary>
+    /// <param name="activePivot">Pivot Player is rotating from.</param>
     public void ActivationSuccessSFX(Transform activePivot)
     {
         // If rotating from a new pivot, play new random SFX
@@ -47,6 +52,10 @@ public class PlankAudioManager : MonoBehaviour
         previousPivot = activePivot;
     }
 
+    /// <summary>
+    /// Plays rotation activation failure SFX.
+    /// </summary>
+    /// <param name="activePivot">Pivot Player has tried to rotate from.</param>
     public void ActivationFailureSFX(Transform activePivot)
     {
         UniversalAudioManager.instance.PlaySFX(activePivot, activationFailure, lowPitchRange, highPitchRange);

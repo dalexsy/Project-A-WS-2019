@@ -12,7 +12,13 @@ public class UniversalAudioManager : MonoBehaviour
         else Destroy(this);
     }
 
-    // Plays random SFX from array of audio clips at given position
+    /// <summary>
+    /// Plays random SFX from array of audio clips at given position.
+    /// </summary>
+    /// <param name="sfxSource">Position SFX should originate from.</param>
+    /// <param name="clips">List of clips SFX should be chosen from.</param>
+    /// <param name="lowPitchRange">Lowest pitch SFX should randomly be pitched to.</param>
+    /// <param name="highPitchRange">Highest pitch SFX should randomly be pitched to.</param>
     public void PlaySFX(Transform sfxSource, AudioClip[] clips, float lowPitchRange, float highPitchRange)
     {
         // Create new audio listener at SFX source

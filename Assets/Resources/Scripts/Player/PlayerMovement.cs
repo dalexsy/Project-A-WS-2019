@@ -49,7 +49,9 @@ public class PlayerMovement : MonoBehaviour
         if (InputManager.instance.isUsingTouch && Application.platform != RuntimePlatform.WebGLPlayer) TouchInput();
     }
 
-    // Detects valid touch input
+    /// <summary>
+    /// Detects valid touch input.
+    /// </summary>
     private void TouchInput()
     {
         if (Input.touchCount == 1)
@@ -71,7 +73,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Detects valid mouse input
+    /// <summary>
+    /// Detects valid mouse input.
+    /// </summary>
     private void MouseInput()
     {
         // Set starting mouse position on mouse down
@@ -81,7 +85,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && (Vector3.Distance(Input.mousePosition, startInputPos) < 2f)) SelectWaypoint();
     }
 
-    // Selects waypoint based on player input
+    /// <summary>
+    /// Selects waypoint based on player input.
+    /// </summary>
     private void SelectWaypoint()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -139,8 +145,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Finds shortest direction between two waypoints
-    // Only used if level is fully connected
+    /// <summary>
+    /// Finds shortest direction between two waypoints
+    /// Only used if level is fully connected
+    /// </summary>
+    /// <param name="currentIndex">Index of current waypoint</param>
+    /// <param name="targetIndex">Index of target waypoint</param>
+    /// <returns></returns>
     private int ShortestDirection(int currentIndex, int targetIndex)
     {
         // Set mean distance as half of array length
@@ -153,8 +164,11 @@ public class PlayerMovement : MonoBehaviour
         return Math.Sign(targetIndex - currentIndex);
     }
 
-    // Moves Player between waypoints
-    // Requires direction to move through waypoint array
+    /// <summary>
+    /// Moves Player between waypoints
+    /// </summary>
+    /// <param name="arrayDirection">Direction to move through waypoint array</param>
+    /// <returns></returns>
     IEnumerator TransitionWaypoints(int arrayDirection)
     {
         // If no next waypoint is given, exit coroutine
@@ -302,8 +316,12 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
-    // Jumps Player from plank to plank
-    // Requires pivot as rotation reference and angle to rotate
+    /// <summary>
+    /// Jumps Player from plank to plank
+    /// </summary>
+    /// <param name="pivot">Active player pivot to rotate around</param>
+    /// <param name="angle">Angle to rotate while jumping</param>
+    /// <returns></returns>
     IEnumerator JumpPlanks(Transform pivot, int angle)
     {
         // Trigger jump animation
@@ -360,7 +378,9 @@ public class PlayerMovement : MonoBehaviour
         PlayerAnimationManager.instance.isTransitioningPlanks = false;
     }
 
-    // Moves Player around level on completion
+    /// <summary>
+    /// Moves Player around level on completion
+    /// </summary>
     private void RunCircles()
     {
         if (PlayerAnimationManager.instance.shouldCelebrate)
@@ -384,7 +404,9 @@ public class PlayerMovement : MonoBehaviour
         else PlayerAnimationManager.instance.isWalking = true;
     }
 
-    // Rotates Player towards active pivot
+    /// <summary>
+    /// Rotates Player towards active pivot
+    /// </summary>
     public void RotatePlayer()
     {
         if (PlankManager.instance.hasReachedGoal && currentWaypoint == lastWaypoint)
@@ -397,7 +419,9 @@ public class PlayerMovement : MonoBehaviour
         else transform.LookAt(PlayerManager.instance.activePivot, currentWaypoint.transform.up * PlayerManager.instance.gravityDirection);
     }
 
-    // Sets angle at which Player should jump
+    /// <summary>
+    /// Sets angle at which Player should jump
+    /// </summary>
     private void SetJumpAngle()
     {
         jumpAngle = 250;
@@ -441,7 +465,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Compares rounded Vector3s
+    /// <summary>
+    /// Compares rounded Vector3s
+    /// </summary>
+    /// <param name="a">First Vector3 to compare</param>
+    /// <param name="b">Second Vector3 to compare</param>
+    /// <returns>Are they the same?</returns>
     private bool V3Equal(Vector3 a, Vector3 b)
     {
         return Vector3.SqrMagnitude(a - b) < 0.9;

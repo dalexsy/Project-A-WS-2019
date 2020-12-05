@@ -1278,7 +1278,7 @@ PrefabInstance:
     - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
       propertyPath: faceTextures.Array.size
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
@@ -1309,12 +1309,12 @@ PrefabInstance:
         type: 3}
       propertyPath: faceTextures.Array.data[0]
       value: 
-      objectReference: {fileID: 2800000, guid: a94935b0f2f23cd4d847a9608ab6d99b, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
       propertyPath: faceTextures.Array.data[1]
       value: 
-      objectReference: {fileID: 2800000, guid: d1608321b92c4e642b24b32b14674b29, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4525777216861364586, guid: cf2e8fae1e3ec914283983271e5d9411,
         type: 3}
       propertyPath: faceTextures.Array.data[2]

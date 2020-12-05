@@ -23,11 +23,17 @@ public class PauseManager : MonoBehaviour
         HidePaused();
     }
 
+    /// <summary>
+    /// Reloads current scene.
+    /// </summary>
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    /// <summary>
+    /// Stops time and displays or hides pause menu.
+    /// </summary>
     public void PauseGame()
     {
         if (Time.timeScale == 1)
@@ -45,12 +51,17 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads start screen.
+    /// </summary>
     public void LoadStartScreen()
     {
         SceneManager.LoadScene("Title Intro");
     }
 
-    // Shows pause screen and fades out audio
+    /// <summary>
+    /// Shows pause screen and fades out audio
+    /// </summary>
     private IEnumerator FadeOut()
     {
         ShowPaused();
@@ -62,7 +73,9 @@ public class PauseManager : MonoBehaviour
         yield return null;
     }
 
-    // Hides pause screen and fades in audio
+     /// <summary>
+    /// Hides pause screen and fades in audio.
+    /// </summary>
     private IEnumerator FadeIn()
     {
         HidePaused();
@@ -74,7 +87,9 @@ public class PauseManager : MonoBehaviour
         yield return null;
     }
 
-    // Shows all UI elements tagged with ShowOnPause
+    /// <summary>
+    /// Shows all UI elements tagged with ShowOnPause
+    /// </summary>
     public void ShowPaused()
     {
         foreach (GameObject g in showOnPause)
@@ -84,7 +99,9 @@ public class PauseManager : MonoBehaviour
             g.SetActive(false);
     }
 
-    // Hides all UI elements tagged with ShowOnPause
+    /// <summary>
+    /// Hides all UI elements tagged with ShowOnPause
+    /// </summary>
     public void HidePaused()
     {
         foreach (GameObject g in showOnPause)

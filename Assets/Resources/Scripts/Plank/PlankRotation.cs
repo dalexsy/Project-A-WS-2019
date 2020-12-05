@@ -40,6 +40,9 @@ public class PlankRotation : MonoBehaviour
         if (activePivot.GetComponent<PivotAssignment>().isValid && PlayerManager.instance.currentPlank != transform) RotationInput();
     }
 
+    /// <summary>
+    /// Starts rotation with valid input
+    /// </summary>
     private void RotationInput()
     {
         // If no pivots are given or camera rig is currently rotating, accept no input
@@ -81,7 +84,10 @@ public class PlankRotation : MonoBehaviour
         }
     }
 
-    // Returns direction of input
+    /// <summary>
+    /// Looks for valid touch input
+    /// </summary>
+    /// <returns>Returns input direction</returns>
     private int TouchInput()
     {
         // If player is double swiping, input is not valid
@@ -154,6 +160,9 @@ public class PlankRotation : MonoBehaviour
         return 0;
     }
 
+    /// <summary>
+    /// Triggers effects after invalid rotation input
+    /// </summary>
     private void ActivationFailure()
     {
         if (!InputManager.instance.isUsingTouch)
@@ -226,7 +235,10 @@ public class PlankRotation : MonoBehaviour
         }
     }
 
-    // Returns direction of input
+    /// <summary>
+    /// Looks for valid mouse input
+    /// </summary>
+    /// <returns>Returns input direction</returns>
     private int MouseInput()
     {
         // On left mouse button down, set start position and reset input offset
@@ -288,8 +300,10 @@ public class PlankRotation : MonoBehaviour
         return 0;
     }
 
-    // Starts Plank rotation
-    // Uses direction from MouseInput/TouchInput
+    /// <summary>
+    /// Starts Plank rotation
+    /// </summary>
+    /// <param name="direction">Directions from <see cref="MouseInput"/> or <see cref="TouchInput"/></param>
     private void StartRotation(int direction)
     {
         if (direction == 0 || PlankRotationManager.instance.isRotating || PlayerAnimationManager.instance.isMoving) return;
@@ -303,8 +317,12 @@ public class PlankRotation : MonoBehaviour
 
     }
 
-    // Rotates Plank
-    // Requires direction (1, -1) and pivot (lPivot, rPivot)
+    /// <summary>
+    /// Rotates Plank
+    /// </summary>
+    /// <param name="direction">Direction to rotate plank from <see cref="StartRotation"></param>
+    /// <param name="pivot">Pivot to rotate from</param>
+    /// <returns></returns>
     IEnumerator RotatePlank(int direction, Transform pivot)
     {
         // Save local variable rotationPivot from active pivot

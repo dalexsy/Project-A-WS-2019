@@ -18,10 +18,9 @@ public class CameraRigRotation : MonoBehaviour
     private Camera mainCamera;
     private float inputBuffer = 0;
     private float inputOffset = 0;
-    private float orthoZoomSpeed = -0.003f;
+    private readonly float orthoZoomSpeed = -0.003f;
     private float zoom;
-    private float zoomSpeed = 5f;
-    private int turnDirection = 0;
+    private readonly float zoomSpeed = 5f;
     private Transform player;
     private Vector2 startPosMouse = Vector2.zero;
     private Vector3 targetPosition;
@@ -92,12 +91,17 @@ public class CameraRigRotation : MonoBehaviour
         if (!PlankManager.instance.hasReachedGoal && InputManager.instance.isUsingTouch) AngleCorrection();
     }
 
-    // Rotates camera around level (used after level is completed)
+    /// <summary>
+    /// Rotates camera around level. (used after level is completed)
+    /// </summary>
     private void RotateAroundLevel()
     {
         transform.RotateAround(transform.position, transform.up, Time.deltaTime * 10f);
     }
 
+    /// <summary>
+    /// Rotates and zooms camera using touch input.
+    /// </summary>
     private void TouchRotation()
     {
         if (Input.touchCount == 2)
@@ -115,9 +119,6 @@ public class CameraRigRotation : MonoBehaviour
             // Limit input sensitivity for turn
             if (Mathf.Abs(DetectTouchMovement.turnAngleDelta) > 0.2f)
                 turnAmount = DetectTouchMovement.turnAngleDelta;
-
-            if (turnAmount != 0)
-                turnDirection = Math.Sign(turnAmount);
 
             if (Application.platform != RuntimePlatform.WebGLPlayer)
 
@@ -137,7 +138,9 @@ public class CameraRigRotation : MonoBehaviour
 
     }
 
-    // Resets rig to a right angle when using touch rotation
+    /// <summary>
+    /// Resets rig to a right angle when using touch rotation.
+    /// </summary>
     private void AngleCorrection()
     {
         float yRotation = transform.eulerAngles.y;
@@ -147,7 +150,7 @@ public class CameraRigRotation : MonoBehaviour
 
         // If angle difference is over 45, reduce angle difference to normalize correction rate
         if (angleDifference > 45)
-            angleDifference = angleDifference - 90;
+            angleDifference -= 90;
 
         // If player is not trying to rotate camera and angle difference is over half a degree
         if (Input.touchCount != 2 && Math.Abs(angleDifference) >= .5f)
@@ -159,6 +162,10 @@ public class CameraRigRotation : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Rotates camera using right mouse button.
+    /// </summary>
+    /// <param name="direction">Direction camera should rotate.</param>
     private void MouseRotation(int direction)
     {
         if (direction == 0 || isRotating) return;
@@ -166,6 +173,9 @@ public class CameraRigRotation : MonoBehaviour
         StartCoroutine(RotateRig(MouseInput()));
     }
 
+    /// <summary>
+    /// Zooms camera using middle mouse wheel input.
+    /// </summary>
     private void MouseZoom()
     {
         // Zoom camera based on scroll amount
@@ -177,8 +187,9 @@ public class CameraRigRotation : MonoBehaviour
         mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
     }
 
-    // Returns direction of input
-    // Should be universal
+    /// <summary>
+    /// Returns direction of mouse input.
+    /// </summary>
     private int MouseInput()
     {
         if (Input.GetMouseButtonDown(1))
@@ -205,7 +216,11 @@ public class CameraRigRotation : MonoBehaviour
         return 0;
     }
 
-    // Coroutine to rotate camera rig
+    /// <summary>
+    /// Coroutine to rotate camera rig.
+    /// </summary>
+    /// <param name="direction">Direction to rotate camera rig.</param>
+    /// <returns></returns>
     IEnumerator RotateRig(int direction)
     {
         // Set isRotating to true to prevent multiple rotations
@@ -240,7 +255,11 @@ public class CameraRigRotation : MonoBehaviour
         yield return null;
     }
 
-    // Returns mean position of list of vectors
+    /// <summary>
+    /// Calculates mean position of planks.
+    /// </summary>
+    /// <param name="positions">List of plank positions</param>
+    /// <returns>Mean position of planks</returns>
     private Vector3 GetMeanVector(List<Vector3> positions)
     {
         // If list is empty, return (0,0,0)

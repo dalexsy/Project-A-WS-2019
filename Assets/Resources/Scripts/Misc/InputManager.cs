@@ -33,6 +33,10 @@ public class InputManager : MonoBehaviour
         if (isUsingTouch) DetectSwipe();
     }
 
+    /// <summary>
+    /// Resets swiping and double swiping bools after a cooldown.
+    /// </summary>
+    /// <param name="swipeCount">Number of touches</param>
     public IEnumerator ResetBool(int swipeCount)
     {
         yield return new WaitForSeconds(.5f);
@@ -41,6 +45,9 @@ public class InputManager : MonoBehaviour
         else yield break;
     }
 
+    /// <summary>
+    /// Detects swipes based on touch duration.
+    /// </summary>
     private void DetectSwipe()
     {
         // Double swipe

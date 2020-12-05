@@ -28,8 +28,11 @@ public class PlankCollisionDetection : MonoBehaviour
             LimitRotationOnExit(collider);
     }
 
-    // Method to limit Plank's rotation (clockwise or counterclockwise)
-    // Uses collider found on OnTriggerEnter
+
+    /// <summary>
+    /// Limits Plank's rotation (clockwise or counterclockwise)
+    /// Uses collider found on OnTriggerEnter
+    /// </summary>
     private void LimitRotationOnEnter(Collider collider)
     {
         // If an active pivot is assigned
@@ -48,8 +51,10 @@ public class PlankCollisionDetection : MonoBehaviour
         DetectMixedCollision(true, collider);
     }
 
-    // Method to limit Plank's rotation (clockwise or counterclockwise)
-    // Uses collider found on OnTriggerExit
+    /// <summary>
+    /// Limits Plank's rotation (clockwise or counterclockwise)
+    /// Uses collider found on OnTriggerExit
+    /// </summary>
     private void LimitRotationOnExit(Collider collider)
     {
         // If an active pivot is assigned
@@ -66,6 +71,12 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Detects mixed collisions between top and bottom colliders.
+    /// Only used once level is solved.
+    /// </summary>
+    /// <param name="hasMixedCollision">Flags pivot as having mixed collision.</param>
+    /// <param name="collider">Collider of collision object.</param>
     private void DetectMixedCollision(bool hasMixedCollision, Collider collider)
     {
         if ((gameObject.name.Equals(PlankManager.instance.topColliderName)) &&
@@ -101,6 +112,11 @@ public class PlankCollisionDetection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets rotation limitations for planks based on collisions with other planks.
+    /// </summary>
+    /// <param name="canRotate">Sets or unsets rotation limitation of a plank.</param>
+    /// <param name="collider">Collider of collision object.</param>
     private void SetRotationLimiter(bool canRotate, Collider collider)
     {
         // If this collider is a top collider that collides with another top collider

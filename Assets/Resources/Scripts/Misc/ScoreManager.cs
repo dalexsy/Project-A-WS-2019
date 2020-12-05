@@ -4,7 +4,15 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
+
+    /// <summary>
+    /// The number of moves before the Player becomes sad.
+    /// </summary>
     public int sadnessThreshold = 10;
+
+    /// <summary>
+    /// The number of moves required for a perfect solution.
+    /// </summary>
     public int perfectSolution = 2;
 
     private void Awake()
@@ -18,7 +26,10 @@ public class ScoreManager : MonoBehaviour
         SetThreshold();
     }
 
-    // Sets threshold for current level
+
+    /// <summary>
+    /// Sets threshold for current level.
+    /// </summary>
     private void SetThreshold()
     {
         string scene = SceneManager.GetActiveScene().name;

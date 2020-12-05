@@ -34,7 +34,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Loads next level by cycling between scenes
+    /// <summary>
+    /// Loads next level by cycling between scenes.
+    /// </summary>
     private void LoadNextLevel()
     {
         string scene = SceneManager.GetActiveScene().name;
@@ -62,7 +64,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Fades transition sprite to black
+    /// <summary>
+    /// Fades transition sprite to black.
+    /// </summary>
     private IEnumerator FadeOut()
     {
         // Wait for given amount of time
@@ -78,7 +82,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Fades transition sprite to clear
+    /// <summary>
+    /// Fades transition sprite to clear.
+    /// </summary>
     private IEnumerator FadeIn()
     {
         // Reset alpha to full opacity
